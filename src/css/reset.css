@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+
+li{
+
+    list-style-type: none;
+}
+
+img{
+    max-width: 100%;
+}

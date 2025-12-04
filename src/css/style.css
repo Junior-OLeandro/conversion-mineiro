@@ -1,0 +1,273 @@
+
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    background: linear-gradient(180deg, #4e2623 0%, #3b1f1e 100%);
+    color: var(--text);
+}
+
+.menu-fixo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #030303;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.menu-fixo a {
+  background: #d5a474;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+  white-space: nowrap;
+}
+
+.menu-fixo a:hover {
+  background: #f2c993;
+}
+
+body {
+  padding-top: 70px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.logo-img {
+    width: 200px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.titulo-categoria, .titulo-cart {
+    font-family: "Alice", serif;
+    font-weight: 400;
+    font-size: 36px;
+}
+
+.container {
+    display: flex;
+    gap: 25px;
+    padding: 25px;
+}
+
+.products {
+    flex: 2;
+}
+
+.cart-area {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+
+
+
+.cart-area input[type="text"],
+.cart-area input[type="number"],
+.cart-area select,
+.cart-area textarea {
+    width: 100%;       
+    display: block; 
+    margin-top: 5px;     
+    padding: 10px;
+    border: 1px solid #ccc;  
+    border-radius: 5px;      
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+
+.cart-area label {
+    display: block;  
+    font-weight: 500;
+}
+
+
+.cart-area textarea {
+    height: 80px;  
+    resize: vertical;        
+}
+
+.cart-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#nomecliente {
+    display: block;
+    width: 100%;
+}
+
+#endereco {
+    width: 100%;
+}
+
+.extras {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.extras label {
+  display: block;
+  font-size: 13px;
+  margin: 3px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.product {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.product img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #fff3
+}
+
+.product h3 {
+    margin: 10px 0 5px;
+    font-family: 'Alice', sans-serif;
+}
+
+.product p {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #f7e5d6
+}
+
+.product .price {
+    font-family: 'Alice', sans-serif;
+    color: var(--accent);
+    font-weight: 700;
+    margin-left: 20px;
+}
+
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px
+}
+
+.controls select,
+.controls input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text)
+}
+
+.btn-add {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer
+}
+   
+
+#cart-list li {
+    padding: 5px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+}
+
+.cart-totals p {
+    margin: 5px 0;
+    font-weight: 700
+}
+
+#valorTrocoContainer{
+    display: none;
+}
+
+/* ESTILO DO SELECT */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.campo-forma-pagamento select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  font-size: 16px;
+  background: #fff;
+}
+
+/* CAMPO DE TROCO */
+#valorTroco {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  width: 100%;
+  font-size: 16px;
+}
+
+.troco-info {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #008000;
+}
+
+/* OBSERVAÇÃO */
+.campo-observacao textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  font-size: 15px;
+}
+
+.campo-observacao {
+  margin-top: 15px;
+}
+
+
+#btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%
+}
+

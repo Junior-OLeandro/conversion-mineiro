@@ -1,0 +1,178 @@
+/* --- FLOATING CART BUTTON (mobile) --- */
+.floating-cart {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  background: var(--accent, #e07a2b);
+  color: #111;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 18px;
+  z-index: 2000;
+  display: none; /* mostrado apenas em mobile via media query */
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.cart-badge {
+  background: #000;
+  color: var(--text, #fff);
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 12px;
+  vertical-align: top;
+  margin-left: 6px;
+}
+
+/* --- MODAL --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  background: rgba(0,0,0,0.5);
+  padding: 20px;
+}
+
+.modal[aria-hidden="false"] {
+  display: flex;
+}
+
+
+
+/* --- ESTILOS DO FORMULÁRIO NO MODAL --- */
+
+/* 1. Faz a etiqueta (o texto "Nome:", "Endereço:", etc) ocupar uma linha inteira */
+#cartModal label {
+  display: block;          /* Comporta-se como um bloco */
+  margin-bottom: 15px;     /* Espaço entre um campo e outro */
+  font-weight: 600;        /* Deixa o texto do rótulo um pouco mais forte */
+  color: #333;
+}
+
+/* 2. Estiliza os campos de entrada (Input, Select, Textarea) dentro do modal */
+#cartModal input[type="text"],
+#cartModal input[type="number"],
+#cartModal select,
+#cartModal textarea {
+  width: 100%;             /* Ocupa 100% da largura do contêiner */
+  display: block;          /* Garante que fique em sua própria linha */
+  margin-top: 5px;         /* Espacinho entre o texto do rótulo e a caixa de digitação */
+  padding: 10px;           /* Espaço interno para ficar confortável de clicar */
+  border: 1px solid #ccc;  /* Borda cinza suave */
+  border-radius: 6px;      /* Cantos arredondados */
+  box-sizing: border-box;  /* Garante que o padding não estoure a largura */
+  font-family: inherit;    /* Mantém a fonte do site */
+  font-size: 16px;         /* Tamanho bom para celular (evita zoom automático no iPhone) */
+}
+
+/* 3. Ajuste específico para a área de observação ficar maiorzinha */
+#cartModal textarea {
+  height: 80px;            /* Altura fixa inicial */
+  resize: vertical;        /* Permite o usuário aumentar a altura se quiser */
+}
+
+/* 4. Ajuste para o container do troco (caso precise de margem extra) */
+#modal-troco-container {
+  margin-bottom: 15px;
+}
+
+
+
+
+
+
+.modal-content {
+  width: 100%;
+  max-width: 760px;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  padding: 18px;
+  position: relative;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-section {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  
+}
+
+.modal-section h3 { margin: 6px 0; }
+
+#modal-cart-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#modal-cart-list li {
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.06);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-primary {
+  background: var(--accent, #e07a2b);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #eee;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* troco info */
+.troco-info {
+  margin-top: 6px;
+  font-weight: 600;
+  color: #007a00;
+}
+
+/* --- ASIDE CARRINHO FIXO (desktop) --- */
+@media (min-width: 900px) {
+  .cart-area {
+    position: sticky;
+    top: 96px; /* abaixo do header/menu */
+    align-self: flex-start;
+  }
+}
+
+/* --- MOBILE: esconder o aside e mostrar botão flutuante --- */
+@media (max-width: 899px) {
+  .cart-area { display: none; }
+  .floating-cart { display: inline-flex; }
+  /* modal full width on small screens */
+  .modal-content { width: 100%; height: 100%; max-width: none; border-radius: 0; padding: 16px; }
+}

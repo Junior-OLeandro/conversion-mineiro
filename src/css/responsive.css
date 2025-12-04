@@ -1,0 +1,32 @@
+@media(max-width:900px) {
+
+  body {
+  padding-top: 100px;
+}
+
+    .container {
+        flex-direction: column
+    }
+
+    .cart {
+        order: 2
+    }
+}
+
+@media (max-width: 768px) {
+  
+  .menu-fixo {
+    flex-wrap: wrap; /* permite quebrar para baixo */
+    justify-content: center; /* centraliza se quiser */
+    overflow-x: visible; /* não queremos scroll */
+    white-space: normal; /* libera quebra de linha */
+  }
+
+  .menu-fixo a {
+    flex: 1 1 auto; /* deixa os botões se ajustarem */
+    margin-bottom: 5px;
+  }
+
+  
+}
+
