@@ -1,27 +1,56 @@
-/* src/js/index.js - versão corrigida e comentada */
+/* src/js/index.js - Versão Final Smashs com Preços Individuais */
 
+// --- DADOS DOS PRODUTOS ---
 const productsData = [
-  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.jpg', alt: 'Foto do hamburguer com batata e refrigerante' },
-  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 60g, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.jpg', alt: 'Foto do hamburguer com batata e refrigerante' },
-  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/tropical.jpg', alt: 'Foto do hamburguer com batata e refrigerante' },
-  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, barbecue, couve crispy e chips de banana. Acompanha maionese mineira.', price: 34.90, img: './src/images/lanches/mineiro.jpg', alt: 'Foto de hamburguer' },
-  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.jpg', alt: 'Foto de hamburguer' },
-  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.png', alt: 'Foto de hamburguer' },
-  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 150g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.png', alt: 'Foto de hamburguer' },
-  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.jpg', alt: 'Foto de hamburguer' },
-  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.jpg', alt: 'Foto de hamburguer' },
-  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.jpg', alt: 'Foto de hamburguer' },
-  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.jpg', alt: 'Foto de hamburguer' },
-  { id: 12, category: 'smashs', name: 'Smash Bacon', desc: 'Smash burguer 60g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.', price: 20.90, img: './src/images/lanches/smash-bacon.jpg', alt: 'Foto de hamburguer' },
-  { id: 13, category: 'smashs', name: 'Smash Cheese', desc: 'Smash burguer 60g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/smash-cheese.jpg', alt: 'Foto de hamburguer' },
-  { id: 14, category: 'smashs', name: 'Smash Mineiro', desc: 'Smash burguer 60g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/smash-mineiro.jpg', alt: 'Foto de hamburguer' },
-  { id: 15, category: 'smashs', name: 'Smashizinho', desc: 'Smash burguer 60g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/smash-bacon.jpg', alt: 'Foto de hamburguer' },
-  { id: 16, category: 'acompanhamentos', name: 'Batata Frita', desc: 'Batata Frita Palito Individual', price: 12.90, img: './src/images/lanches/batata.jpg', alt: 'Foto de batata frita' },
-  { id: 17, category: 'acompanhamentos', name: 'Batata, cheddar e bacon', desc: '', price: 24.90, img: './src/images/lanches/batata-cb.jpg', alt: 'Foto de batata frita com cheddar e bacon' },
-  { id: 18, category: 'bebidas', name: 'Coca-Cola Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/cocazero.webp', alt: 'Foto de coca-cola lata'  },
-  { id: 19, category: 'bebidas', name: 'Coca-Cola 350ml', desc: '', price: 6.00, img: './src/images/lanches/coca.webp', alt: 'Foto de coca-cola lata'  },
-  { id: 20, category: 'bebidas', name: 'Guaraná Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/guaranazero.webp', alt: 'Foto de coca-cola lata'  },
-  { id: 21, category: 'bebidas', name: 'Guaraná 350ml', desc: '', price: 6.00, img: './src/images/lanches/guarana.webp', alt: 'Foto de coca-cola lata'  },
+  // --- COMBOS ---
+  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Combo Trem Bão' },
+  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 60g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Combo Smash' },
+  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/tropical.webp', alt: 'Combo Tropical' },
+
+  // --- HAMBURGUERES ---
+  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, barbecue, couve crispy e chips de banana. Acompanha maionese mineira.', price: 34.90, img: './src/images/lanches/mineiro.webp', alt: 'Hamburguer Mineiro' },
+  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.webp', alt: 'Hamburguer Chico Bento' },
+  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.webp', alt: 'Hamburguer Romeu e Julieta' },
+  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 150g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.webp', alt: 'Hamburguer Bacon Docinho' },
+  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.webp', alt: 'Hamburguer Chimiburguer' },
+  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer Tropical' },
+  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado' },
+  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão' },
+
+  // --- SMASHS (Com preços individuais por tamanho) ---
+  // AQUI VOCÊ EDITA OS PREÇOS DE CADA UM:
+  {
+    id: 12, category: 'smashs', name: 'Smash Bacon',
+    desc: 'Smash burguer 60g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.',
+    img: './src/images/lanches/smash-bacon.webp', alt: 'Smash Bacon',
+    prices: { simples: 20.90, duplo: 27.90, triplo: 34.90 } // <--- EDITE AQUI
+  },
+  {
+    id: 13, category: 'smashs', name: 'Smash Cheese',
+    desc: 'Smash burguer 60g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.',
+    img: './src/images/lanches/smash-cheese.webp', alt: 'Smash Cheese',
+    prices: { simples: 21.90, duplo: 28.90, triplo: 35.90 } // <--- EDITE AQUI
+  },
+  {
+    id: 14, category: 'smashs', name: 'Smash Mineiro',
+    desc: 'Smash burguer 60g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.',
+    img: './src/images/lanches/smash-mineiro.webp', alt: 'Smash Mineiro',
+    prices: { simples: 22.90, duplo: 29.90, triplo: 36.90 } // <--- EDITE AQUI
+  },
+  {
+    id: 15, category: 'smashs', name: 'Smashizinho',
+    desc: 'Smash burguer 60g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.',
+    img: './src/images/lanches/smash-bacon.webp', alt: 'Smashizinho',
+    prices: { simples: 16.90, duplo: 25.90, triplo: 32.90 } // <--- EDITE AQUI
+  },
+
+  // --- ACOMPANHAMENTOS E BEBIDAS ---
+  { id: 16, category: 'acompanhamentos', name: 'Batata Frita', desc: 'Batata frita simples', price: 12.90, img: './src/images/lanches/batata.webp', alt: 'Batata Frita' },
+  { id: 17, category: 'acompanhamentos', name: 'Batata, cheddar e bacon', desc: 'Batata frita com cheddar e bacon', price: 24.90, img: './src/images/lanches/batata-cb.webp', alt: 'Batata Especial' },
+  { id: 18, category: 'bebidas', name: 'Coca-Cola Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/cocazero.webp', alt: 'Coca Zero' },
+  { id: 19, category: 'bebidas', name: 'Coca-Cola 350ml', desc: '', price: 6.00, img: './src/images/lanches/coca.webp', alt: 'Coca Cola' },
+  { id: 20, category: 'bebidas', name: 'Guaraná Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/guaranazero.webp', alt: 'Guaraná Zero' },
+  { id: 21, category: 'bebidas', name: 'Guaraná 350ml', desc: '', price: 6.00, img: './src/images/lanches/guarana.webp', alt: 'Guaraná' },
 ];
 
 const extras = [
@@ -42,11 +71,17 @@ const extras = [
   { id: 'bife', name: 'Bife artesanal de boi 150g', price: 13.00 },
 ];
 
+// --- CONFIGURAÇÕES ---
+const categoriesWithExtras = ['combos', 'hamburgueres', 'smashs'];
+const categoriesWithMeatOptions = ['combos', 'hamburgueres'];
+// Smashs são identificados pelo campo 'prices' no objeto do produto
+
+
 let cart = [];
 
+// --- DOM ELEMENTS ---
 const floatingCartBtn = document.getElementById('floatingCartBtn');
 const cartCountBadge = document.getElementById('cart-count-badge');
-
 const cartModal = document.getElementById('cartModal');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
 const modalCartList = document.getElementById('modal-cart-list');
@@ -62,16 +97,29 @@ const modalTrocoContainer = document.getElementById('modal-troco-container');
 const modalTrocoInput = document.getElementById('modal-troco');
 const modalTrocoInfo = document.getElementById('modal-troco-info');
 const modalObs = document.getElementById('modal-obs');
-
 const confirmCloseBtn = document.getElementById('confirmCloseBtn');
 const confirmSendBtn = document.getElementById('confirmSendBtn');
 
-function formatBRL(v) {
-  return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const mainTrocoInfo = document.getElementById('troco-info');
+
+// --- HELPER FUNCTIONS ---
+function formatBRL(value) {
+  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+function parseMoney(valueStr) {
+  if (!valueStr) return 0;
+  return parseFloat(valueStr.replace(/[^0-9,-]/g, '').replace(',', '.')) || 0;
+}
+
+function calculateItemTotal(item) {
+  const extrasSum = (item.extras || []).reduce((s, e) => s + (e.price || 0), 0);
+  return (item.price + extrasSum) * item.qty;
+}
+
+// --- BUILD PRODUCTS ---
 function buildProducts() {
-  const categories = {
+  const categoriesContainer = {
     combos: document.getElementById('grid-combos'),
     hamburgueres: document.getElementById('grid-hamburgueres'),
     smashs: document.getElementById('grid-smashs'),
@@ -80,65 +128,131 @@ function buildProducts() {
   };
 
   productsData.forEach(p => {
-    const container = categories[p.category];
-    if (!container) {
-      console.warn('Categoria não encontrada:', p.category);
-      return;
+    const container = categoriesContainer[p.category];
+    if (!container) return;
+
+    const showMeatOptions = categoriesWithMeatOptions.includes(p.category);
+    const showExtras = categoriesWithExtras.includes(p.category);
+
+    // Verifica se o produto tem tabela de preços (SMASHS)
+    const hasSizeOptions = p.prices !== undefined;
+
+    // 1. Opções de Carne (Combos/Burgers)
+    let meatOptionsHTML = '';
+    if (showMeatOptions) {
+      meatOptionsHTML = `
+        <select id="meat-${p.id}" aria-label="Tipo de carne">
+            <option value="Bovino">Bovino</option>
+            <option value="Frango">Frango</option>
+        </select>
+        <select id="point-${p.id}" aria-label="Ponto da carne">
+            <option value="Malpassado">Malpassado</option>
+            <option value="AoPonto">Ao Ponto</option>
+            <option value="BemPassado">Bem Passado</option>
+        </select>
+      `;
+    }
+
+    // 2. Opções de Tamanho (SMASHS) - Pega o preço específico do produto
+    let sizeOptionsHTML = '';
+    let displayPrice = formatBRL(p.price || 0);
+
+    if (hasSizeOptions) {
+      // O preço exibido no card será o "Simples"
+      displayPrice = `<small>A partir de</small> <br>${formatBRL(p.prices.simples)}`;
+
+      sizeOptionsHTML = `
+        <select id="size-${p.id}" aria-label="Tamanho do Smash" style="width: 100%; margin-bottom: 5px; font-weight: bold;">
+            <option value="simples">Simples (${formatBRL(p.prices.simples)})</option>
+            <option value="duplo">Duplo (${formatBRL(p.prices.duplo)})</option>
+            <option value="triplo">Triplo (${formatBRL(p.prices.triplo)})</option>
+        </select>
+      `;
+    }
+
+    // 3. Extras
+    let extrasHTML = '';
+    if (showExtras) {
+      extrasHTML = `
+        <div class="extras">Adicionais: <br>
+          ${extras.map(e => `
+            <label>
+              <input type="checkbox" data-extra="${e.id}" data-price="${e.price}">
+              ${e.name} (+${formatBRL(e.price)})
+            </label>
+          `).join('')}
+        </div>
+      `;
     }
 
     const div = document.createElement('div');
     div.className = 'product';
     div.innerHTML = `
-      <img src="${p.img}" alt="${p.name}">
-      <h3>${p.name} <span class="price">${formatBRL(p.price)}</span></h3>
+      <img src="${p.img}" alt="${p.alt || p.name}">
+      <h3>${p.name} <span class="price" style="font-size: 0.9em">${displayPrice}</span></h3>
       <p>${p.desc || ''}</p>
+      
       <div class="controls">
-        <select id="meat-${p.id}" aria-label="Tipo de carne ${p.name}"><option value="Bovino">Bovino</option><option value="Frango">Frango</option></select>
-        <select id="point-${p.id}" aria-label="Ponto da carne ${p.name}"><option value="Malpassado">Malpassado</option><option value="AoPonto">Ao Ponto</option><option value="BemPassado">Bem Passado</option></select>
-        <select id="qty-${p.id}" aria-label="Quantidade ${p.name}"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
-        <button type="button" class="btn-add" data-id="${p.id}">Adicionar</button>
+        ${meatOptionsHTML}
+        ${sizeOptionsHTML}
+        
+        <div style="display:flex; gap:5px; margin-top:5px;">
+             <select id="qty-${p.id}" aria-label="Quantidade" style="width: 60px; "><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+             <button type="button" class="btn-add" data-id="${p.id}" style="flex:1;">Adicionar</button>
+        </div>
       </div>
-      <div class="extras">Adicionais: <br>
-        ${extras.map(e => `
-          <label>
-            <input type="checkbox" data-extra="${e.id}" data-price="${e.price}">
-            ${e.name} (+${formatBRL(e.price)})
-          </label>
-        `).join('')}
-      </div>
+      ${extrasHTML}
     `;
     container.appendChild(div);
   });
 
-  // delegação de eventos para botões "Adicionar"
   document.querySelectorAll('.btn-add').forEach(btn => {
     btn.addEventListener('click', (ev) => {
-      const id = parseInt(btn.dataset.id, 10);
-      addToCart(ev, id);
+      addToCart(ev, parseInt(btn.dataset.id, 10));
     });
   });
 }
 
+// --- CART LOGIC ---
 function addToCart(ev, id) {
-  // defensivo
   const prod = productsData.find(p => p.id === id);
-  if (!prod) {
-    console.error('Produto não encontrado id=', id);
-    return;
-  }
+  if (!prod) return;
 
   const meatEl = document.getElementById(`meat-${id}`);
   const pointEl = document.getElementById(`point-${id}`);
+  const sizeEl = document.getElementById(`size-${id}`);
   const qtyEl = document.getElementById(`qty-${id}`);
-  const meat = meatEl ? meatEl.value : '';
-  const point = pointEl ? pointEl.value : '';
+
+  // Determina tipo de produto
+  const hasSizeOptions = prod.prices !== undefined;
+  const hasMeatOptions = categoriesWithMeatOptions.includes(prod.category);
+
+  // Carne e Ponto
+  let meat = '';
+  let point = '';
+  if (hasMeatOptions) {
+    meat = meatEl ? meatEl.value : 'Bovino';
+    point = pointEl ? pointEl.value : 'Ao Ponto';
+  }
+
+  // Preço e Tamanho
+  let sizeLabel = '';
+  let finalPrice = prod.price; // Preço padrão
+
+  if (hasSizeOptions && sizeEl) {
+    const selectedSize = sizeEl.value; // 'simples', 'duplo', 'triplo'
+    finalPrice = prod.prices[selectedSize]; // Busca o preço DENTRO do objeto do produto
+    sizeLabel = selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1);
+  }
+
   const qty = qtyEl ? parseInt(qtyEl.value, 10) : 1;
 
+  // Extras
   const container = ev.currentTarget.closest('.product');
   const checkedExtras = container ? Array.from(container.querySelectorAll('input[type=checkbox]:checked')) : [];
   const chosenExtras = checkedExtras.map(ch => ({
     id: ch.dataset.extra,
-    name: ch.parentNode ? ch.parentNode.textContent.trim() : ch.dataset.extra,
+    name: ch.parentNode.textContent.trim().split('(+')[0].trim(),
     price: parseFloat(ch.dataset.price) || 0
   }));
 
@@ -146,257 +260,377 @@ function addToCart(ev, id) {
     id: Date.now() + Math.random(),
     prodId: prod.id,
     name: prod.name,
-    price: prod.price,
+    price: finalPrice,
     qty,
     meat,
     point,
+    size: sizeLabel,
     extras: chosenExtras
   });
+
+  if (container) {
+    container.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    if (qtyEl) qtyEl.value = "1";
+  }
+
   renderCart();
 }
 
 function renderCart() {
-  // Atualiza lista no aside (desktop)
-  const list = document.getElementById('cart-list');
-  if (list) {
-    list.innerHTML = '';
-    cart.forEach(item => {
-      const li = document.createElement('li');
-      const extrasText = item.extras && item.extras.length ? '<br><small>Extras: ' + item.extras.map(e => e.name.replace(/^\s+|\s+$/g, '')).join(', ') + '</small>' : '';
-      li.innerHTML = `${item.qty}x ${item.name} <br> Carne: ${item.meat} | Ponto: ${item.point} ${extrasText} <br> ${formatBRL(calculateItemTotal(item))} <button type="button" onclick="removeItem('${item.id}')" style="margin-left:8px">Remover</button>`;
-      list.appendChild(li);
-    });
+  const sidebarList = document.getElementById('cart-list');
+  if (sidebarList) {
+    sidebarList.innerHTML = '';
+    cart.forEach(item => sidebarList.appendChild(createCartItemElement(item, true)));
   }
 
-  // Atualiza modal (mobile/confirm)
   if (modalCartList) {
     modalCartList.innerHTML = '';
-    cart.forEach(item => {
-      const li = document.createElement('li');
-      const extrasText = item.extras && item.extras.length ? ' (Extras: ' + item.extras.map(e => e.name.replace(/^\s+|\s+$/g, '')).join(', ') + ')' : '';
-      li.innerHTML = `${item.qty}x ${item.name}${extrasText} — ${formatBRL(calculateItemTotal(item))}`;
-      modalCartList.appendChild(li);
-    });
+    cart.forEach(item => modalCartList.appendChild(createCartItemElement(item, false)));
   }
 
-  // Atualiza totais na página e no modal
-  atualizarTotais();
+  updateTotals();
+  const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+  if (cartCountBadge) cartCountBadge.textContent = totalItems;
+}
 
-  // copia valores para modal
-  const subtotal = cart.reduce((s,i)=>s+calculateItemTotal(i),0);
-  const frete = parseFloat(document.getElementById('bairro')?.value || 0);
+function createCartItemElement(item, allowRemove) {
+  const li = document.createElement('li');
+  const totalItem = calculateItemTotal(item);
+
+  let details = [];
+  if (item.size) details.push(`<strong>Tamanho: ${item.size}</strong>`);
+  if (item.meat) details.push(`Carne: ${item.meat}`);
+  if (item.point) details.push(`Ponto: ${item.point}`);
+  if (item.extras && item.extras.length > 0) {
+    const extrasNames = item.extras.map(e => e.name).join(', ');
+    details.push(`Extras: ${extrasNames}`);
+  }
+
+  const detailsHtml = details.length ? `<br><small>${details.join(' | ')}</small>` : '';
+
+  li.innerHTML = `
+    <div style="width: 100%">
+      ${item.qty}x ${item.name}
+      ${detailsHtml}
+      <div style="margin-top: 4px; font-weight:bold;">${formatBRL(totalItem)}</div>
+    </div>
+  `;
+
+  if (allowRemove) {
+    const btn = document.createElement('button');
+    btn.textContent = 'Remover';
+    btn.style.marginLeft = '10px';
+    btn.style.color = 'red';
+    btn.style.fontSize = '0.8em';
+    btn.onclick = () => removeItem(item.id);
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'flex-start';
+    li.appendChild(btn);
+  }
+
+  return li;
+}
+
+function updateTotals() {
+  const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
+  const bairroSelect = document.getElementById('bairro');
+  const freteVal = modalBairro.value || (bairroSelect ? bairroSelect.value : 0);
+  const frete = parseFloat(freteVal) || 0;
   const total = subtotal + frete;
+
+  const subtotalEl = document.getElementById('subtotal');
+  const freteEl = document.getElementById('frete');
+  const totalEl = document.getElementById('total');
+
+  if (subtotalEl) subtotalEl.textContent = 'Subtotal: ' + formatBRL(subtotal);
+  if (freteEl) freteEl.textContent = 'Entrega: ' + formatBRL(frete);
+  if (totalEl) totalEl.textContent = 'Total: ' + formatBRL(total);
 
   if (modalSubtotal) modalSubtotal.textContent = 'Subtotal: ' + formatBRL(subtotal);
   if (modalFrete) modalFrete.textContent = 'Entrega: ' + formatBRL(frete);
   if (modalTotal) modalTotal.textContent = 'Total: ' + formatBRL(total);
-
-  // Atualiza badge do contador
-  const totalItems = cart.reduce((s,i)=>s+i.qty,0);
-  if (cartCountBadge) cartCountBadge.textContent = totalItems;
 }
 
-function openCartModal() {
-  modalNome.value = document.getElementById('nomecliente')?.value || '';
-  modalEndereco.value = document.getElementById('endereco')?.value || '';
-  modalPagamento.value = document.getElementById('pagamento')?.value || '';
-  modalObs.value = document.getElementById('obs')?.value || '';
-  modalBairro.value = document.getElementById('bairro')?.value || '';
-
-  if (modalPagamento.value === 'dinheiro') modalTrocoContainer.style.display = 'block';
-  else modalTrocoContainer.style.display = 'none';
-
+function removeItem(itemId) {
+  cart = cart.filter(i => i.id !== itemId);
   renderCart();
-  cartModal.setAttribute('aria-hidden','false');
+}
+
+// ... (dentro do seu index.js)
+function closeCartModal() {
+  if (cartModal) {
+    cartModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; // Retira o bloqueio de scroll
+  }
+}
+
+
+function openCartModal() {
+  if (cart.length === 0) { alert("Seu carrinho está vazio!"); return; }
+
+  const syncField = (srcId, destEl) => {
+    const src = document.getElementById(srcId);
+    // Sincroniza o valor da sidebar (src) para o modal (destEl)
+    if (src && destEl) destEl.value = src.value;
+  };
+
+  // 1. Sincroniza campos de texto/selects da sidebar para o modal
+  syncField('nomecliente', modalNome);
+  syncField('endereco', modalEndereco);
+  syncField('obs', modalObs);
+
+  const bairroMain = document.getElementById('bairro');
+  if (bairroMain && modalBairro) {
+    // Sincroniza as opções do bairro (o HTML interno do select)
+    modalBairro.innerHTML = bairroMain.innerHTML;
+    // E o valor selecionado
+    modalBairro.value = bairroMain.value;
+  }
+
+  syncField('pagamento', modalPagamento);
+  // Sincroniza o valor de troco da sidebar (que é formatado) para o modal
+  if (modalTrocoInput && mainTrocoInput) {
+    modalTrocoInput.value = mainTrocoInput.value;
+  }
+
+  // 2. Executa handlers para configurar o modal (troco e totais)
+  handlePagamentoChange(); // Garante que o container do troco está visível se for dinheiro
+  handleTrocoInput(); // Re-valida o troco no modal com o valor sincronizado
+  renderCart(); // Re-renderiza o carrinho no modal e atualiza totais
+
+  // 3. Abre o modal
+  cartModal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 }
 
-function closeCartModal() {
-  cartModal.setAttribute('aria-hidden','true');
-  document.body.style.overflow = '';
-}
-
-// listeners
-if (floatingCartBtn) floatingCartBtn.addEventListener('click', openCartModal);
-if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCartModal);
-if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeCartModal);
-if (cartModal) {
-  cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) closeCartModal();
-  });
-}
-
-// Se modalTrocoInput existir, adiciona listener defensivo
-if (modalTrocoInput) {
-  modalTrocoInput.addEventListener('input', () => {
-    let v = modalTrocoInput.value.replace(/\D/g, '');
-    if(!v) { modalTrocoInput.value = ''; modalTrocoInfo.textContent = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    modalTrocoInput.value = v.toString().replace('.', ',').replace(/^/, 'R$ ');
-    calcularTrocoModal();
-  });
-}
-
-function calcularTrocoModal() {
-  let totalText = modalTotal?.textContent?.replace(/[^0-9,-]/g,'')?.replace(',','.') || '0';
-  let total = parseFloat(totalText) || 0;
-  let recebido = modalTrocoInput?.value?.replace(/[^0-9,-]/g,'')?.replace(',','.') || '0';
-  recebido = parseFloat(recebido) || 0;
-  if (recebido >= total) {
-    const troco = recebido - total;
-    if (modalTrocoInfo) {
-      modalTrocoInfo.style.color = '#007a00';
-      modalTrocoInfo.textContent = `Troco: R$ ${troco.toFixed(2).replace('.',',')}`;
-    }
+function handlePagamentoChange() {
+  if (modalPagamento.value === 'dinheiro') {
+    modalTrocoContainer.style.display = 'block';
   } else {
-    if (modalTrocoInfo) {
-      modalTrocoInfo.style.color = '#b30000';
-      modalTrocoInfo.textContent = 'Valor menor que o total';
-    }
+    modalTrocoContainer.style.display = 'none';
+    modalTrocoInput.value = '';
+    modalTrocoInfo.textContent = '';
   }
-}
-
-function calculateItemTotal(item) {
-  const extrasSum = (item.extras || []).reduce((s, e) => s + (e.price || 0), 0);
-  return (item.price + extrasSum) * item.qty;
-}
-
-// syncBairrosToModal agora é GLOBAL (antes estava dentro de outra função)
-function syncBairrosToModal() {
-  const original = document.getElementById('bairro');
-  if (!original || !modalBairro) return;
-  modalBairro.innerHTML = original.innerHTML;
-}
-
-function atualizarTotais() {
-  const subtotalEl = document.getElementById('subtotal');
-  const freteEl = document.getElementById('frete');
-  const totalEl = document.getElementById('total');
-  const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
-  const frete = parseFloat(document.getElementById('bairro')?.value || 0);
-
-  if (subtotalEl) subtotalEl.textContent = 'Subtotal: ' + formatBRL(subtotal);
-  if (freteEl) freteEl.textContent = 'Entrega: ' + formatBRL(frete);
-  if (totalEl) totalEl.textContent = 'Total: ' + formatBRL(subtotal + frete);
-}
-
-function removeItem(id) {
-  cart = cart.filter(i => i.id != id);
-  renderCart();
-}
-
-function calcularEntrega() {
-  atualizarTotais();
 }
 
 function toggleTroco() {
-  const pagamento = document.getElementById('pagamento')?.value;
-  const campoTroco = document.getElementById('campo-troco');
-  if (pagamento === 'dinheiro') {
-    if (campoTroco) campoTroco.style.display = 'block';
+  const pagamento = document.getElementById("pagamento").value;
+  const trocoDiv = document.getElementById("troco-container");
+
+  if (pagamento === "dinheiro") {
+    trocoDiv.style.display = "block";
   } else {
-    if (campoTroco) {
-      campoTroco.style.display = 'none';
-      const trocoInput = document.getElementById('troco');
-      if (trocoInput) trocoInput.value = '';
-    }
+    trocoDiv.style.display = "none";
+    // limpa o troco caso a pessoa mude pra pix ou cartão
+    document.getElementById("troco").value = "";
+  }
+}
+// ADICIONE ESTAS DUAS FUNÇÕES AO SEU CÓDIGO:
+
+// Função para obter o total atual da sidebar
+function getSidebarTotal() {
+  const totalEl = document.getElementById('total');
+  if (!totalEl) return 0;
+  const totalText = totalEl.textContent.replace('Total: ', '');
+  return parseMoney(totalText);
+}
+
+// Handler de Input para o campo de Troco da Sidebar
+function handleMainTrocoInput() {
+  const mainTrocoInput = document.getElementById('troco');
+  const mainTrocoInfo = document.getElementById('troco-info'); // Presumindo que você tem um elemento para a info na sidebar
+
+  if (!mainTrocoInput || !mainTrocoInfo) return;
+
+  let v = mainTrocoInput.value.replace(/\D/g, '');
+  if (!v) {
+    mainTrocoInput.value = '';
+    mainTrocoInfo.textContent = '';
+    return;
+  }
+
+  const valFloat = parseInt(v) / 100;
+  mainTrocoInput.value = valFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const total = getSidebarTotal();
+
+  if (valFloat >= total) {
+    mainTrocoInfo.style.color = '#007a00';
+    mainTrocoInfo.textContent = `Troco: ${formatBRL(valFloat - total)}`;
+  } else {
+    mainTrocoInfo.style.color = '#b30000';
+    mainTrocoInfo.textContent = 'Valor menor que o total';
   }
 }
 
-if (confirmSendBtn) {
-  confirmSendBtn.addEventListener('click', () => {
-    if (document.getElementById('nomecliente')) document.getElementById('nomecliente').value = modalNome.value;
-    if (document.getElementById('endereco')) document.getElementById('endereco').value = modalEndereco.value;
-    if (document.getElementById('bairro')) document.getElementById('bairro').value = modalBairro.value;
-    if (document.getElementById('pagamento')) document.getElementById('pagamento').value = modalPagamento.value;
-    if (document.getElementById('troco')) document.getElementById('troco').value = modalTrocoInput?.value?.replace(/\s/g,'') || '';
-    if (document.getElementById('obs')) document.getElementById('obs').value = modalObs.value;
+// ADICIONE ESTE NO BLOCO DE INICIALIZAÇÃO (event listeners no final do arquivo):
+const mainTrocoInput = document.getElementById('troco');
+if (mainTrocoInput) mainTrocoInput.addEventListener('input', handleMainTrocoInput);
+// E verifique se você tem um <span id="troco-info"></span> correspondente na sidebar.
 
-    if (!modalNome.value.trim()) { alert('Por favor, informe seu nome.'); return; }
-    if (!modalEndereco.value.trim()) { alert('Por favor, informe o endereço.'); return; }
-    if (!modalBairro.value) { alert('Por favor, selecione um bairro.'); return; }
-    if (!modalPagamento.value) { alert('Por favor, selecione a forma de pagamento.'); return; }
-    if (modalPagamento.value === 'dinheiro') {
-      const recebidoRaw = modalTrocoInput?.value?.replace(/[^0-9,]/g,'').replace(',','.') || '0';
-      const recebido = parseFloat(recebidoRaw) || 0;
-      const subtotal = cart.reduce((s,i)=>s+calculateItemTotal(i),0);
-      const frete = parseFloat(modalBairro.value || 0);
-      const total = subtotal + frete;
-      if (recebido < total) { alert('Valor de troco informado é menor que o total.'); return; }
-    }
 
-    closeCartModal();
-    enviarWhatsapp();
-  });
+function handleTrocoInput() {
+  let v = modalTrocoInput.value.replace(/\D/g, '');
+  if (!v) { modalTrocoInput.value = ''; modalTrocoInfo.textContent = ''; return; }
+  const valFloat = parseInt(v) / 100;
+  modalTrocoInput.value = valFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const totalText = modalTotal.textContent.replace('Total: ', '');
+  const total = parseMoney(totalText);
+  if (valFloat >= total) {
+    modalTrocoInfo.style.color = '#007a00';
+    modalTrocoInfo.textContent = `Troco: ${formatBRL(valFloat - total)}`;
+  } else {
+    modalTrocoInfo.style.color = '#b30000';
+    modalTrocoInfo.textContent = 'Valor menor que o total';
+  }
 }
 
 function enviarWhatsapp() {
-  if (cart.length === 0) { alert('Seu carrinho está vazio!'); return; }
+  if (cart.length === 0) return alert('Carrinho vazio.');
 
-  const nome = document.getElementById('nomecliente')?.value?.trim() || '';
-  if (!nome) { alert('Por favor, informe o nome do cliente.'); return; }
+  const nome = modalNome.value.trim();
+  const endereco = modalEndereco.value.trim();
+  const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
+  const bairroValor = modalBairro.value;
+  const pagamento = modalPagamento.value;
+  const obs = modalObs.value;
 
-  const endereco = document.getElementById('endereco')?.value?.trim() || '';
-  if (!endereco) { alert('Por favor, informe o endereço de entrega (ou escreva Retirar no local).'); return; }
+  if (!nome) return alert('Informe seu nome.');
+  if (!endereco) return alert('Informe o endereço.');
+  if (!bairroValor) return alert('Selecione o bairro.');
+  if (!pagamento) return alert('Selecione o pagamento.');
 
-  const bairroVal = document.getElementById('bairro')?.value || '';
-  if (bairroVal === "") { alert("Por favor, selecione um bairro ou escolha 'Retirar no local'."); return; }
-
-  const pagamentoVal = (document.getElementById('pagamento')?.value || document.getElementById('modal-pagamento')?.value);
-  if (!pagamentoVal) { alert('Selecione a forma de pagamento!'); return; }
-
-  let trocoRaw = (document.getElementById('troco')?.value) || (document.getElementById('modal-troco')?.value) || '';
-  let trocoNumber = 0;
-  if (trocoRaw) {
-    const cleaned = trocoRaw.replace(/[^0-9,\.]/g, '').replace(',', '.');
-    trocoNumber = parseFloat(cleaned) || 0;
+  let trocoMsg = '';
+  if (pagamento === 'dinheiro') {
+    const valorEntregue = parseMoney(modalTrocoInput.value);
+    const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
+    if (valorEntregue < total) return alert('Valor para troco inválido.');
+    trocoMsg = `\nTroco para: ${formatBRL(valorEntregue)}\nTroco estimado: ${formatBRL(valorEntregue - total)}`;
   }
 
-  const observacao = (document.getElementById('obs')?.value || '').trim();
+  // ... dentro da função enviarWhatsapp()
+  // ... (Após a validação do Troco)
 
-  const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
-  const frete = parseFloat(document.getElementById('bairro')?.value || 0);
-  const total = subtotal + frete;
+  let texto = `*✅ NOVO PEDIDO - Mineiro Hamburgueria*\n`;
+  texto += `*----------------------------------*\n\n`;
 
-  // Monta texto de forma segura e somente depois faz encodeURIComponent
-  let texto = '🍔 Pedido Mineiro - Hamburgueria Artesanal\n';
-  texto += `Cliente: ${nome}\n`;
-  texto += `Endereço: ${endereco}\n`;
-  texto += '----\n';
-  cart.forEach(i => {
-    const extrasNames = (i.extras || []).map(e => e.name.replace(/^\s+|\s+$/g, '')).join(', ');
-    texto += `${i.qty}x ${i.name} - Carne: ${i.meat} | Ponto: ${i.point}`;
-    if (extrasNames) texto += ` | Extras: ${extrasNames}`;
-    texto += ` - ${formatBRL(calculateItemTotal(i))}\n`;
+  // 1. DADOS DO CLIENTE
+  texto += `*👤 CLIENTE E ENTREGA:*\n`;
+  texto += `*Nome:* ${nome}\n`;
+  texto += `*Endereço:* ${endereco}\n`;
+  texto += `*Bairro:* ${bairro}\n`;
+  texto += `*----------------------------------*\n\n`;
+
+  // 2. ITENS DO PEDIDO
+  texto += `*🍔 ITENS:*\n`;
+  cart.forEach((item, index) => {
+    // Adiciona número do item para conferência fácil
+    texto += `${index + 1}. ${item.qty}x *${item.name}* ${formatBRL(calculateItemTotal(item))}\n`;
+
+    let detalhes = [];
+    if (item.size) detalhes.push(`Tamanho: ${item.size}`);
+    if (item.meat) detalhes.push(`Carne: ${item.meat} | ${item.point}`);
+    if (item.extras && item.extras.length) detalhes.push(`Extras: ${item.extras.map(e => e.name).join(', ')}`);
+
+    if (detalhes.length) {
+      // Usa o hífen para recuo e clareza na lista
+      detalhes.forEach(d => texto += `   - ${d}\n`);
+    } else {
+      texto += '\n'; // Garante espaço se não houver detalhes
+    }
   });
-  texto += '----\n';
-  texto += `Subtotal: ${formatBRL(subtotal)}\n`;
-  texto += `Entrega: ${formatBRL(frete)}\n`;
-  texto += `Total: ${formatBRL(total)}\n\n`;
-  texto += `Forma de pagamento: ${pagamentoVal}\n`;
-  if (trocoNumber > 0) {
-    texto += `Troco para: ${formatBRL(trocoNumber)}\n`;
-    texto += `Troco estimado: ${formatBRL(trocoNumber - total)}\n`;
+
+  texto += `*----------------------------------*\n\n`;
+
+  // 3. OBSERVAÇÕES
+  if (obs) {
+    texto += `*💡 OBSERVAÇÕES:* ${obs}\n`;
+    texto += `*----------------------------------*\n\n`;
   }
-  if (observacao) texto += `\nObservações: ${observacao}\n`;
+
+  // 4. RESUMO FINANCEIRO E PAGAMENTO
+  texto += `*💵 TOTAL:*\n`;
+  texto += `Subtotal: ${modalSubtotal.textContent.replace('Subtotal: ', '')}\n`;
+  texto += `Entrega: ${modalFrete.textContent.replace('Entrega: ', '')}\n`;
+  texto += `*${modalTotal.textContent}*\n`;
+  texto += `*Pagamento:* *${pagamento.toUpperCase()}*${trocoMsg}\n\n`;
+
+  // 5. CONFIRMAÇÃO (Para você responder rapidamente)
+  texto += `*----------------------------------*\n`;
+  texto += `*➡️ AÇÃO:* Confirme recebimento com "OK" ou "Aguardando pagamento" se for PIX.`;
+
 
   const numero = '5532984550411';
   const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+
+  closeCartModal();
   window.open(url, '_blank');
 }
 
-// inicializa
-buildProducts();
-syncBairrosToModal();
-renderCart();
-atualizarTotais();
 
-// listeners extra
-if (modalPagamento) {
-  modalPagamento.addEventListener('change', () => {
-    if (modalPagamento.value === 'dinheiro') modalTrocoContainer.style.display = 'block';
-    else { modalTrocoContainer.style.display = 'none'; if (modalTrocoInput) { modalTrocoInput.value = ''; modalTrocoInfo.textContent = ''; } }
-  });
+
+function verificarHorarioFuncionamento() {
+  const agora = new Date();
+  const dia = agora.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+  const hora = agora.getHours();
+  const minuto = agora.getMinutes();
+  const statusEl = document.getElementById("status-loja");
+
+  let aberto = false;
+
+  // Função auxiliar para comparar horário (hora:minuto)
+  function dentroDoHorario(h, m, hIni, mIni, hFim, mFim) {
+    const atual = h * 60 + m;
+    const inicio = hIni * 60 + mIni;
+    const fim = hFim * 60 + mFim;
+    return atual >= inicio && atual <= fim;
+  }
+
+  // QUARTA (3), QUINTA (4), SEXTA (5)
+  if (dia >= 3 && dia <= 5) {
+    aberto = dentroDoHorario(hora, minuto, 18, 30, 22, 30);
+  }
+
+  // SÁBADO (6) e DOMINGO (0)
+  if (dia === 6 || dia === 0) {
+    aberto = dentroDoHorario(hora, minuto, 17, 0, 22, 30);
+  }
+
+  if (aberto) {
+    statusEl.textContent = "🟢 Estamos ABERTOS!";
+    statusEl.style.color = "#00ff88";
+  } else {
+    statusEl.textContent = "🔴 Estamos FECHADOS";
+    statusEl.style.color = "#ff4444";
+  }
 }
 
-document.getElementById('bairro')?.addEventListener('change', () => { renderCart(); });
+
+
+
+// INICIALIZAÇÃO
+document.addEventListener('DOMContentLoaded', () => {
+  buildProducts();
+  renderCart();
+  verificarHorarioFuncionamento();
+  const originalBairro = document.getElementById('bairro');
+  if (originalBairro && modalBairro) modalBairro.innerHTML = originalBairro.innerHTML;
+});
+
+if (floatingCartBtn) floatingCartBtn.addEventListener('click', openCartModal);
+if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCartModal);
+if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeCartModal);
+
+if (confirmSendBtn) confirmSendBtn.addEventListener('click', enviarWhatsapp);
+// if (cartModal) cartModal.addEventListener('click', (e) => { if (e.target === cartModal) closeCartModal(); });
+if (modalPagamento) modalPagamento.addEventListener('change', handlePagamentoChange);
+if (modalTrocoInput) modalTrocoInput.addEventListener('input', handleTrocoInput);
+if (modalBairro) modalBairro.addEventListener('change', () => updateTotals());
+const mainBairro = document.getElementById('bairro');
+if (mainBairro) mainBairro.addEventListener('change', () => {
+  if (modalBairro) modalBairro.value = mainBairro.value;
+  updateTotals();
+});
+

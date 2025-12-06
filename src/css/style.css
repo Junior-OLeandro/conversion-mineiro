@@ -12,6 +12,14 @@ body {
     color: var(--text);
 }
 
+
+#status-loja {
+  font-size:12px; 
+  font-weight:bold; 
+  margin-top:10px; 
+  display:block;
+}
+
 .menu-fixo {
   position: fixed;
   top: 0;
@@ -19,6 +27,7 @@ body {
   width: 100%;
   background: #030303;
   padding: 10px;
+  text-transform: uppercase;
   display: flex;
   gap: 8px;
   justify-content: center;
@@ -60,6 +69,7 @@ body {
     font-family: "Alice", serif;
     font-weight: 400;
     font-size: 36px;
+    text-transform: uppercase;
 }
 
 .container {
@@ -176,7 +186,7 @@ body {
     margin: 0 0 10px;
     font-size: 15px;
     color: #f7e5d6;
-    height: 100px;
+    height: 120px;
 }
 
 .product .price {
@@ -289,5 +299,28 @@ background: #33000A;
     border-radius: 5px;
     cursor: pointer;
     width: 100%
+}
+
+.footer {
+  height: 70px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  font-size: 25px;
+}
+
+.social {
+  gap: 100px;
+}
+
+.icons {
+  color: var(--text);
+}
+
+.desenvolvido {
+  color: var(--text);
+  font-size: 12px;
 }
 

@@ -26,11 +26,17 @@
     <a href="#grid-smashs">Smashs</a>
     <a href="#grid-acompanhamentos">Acompanhamentos</a>
     <a href="#grid-bebidas">Bebidas</a>
+
+    <span id="status-loja"></span>
+
   </div>
+
+  
   <header class="header">
     <div class="logo">
       <img src="./src/images/LOGOMARCA.png" alt="Logo Mineiro" class="logo-img">
     </div>
+
 
   </header>
 
@@ -50,6 +56,7 @@
 
       <h2 class="titulo-categoria">Bebidas</h2>
       <div id="grid-bebidas" class="grid"></div>
+
     </section>
 
     <aside class="cart-area">
@@ -66,14 +73,43 @@
         </label>
 
         <label for="bairro">Bairro (entrega):</label>
-        <select id="bairro" onchange="calcularEntrega()">
-          <option value="">Escolha o bairro</option>
-          <option value="5">Centro — R$ 5,00</option>
-          <option value="7.5">Bairro A — R$ 7,50</option>
-          <option value="10">Bairro B — R$ 10,00</option>
-          <option value="12.5">Bairro C — R$ 12,50</option>
-          <option value="0">Retirar no local — R$ 0,00</option>
-
+        <select id="bairro" required>
+          <option value="" disabled selected>Selecione seu Bairro</option>
+          <option value="5.00">CENTRO</option>
+          <option value="10.00">AEROPORTO</option>
+          <option value="5.00">ANDARAÍ</option>
+          <option value="10.00">N. SRA. APARECIDA</option>
+          <option value="6.00">BOA MORTE</option>
+          <option value="5.00">BOA VISTA</option>
+          <option value="5.00">BOM PASTOR</option>
+          <option value="5.00">CAIÇARAS</option>
+          <option value="7.00">CAMPO</option>
+          <option value="7.00">CARMO</option>
+          <option value="8.00">CHÁCARA DAS ANDORINHAS</option>
+          <option value="5.00">DINIZ</option>
+          <option value="10.00">DOM BOSCO</option>
+          <option value="5.00">EPCAR</option>
+          <option value="10.00">FÁTIMA</option>
+          <option value="6.00">FUNCIONÁRIOS</option>
+          <option value="6.00">GROGOTÓ</option>
+          <option value="10.00">IPANEMA</option>
+          <option value="10.00">JOÃO PAULO II</option>
+          <option value="5.00">SANTA LUZIA</option>
+          <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
+          <option value="10.00">MONTE MÁRIO</option>
+          <option value="6.00">NOVO HORIZONTE</option>
+          <option value="5.00">PADRE CUNHA</option>
+          <option value="7.00">PENHA</option>
+          <option value="7.00">SANTA CECÍLIA</option>
+          <option value="5.00">SANTA EFIGÊNIA</option>
+          <option value="7.00">SANTA TEREZA</option>
+          <option value="6.00">SANTO ANTÔNIO</option>
+          <option value="7.00">SÃO CRISTÓVÃO</option>
+          <option value="6.00">SÃO JOSÉ</option>
+          <option value="5.00">SÃO SEBASTIÃO</option>
+          <option value="5.00">VILELA</option>
+          <option value="7.00">VISTA ALEGRE</option>
+          <option value="0">RETIRAR NO LOCAL</option>
         </select>
 
         <label for="pagamento">Forma de pagamento:</label>
@@ -84,9 +120,10 @@
           <option value="dinheiro">Dinheiro</option>
         </select>
 
-        <div id="campo-troco" style="display:none;">
+        <div id="troco-container" style="display:none;">
           <label>Troco para quanto?</label>
-          <input type="number" id="troco" placeholder="Ex: 100">
+          <input type="text" id="troco" placeholder="Ex: R$ 100,00">
+          <div id="troco-info" class="troco-info" style="font-size: 0.9em; margin-top: 5px;"></div>
         </div>
 
         <label for="obs">Observações:</label>
@@ -97,90 +134,94 @@
           <p id="frete">Entrega: R$ 0,00</p>
           <p id="total">Total: R$ 0,00</p>
         </div>
-        <button id="btn-whatsapp" onclick="enviarWhatsapp()">Enviar pedido por WhatsApp</button>
+        <button id="btn-whatsapp" onclick="openCartModal()">Enviar pedido por WhatsApp</button>
       </div>
     </aside>
   </main>
   <footer class="footer">
     <div class="social">
-      <a href="#" class="icons">
+      <!-- <a href="#" class="icons">
         <i class="fa-brands fa-facebook-f"></i>
+      </a> -->
+      <a href="https://wa.me/5532984550411" class="icons">
+        <i class="fa-brands fa-whatsapp"></i>
       </a>
-      <a href="#" class="icons">
-        <i class="fa-brands fa-twitter"></i>
-      </a>
-      <a href="#" class="icons">
+      <a href="https://www.instagram.com/mineiro.bq/" class="icons">
         <i class="fa-brands fa-instagram"></i>
       </a>
+
     </div>
+
   </footer>
-
+  <a href="https://www.instagram.com/junior.oleandro/">
+    <p class="desenvolvido">Desenvolvido por: Junior O Leandro</p>
+  </a>
   <!-- BOTÃO DE CARRINHO FLUTUANTE (mobile) -->
-<button id="floatingCartBtn" class="floating-cart" aria-label="Abrir carrinho" title="Carrinho">
-  <i class="fa-solid fa-basket-shopping"></i> <span id="cart-count-badge" class="cart-badge">0</span>
-</button>
+  <button id="floatingCartBtn" class="floating-cart" aria-label="Abrir carrinho" title="Carrinho">
+    <i class="fa-solid fa-basket-shopping"></i> <span id="cart-count-badge" class="cart-badge">0</span>
+  </button>
 
-<!-- MODAL DE CONFIRMAÇÃO DO PEDIDO -->
-<div id="cartModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
-  <div class="modal-content">
-    <button class="modal-close" id="modalCloseBtn" aria-label="Fechar">✕</button>
-    <h2 id="modalTitle">Confirme seu pedido</h2>
+  <!-- MODAL DE CONFIRMAÇÃO DO PEDIDO -->
+  <div id="cartModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Fechar">✕</button>
+      <h2 id="modalTitle">Confirme seu pedido</h2>
 
-    <div id="modal-body">
-      <div class="modal-section">
-        <h3>Itens</h3>
-        <ul id="modal-cart-list"></ul>
-      </div>
-
-      <div class="modal-section">
-        <h3>Resumo</h3>
-        <p id="modal-subtotal">Subtotal: R$ 0,00</p>
-        <p id="modal-frete">Entrega: R$ 0,00</p>
-        <p id="modal-total"><strong>Total: R$ 0,00</strong></p>
-      </div>
-
-      <div class="modal-section">
-        <h3>Dados do pedido</h3>
-        <label>Nome:
-          <input id="modal-nome" type="text" placeholder="Digite seu nome">
-        </label>
-
-        <label>Endereço:
-          <input id="modal-endereco" type="text" placeholder="Rua, número, complemento">
-        </label>
-
-        <label>Bairro:
-          <select id="modal-bairro"></select>
-        </label>
-
-        <label>Forma de pagamento:
-          <select id="modal-pagamento">
-            <option value="">Selecione</option>
-            <option value="pix">Pix</option>
-            <option value="cartao">Cartão</option>
-            <option value="dinheiro">Dinheiro</option>
-          </select>
-        </label>
-
-        <div id="modal-troco-container" style="display:none;">
-          <label>Troco para:
-            <input id="modal-troco" type="text" placeholder="Ex: R$ 100,00">
-          </label>
-          <div id="modal-troco-info" class="troco-info"></div>
+      <div id="modal-body">
+        <div class="modal-section">
+          <h3>Itens</h3>
+          <ul id="modal-cart-list"></ul>
         </div>
 
-        <label>Observações:
-          <textarea id="modal-obs" placeholder="Ex: Tirar cebola, ponto da carne..."></textarea>
-        </label>
-      </div>
+        <div class="modal-section">
+          <h3>Resumo</h3>
+          <p id="modal-subtotal">Subtotal: R$ 0,00</p>
+          <p id="modal-frete">Entrega: R$ 0,00</p>
+          <p id="modal-total"><strong>Total: R$ 0,00</strong></p>
+        </div>
 
-      <div class="modal-actions">
-        <button id="confirmCloseBtn" class="btn-secondary">Voltar</button>
-        <button id="confirmSendBtn" class="btn-primary">Confirmar e Enviar por WhatsApp</button>
+        <div class="modal-section">
+          <h3>Dados do pedido</h3>
+          <label>Nome:
+            <input id="modal-nome" type="text" placeholder="Digite seu nome">
+          </label>
+
+          <label>Endereço:
+            <input id="modal-endereco" type="text" placeholder="Rua, número, complemento">
+          </label>
+
+          <label>Bairro:
+            <select id="modal-bairro"></select>
+          </label>
+
+          <label>Forma de pagamento:
+            <select id="modal-pagamento">
+              <option value="">Selecione</option>
+              <option value="pix">Pix</option>
+              <option value="cartao">Cartão</option>
+              <option value="dinheiro">Dinheiro</option>
+            </select>
+          </label>
+
+          <div id="modal-troco-container" style="display:none;">
+            <label>Troco para:
+              <input id="modal-troco" type="text" placeholder="Ex: R$ 100,00">
+            </label>
+            <div id="modal-troco-info" class="troco-info"></div>
+          </div>
+
+          <label>Observações:
+            <textarea id="modal-obs" placeholder="Ex: Tirar cebola, ponto da carne..."></textarea>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button id="confirmCloseBtn" class="btn-secondary">Voltar</button>
+          <button id="confirmSendBtn" class="btn-primary">Confirmar e Enviar por WhatsApp</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"
