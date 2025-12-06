@@ -1,7 +1,34 @@
+/* ARQUIVO: ./src/css/variaveis.css */
 :root {
-    --bg: #5b2d28;
-    --accent: #e07a2b;
-    --card: #703a36;
-    --text: #f3d8c8;
+    /* CORES DO TEMA ESCURO (Padrão) */
+    --bg-principal: #5b2d28;;
+    --bg-secundaria: #570000; /* Fundo do menu fixo */
+    --bg-cart: rgb(82, 0, 0); /* Fundo do carrinho */
+    --bg-promo: #33000A;
+    --bg-produto: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    
+    --text-principal: #f3d8c8; /* Branco/Claro para a maioria dos textos */
+    --text-secundario: #f3d8c8;
+    --borda-secundaria: rgba(255, 255, 255, 0.08); /* Borda do carrinho */
+
+    --accent: #e07a2b; /* Cor de destaque (botão do menu, preço) */
+    --logo-url: url('./src/images/logomarca.png');
+}
+
+/* ARQUIVO: ./src/css/variaveis.css (Continuação) */
+
+body.bg-claro {
+    /* CORES DO TEMA CLARO */
+    --bg-principal: #f3d8c8; /* Cinza bem claro */
+    --bg-secundaria: #ffcdaf; /* Branco (fundo do menu) */
+    --bg-cart: #ffd0b5; /* Fundo do carrinho branco */
+    --bg-promo-secundaria: #d8925d;
+    --bg-produto: #f3d8c8; /* Fundo do produto branco */
+
+    --text-principal: #703a36; /* Texto escuro */
+    --text-secundario: #703a36;
+    --borda-secundaria: #815e5b; /* Borda do carrinho clara */
+    --accent: #e07a2b; /* Mantém o destaque igual */
+    --logo-url: url('./src/images/logoescura.png');
 }
 

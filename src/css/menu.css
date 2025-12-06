@@ -177,7 +177,8 @@
 /* --- MOBILE: esconder o aside e mostrar botão flutuante --- */
 @media (max-width: 899px) {
   .cart-area { display: none; }
-  .floating-cart { display: inline-flex; }
+  .floating-cart { display: inline-flex;
+  margin-top: 120px; }
   /* modal full width on small screens */
   .modal-content { width: 100%; height: 100%; max-width: none; border-radius: 0; padding: 16px; }
 }

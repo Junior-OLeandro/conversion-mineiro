@@ -1,7 +1,7 @@
 @media(max-width:900px) {
 
   body {
-  padding-top: 100px;
+  padding-top: 140px;
 }
 
     .container {
@@ -9,7 +9,7 @@
     }
 
     .cart {
-        order: 2
+        order: 2;
     }
 }
 

@@ -1,6 +1,79 @@
 /* src/js/index.js - Versão Final Smashs com Preços Individuais */
 
 // --- DADOS DOS PRODUTOS ---
+// src/js/index.js (Adicione no final)
+
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+const logoImg = document.getElementById('logo-img');
+const THEME_KEY = 'mineiroloja_theme';
+
+
+const LIGHT_LOGO_URL = './src/images/logoescura.png'; // Tema Claro (bg-claro) usa a logo escura
+const DARK_LOGO_URL = './src/images/logomarca.png';
+// ------------------------------------------
+// 1. FUNÇÃO DE TROCA DE TEMA
+// ------------------------------------------
+// ------------------------------------------
+// 1. FUNÇÃO DE TROCA DE TEMA (COM MUDANÇA DE LOGO)
+// ------------------------------------------
+function toggleTheme() {
+  // O .toggle() adiciona a classe se ela não existir e remove se ela existir
+  body.classList.toggle('bg-claro');
+
+  // Salva a preferência no armazenamento local (localStorage)
+  const isLight = body.classList.contains('bg-claro'); // Se 'bg-claro' está presente, é o tema CLARO
+
+  // 🚨 MUDANÇA DA LOGO VIA JAVASCRIPT
+  if (logoImg) {
+    // Se for tema claro (isLight = true), usa a logo escura (LIGHT_LOGO_URL)
+    logoImg.src = isLight ? LIGHT_LOGO_URL : DARK_LOGO_URL;
+  }
+
+  // Salva o tema
+  localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+
+  // Opcional: Atualizar o texto ou ícone do botão
+  themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+}
+
+// ------------------------------------------
+// 2. APLICA TEMA E LOGO NA CARGA DA PÁGINA
+// ------------------------------------------
+function loadTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+
+  // Se houver um tema salvo e for 'light', aplica o bg-claro
+  const isLight = (savedTheme === 'light');
+
+  if (isLight) {
+    body.classList.add('bg-claro');
+  } else if (savedTheme === 'dark') {
+    // Garante que a classe é removida se o último tema foi 'dark'
+    body.classList.remove('bg-claro');
+  }
+
+  // 🚨 MUDANÇA DA LOGO NA CARGA
+  if (logoImg) {
+    logoImg.src = isLight ? LIGHT_LOGO_URL : DARK_LOGO_URL;
+  }
+
+  // Atualizar o texto do botão na carga inicial
+  themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+}
+
+// ------------------------------------------
+// 3. ADICIONA EVENTOS
+// ------------------------------------------
+// Carrega o tema salvo assim que o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', loadTheme);
+
+// Adiciona o event listener ao botão
+themeToggle.addEventListener('click', toggleTheme);
+
+
+
+
 const productsData = [
   // --- COMBOS ---
   { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Combo Trem Bão' },
