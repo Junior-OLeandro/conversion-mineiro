@@ -673,7 +673,7 @@ function verificarHorarioFuncionamento() {
 
   if (aberto) {
     statusEl.textContent = "🟢 Estamos ABERTOS!";
-    statusEl.style.color = "#00ff88";
+    statusEl.style.color = "#008a49ff";
   } else {
     statusEl.textContent = "🔴 Estamos FECHADOS";
     statusEl.style.color = "#ff4444";
