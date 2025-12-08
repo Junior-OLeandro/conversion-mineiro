@@ -54,4 +54,3 @@ Abra o Arquivo: Simplesmente abra o arquivo index.html em qualquer navegador.
 
 [ ] Otimização de SEO (Search Engine Optimization).
 
-[ ] Ajustar a verificação de horário de funcionamento da loja (#status-loja).
