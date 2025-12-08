@@ -10,7 +10,7 @@ const THEME_KEY = 'mineiroloja_theme';
 
 
 const LIGHT_LOGO_URL = './src/images/logoescura.png'; // Tema Claro (bg-claro) usa a logo escura
-const DARK_LOGO_URL = './src/images/logomarca.png';
+const DARK_LOGO_URL = './src/images/logomarca.svg';
 // ------------------------------------------
 // 1. FUNÇÃO DE TROCA DE TEMA
 // ------------------------------------------
