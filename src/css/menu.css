@@ -16,6 +16,38 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
+/* --- ESTILO DO BOTÃO DE REMOVER (Funciona na Sidebar e no Modal) --- */
+
+.remove-item-btn {
+    /* Reset básico para funcionar com ícone */
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+    /* Cores e Tamanho */
+    color: #ff4444; /* Vermelho claro para o ícone de remover */
+    font-size: 1.25em; /* Bom tamanho para toque em mobile */
+    opacity: 0.85; 
+    
+    /* Posição no LI */
+    margin-left: 10px;
+    flex-shrink: 0; /* Impede que o botão encolha */
+    padding: 5px; /* Aumenta a área de clique */
+    transition: opacity 0.1s;
+}
+
+.remove-item-btn:hover {
+    opacity: 1;
+}
+
+/* Garante que o item do carrinho é um container flexível */
+/* Aplicado em #cart-list li (sidebar) e #modal-cart-list li (modal) */
+#cart-list li, 
+#modal-cart-list li {
+    display: flex; /* Essencial para posicionar o botão ao lado */
+    justify-content: space-between; /* Espaço entre o item e o botão */
+    align-items: center; /* Alinhamento vertical */
+}
 
 .cart-badge {
   background: #000;

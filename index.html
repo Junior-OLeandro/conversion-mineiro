@@ -4,18 +4,18 @@
 
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WVJ8S7ZW6M"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WVJ8S7ZW6M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-WVJ8S7ZW6M');
-</script>
+    gtag('config', 'G-WVJ8S7ZW6M');
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Mineiro - Hamburgueria Artesanal</title>
-   <link rel="shortcut icon" href="./src/images/favicon-16x16.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./src/images/favicon-16x16.png" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -40,16 +40,16 @@
     <span id="status-loja"></span>
 
   </div>
-<div>
-    </div>
-    <button id="theme-toggle" aria-label="Alternar tema claro/escuro">
-  </button>
-  
-  <header class="header">
-  <div class="logo">
-    <img src="./src/images/logomarca.png" alt="Logo Mineiro" class="logo-img" id="logo-img">
+  <div>
   </div>
-</header>
+  <button id="theme-toggle" aria-label="Alternar tema claro/escuro">
+  </button>
+
+  <header class="header">
+    <div class="logo">
+      <img src="./src/images/logomarca.png" alt="Logo Mineiro" class="logo-img" id="logo-img">
+    </div>
+  </header>
 
 
   </header>
@@ -82,49 +82,53 @@
           <input id="nomecliente" type="text" placeholder="Digite seu nome">
         </label>
 
-        <label for="endereco">Endereço (rua, número, complemento):
+        <label for="endereco">Endereço (rua, complemento...):
           <input id="endereco" type="text" placeholder="Digite o endereço completo">
+        </label>
+
+        <label for="numero-casa">Número da Casa/Apto:
+          <input id="numero-casa" type="text" placeholder="Ex: 123 ou Apto 402" required>
         </label>
 
         <label for="bairro">Bairro (entrega):</label>
         <select id="bairro" required>
-          <option value="" disabled selected>Selecione seu Bairro</option>
-          <option value="5.00">CENTRO</option>
-          <option value="10.00">AEROPORTO</option>
-          <option value="5.00">ANDARAÍ</option>
-          <option value="10.00">N. SRA. APARECIDA</option>
-          <option value="6.00">BOA MORTE</option>
-          <option value="5.00">BOA VISTA</option>
-          <option value="5.00">BOM PASTOR</option>
-          <option value="5.00">CAIÇARAS</option>
-          <option value="7.00">CAMPO</option>
-          <option value="7.00">CARMO</option>
-          <option value="8.00">CHÁCARA DAS ANDORINHAS</option>
-          <option value="5.00">DINIZ</option>
-          <option value="10.00">DOM BOSCO</option>
-          <option value="5.00">EPCAR</option>
-          <option value="10.00">FÁTIMA</option>
-          <option value="6.00">FUNCIONÁRIOS</option>
-          <option value="6.00">GROGOTÓ</option>
-          <option value="10.00">IPANEMA</option>
-          <option value="10.00">JOÃO PAULO II</option>
-          <option value="5.00">SANTA LUZIA</option>
-          <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
-          <option value="10.00">MONTE MÁRIO</option>
-          <option value="6.00">NOVO HORIZONTE</option>
-          <option value="5.00">PADRE CUNHA</option>
-          <option value="7.00">PENHA</option>
-          <option value="7.00">SANTA CECÍLIA</option>
-          <option value="5.00">SANTA EFIGÊNIA</option>
-          <option value="7.00">SANTA TEREZA</option>
-          <option value="6.00">SANTO ANTÔNIO</option>
-          <option value="7.00">SÃO CRISTÓVÃO</option>
-          <option value="6.00">SÃO JOSÉ</option>
-          <option value="5.00">SÃO SEBASTIÃO</option>
-          <option value="5.00">VILELA</option>
-          <option value="7.00">VISTA ALEGRE</option>
-          <option value="0">RETIRAR NO LOCAL</option>
-        </select>
+    <option value="" disabled selected>Selecione seu Bairro</option>
+    <option value="10.00">AEROPORTO</option>
+    <option value="5.00">ANDARAÍ</option>
+    <option value="6.00">BOA MORTE</option>
+    <option value="5.00">BOA VISTA</option>
+    <option value="5.00">BOM PASTOR</option>
+    <option value="5.00">CAIÇARAS</option>
+    <option value="7.00">CAMPO</option>
+    <option value="7.00">CARMO</option>
+    <option value="5.00">CENTRO</option>
+    <option value="8.00">CHÁCARA DAS ANDORINHAS</option>
+    <option value="5.00">DINIZ</option>
+    <option value="10.00">DOM BOSCO</option>
+    <option value="5.00">EPCAR</option>
+    <option value="10.00">FÁTIMA</option>
+    <option value="6.00">FUNCIONÁRIOS</option>
+    <option value="6.00">GROGOTÓ</option>
+    <option value="10.00">IPANEMA</option>
+    <option value="10.00">JOÃO PAULO II</option>
+    <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
+    <option value="10.00">MONTE MÁRIO</option>
+    <option value="10.00">N. SRA. APARECIDA</option>
+    <option value="6.00">NOVO HORIZONTE</option>
+    <option value="5.00">PADRE CUNHA</option>
+    <option value="7.00">PENHA</option>
+    <option value="0">RETIRAR NO LOCAL</option>
+    <option value="7.00">SANTA CECÍLIA</option>
+    <option value="5.00">SANTA EFIGÊNIA</option>
+    <option value="5.00">SANTA LUZIA</option>
+    <option value="7.00">SANTA TEREZA</option>
+    <option value="6.00">SANTO ANTÔNIO</option>
+    <option value="7.00">SÃO CRISTÓVÃO</option>
+    <option value="6.00">SÃO JOSÉ</option>
+    <option value="5.00">SÃO SEBASTIÃO</option>
+    <option value="5.00">VILELA</option>
+    <option value="7.00">VISTA ALEGRE</option>
+</select>
 
         <label for="pagamento">Forma de pagamento:</label>
         <select id="pagamento" onchange="toggleTroco()">
@@ -135,6 +139,11 @@
         </select>
 
         <div id="troco-container" style="display:none;">
+          <div style="margin-bottom: 10px;">
+            <input type="checkbox" id="sem-troco">
+            <label for="sem-troco" style="font-weight: bold;">Não preciso de troco</label>
+          </div>
+
           <label>Troco para quanto?</label>
           <input type="text" id="troco" placeholder="Ex: R$ 100,00">
           <div id="troco-info" class="troco-info" style="font-size: 0.9em; margin-top: 5px;"></div>
@@ -201,7 +210,11 @@
           </label>
 
           <label>Endereço:
-            <input id="modal-endereco" type="text" placeholder="Rua, número, complemento">
+            <input id="modal-endereco" type="text" placeholder="Rua, complemento...">
+          </label>
+
+          <label>Número da Casa/Apto:
+            <input id="modal-numero-casa" type="text" placeholder="Ex: 123 ou Apto 402">
           </label>
 
           <label>Bairro:
@@ -218,6 +231,12 @@
           </label>
 
           <div id="modal-troco-container" style="display:none;">
+
+            <div style="margin-bottom: 10px;">
+              <input type="checkbox" id="modal-sem-troco">
+              <label for="modal-sem-troco" style="font-weight: bold;">Não preciso de troco</label>
+            </div>
+
             <label>Troco para:
               <input id="modal-troco" type="text" placeholder="Ex: R$ 100,00">
             </label>

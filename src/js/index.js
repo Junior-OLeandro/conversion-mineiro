@@ -1,78 +1,49 @@
-/* src/js/index.js - Versão Final Smashs com Preços Individuais */
+/* src/js/index.js - Versão Limpa e Corrigida */
 
-// --- DADOS DOS PRODUTOS ---
-// src/js/index.js (Adicione no final)
+// ==========================================
+// 1. CONFIGURAÇÕES E TEMA
+// ==========================================
 
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 const logoImg = document.getElementById('logo-img');
 const THEME_KEY = 'mineiroloja_theme';
 
-
-const LIGHT_LOGO_URL = './src/images/logoescura.png'; // Tema Claro (bg-claro) usa a logo escura
+const LIGHT_LOGO_URL = './src/images/logoescura.png'; 
 const DARK_LOGO_URL = './src/images/logomarca.png';
-// ------------------------------------------
-// 1. FUNÇÃO DE TROCA DE TEMA
-// ------------------------------------------
-// ------------------------------------------
-// 1. FUNÇÃO DE TROCA DE TEMA (COM MUDANÇA DE LOGO)
-// ------------------------------------------
+
 function toggleTheme() {
-  // O .toggle() adiciona a classe se ela não existir e remove se ela existir
   body.classList.toggle('bg-claro');
+  const isLight = body.classList.contains('bg-claro');
 
-  // Salva a preferência no armazenamento local (localStorage)
-  const isLight = body.classList.contains('bg-claro'); // Se 'bg-claro' está presente, é o tema CLARO
-
-  // 🚨 MUDANÇA DA LOGO VIA JAVASCRIPT
   if (logoImg) {
-    // Se for tema claro (isLight = true), usa a logo escura (LIGHT_LOGO_URL)
     logoImg.src = isLight ? LIGHT_LOGO_URL : DARK_LOGO_URL;
   }
 
-  // Salva o tema
   localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
-
-  // Opcional: Atualizar o texto ou ícone do botão
-  themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+  if(themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
 }
 
-// ------------------------------------------
-// 2. APLICA TEMA E LOGO NA CARGA DA PÁGINA
-// ------------------------------------------
 function loadTheme() {
   const savedTheme = localStorage.getItem(THEME_KEY);
-
-  // Se houver um tema salvo e for 'light', aplica o bg-claro
   const isLight = (savedTheme === 'light');
 
   if (isLight) {
     body.classList.add('bg-claro');
   } else if (savedTheme === 'dark') {
-    // Garante que a classe é removida se o último tema foi 'dark'
     body.classList.remove('bg-claro');
   }
 
-  // 🚨 MUDANÇA DA LOGO NA CARGA
   if (logoImg) {
     logoImg.src = isLight ? LIGHT_LOGO_URL : DARK_LOGO_URL;
   }
 
-  // Atualizar o texto do botão na carga inicial
-  themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+  if(themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
 }
 
-// ------------------------------------------
-// 3. ADICIONA EVENTOS
-// ------------------------------------------
-// Carrega o tema salvo assim que o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', loadTheme);
-
-// Adiciona o event listener ao botão
-themeToggle.addEventListener('click', toggleTheme);
-
-
-
+// ==========================================
+// 2. DADOS DOS PRODUTOS
+// ==========================================
 
 const productsData = [
   // --- COMBOS ---
@@ -90,31 +61,30 @@ const productsData = [
   { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado' },
   { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão' },
 
-  // --- SMASHS (Com preços individuais por tamanho) ---
-  // AQUI VOCÊ EDITA OS PREÇOS DE CADA UM:
+  // --- SMASHS ---
   {
     id: 12, category: 'smashs', name: 'Smash Bacon',
     desc: 'Smash burguer 60g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-bacon.webp', alt: 'Smash Bacon',
-    prices: { simples: 20.90, duplo: 27.90, triplo: 34.90 } // <--- EDITE AQUI
+    prices: { simples: 20.90, duplo: 27.90, triplo: 34.90 }
   },
   {
     id: 13, category: 'smashs', name: 'Smash Cheese',
     desc: 'Smash burguer 60g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-cheese.webp', alt: 'Smash Cheese',
-    prices: { simples: 21.90, duplo: 28.90, triplo: 35.90 } // <--- EDITE AQUI
+    prices: { simples: 21.90, duplo: 28.90, triplo: 35.90 }
   },
   {
     id: 14, category: 'smashs', name: 'Smash Mineiro',
     desc: 'Smash burguer 60g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-mineiro.webp', alt: 'Smash Mineiro',
-    prices: { simples: 22.90, duplo: 29.90, triplo: 36.90 } // <--- EDITE AQUI
+    prices: { simples: 22.90, duplo: 29.90, triplo: 36.90 }
   },
   {
     id: 15, category: 'smashs', name: 'Smashizinho',
     desc: 'Smash burguer 60g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-bacon.webp', alt: 'Smashizinho',
-    prices: { simples: 16.90, duplo: 25.90, triplo: 32.90 } // <--- EDITE AQUI
+    prices: { simples: 16.90, duplo: 25.90, triplo: 32.90 }
   },
 
   // --- ACOMPANHAMENTOS E BEBIDAS ---
@@ -144,15 +114,14 @@ const extras = [
   { id: 'bife', name: 'Bife artesanal de boi 150g', price: 13.00 },
 ];
 
-// --- CONFIGURAÇÕES ---
 const categoriesWithExtras = ['combos', 'hamburgueres', 'smashs'];
 const categoriesWithMeatOptions = ['combos', 'hamburgueres'];
-// Smashs são identificados pelo campo 'prices' no objeto do produto
-
 
 let cart = [];
 
-// --- DOM ELEMENTS ---
+// ==========================================
+// 3. ELEMENTOS DOM
+// ==========================================
 const floatingCartBtn = document.getElementById('floatingCartBtn');
 const cartCountBadge = document.getElementById('cart-count-badge');
 const cartModal = document.getElementById('cartModal');
@@ -164,6 +133,7 @@ const modalTotal = document.getElementById('modal-total');
 
 const modalNome = document.getElementById('modal-nome');
 const modalEndereco = document.getElementById('modal-endereco');
+const modalNumeroCasa = document.getElementById('modal-numero-casa'); // Novo campo
 const modalBairro = document.getElementById('modal-bairro');
 const modalPagamento = document.getElementById('modal-pagamento');
 const modalTrocoContainer = document.getElementById('modal-troco-container');
@@ -174,8 +144,12 @@ const confirmCloseBtn = document.getElementById('confirmCloseBtn');
 const confirmSendBtn = document.getElementById('confirmSendBtn');
 
 const mainTrocoInfo = document.getElementById('troco-info');
+const mainTrocoInput = document.getElementById('troco');
 
-// --- HELPER FUNCTIONS ---
+// ==========================================
+// 4. FUNÇÕES DE FORMATAÇÃO E CÁLCULO
+// ==========================================
+
 function formatBRL(value) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
@@ -190,7 +164,10 @@ function calculateItemTotal(item) {
   return (item.price + extrasSum) * item.qty;
 }
 
-// --- BUILD PRODUCTS ---
+// ==========================================
+// 5. CONSTRUÇÃO DE PRODUTOS
+// ==========================================
+
 function buildProducts() {
   const categoriesContainer = {
     combos: document.getElementById('grid-combos'),
@@ -206,11 +183,9 @@ function buildProducts() {
 
     const showMeatOptions = categoriesWithMeatOptions.includes(p.category);
     const showExtras = categoriesWithExtras.includes(p.category);
-
-    // Verifica se o produto tem tabela de preços (SMASHS)
     const hasSizeOptions = p.prices !== undefined;
 
-    // 1. Opções de Carne (Combos/Burgers)
+    // Opções de Carne
     let meatOptionsHTML = '';
     if (showMeatOptions) {
       meatOptionsHTML = `
@@ -226,14 +201,12 @@ function buildProducts() {
       `;
     }
 
-    // 2. Opções de Tamanho (SMASHS) - Pega o preço específico do produto
+    // Opções de Tamanho
     let sizeOptionsHTML = '';
     let displayPrice = formatBRL(p.price || 0);
 
     if (hasSizeOptions) {
-      // O preço exibido no card será o "Simples"
       displayPrice = `<small>A partir de</small> <br>${formatBRL(p.prices.simples)}`;
-
       sizeOptionsHTML = `
         <select id="size-${p.id}" aria-label="Tamanho do Smash" style="width: 100%; margin-bottom: 5px; font-weight: bold;">
             <option value="simples">Simples (${formatBRL(p.prices.simples)})</option>
@@ -243,7 +216,7 @@ function buildProducts() {
       `;
     }
 
-    // 3. Extras
+    // Extras
     let extrasHTML = '';
     if (showExtras) {
       extrasHTML = `
@@ -286,7 +259,10 @@ function buildProducts() {
   });
 }
 
-// --- CART LOGIC ---
+// ==========================================
+// 6. LÓGICA DO CARRINHO (ADD/REMOVE)
+// ==========================================
+
 function addToCart(ev, id) {
   const prod = productsData.find(p => p.id === id);
   if (!prod) return;
@@ -296,11 +272,9 @@ function addToCart(ev, id) {
   const sizeEl = document.getElementById(`size-${id}`);
   const qtyEl = document.getElementById(`qty-${id}`);
 
-  // Determina tipo de produto
   const hasSizeOptions = prod.prices !== undefined;
   const hasMeatOptions = categoriesWithMeatOptions.includes(prod.category);
 
-  // Carne e Ponto
   let meat = '';
   let point = '';
   if (hasMeatOptions) {
@@ -308,19 +282,17 @@ function addToCart(ev, id) {
     point = pointEl ? pointEl.value : 'Ao Ponto';
   }
 
-  // Preço e Tamanho
   let sizeLabel = '';
-  let finalPrice = prod.price; // Preço padrão
+  let finalPrice = prod.price; 
 
   if (hasSizeOptions && sizeEl) {
-    const selectedSize = sizeEl.value; // 'simples', 'duplo', 'triplo'
-    finalPrice = prod.prices[selectedSize]; // Busca o preço DENTRO do objeto do produto
+    const selectedSize = sizeEl.value; 
+    finalPrice = prod.prices[selectedSize];
     sizeLabel = selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1);
   }
 
   const qty = qtyEl ? parseInt(qtyEl.value, 10) : 1;
 
-  // Extras
   const container = ev.currentTarget.closest('.product');
   const checkedExtras = container ? Array.from(container.querySelectorAll('input[type=checkbox]:checked')) : [];
   const chosenExtras = checkedExtras.map(ch => ({
@@ -330,7 +302,8 @@ function addToCart(ev, id) {
   }));
 
   cart.push({
-    id: Date.now() + Math.random(),
+    // Usar toString para evitar problemas de comparação com números flutuantes
+    id: (Date.now() + Math.random()).toString(), 
     prodId: prod.id,
     name: prod.name,
     price: finalPrice,
@@ -349,60 +322,69 @@ function addToCart(ev, id) {
   renderCart();
 }
 
-function renderCart() {
-  const sidebarList = document.getElementById('cart-list');
-  if (sidebarList) {
-    sidebarList.innerHTML = '';
-    cart.forEach(item => sidebarList.appendChild(createCartItemElement(item, true)));
-  }
-
-  if (modalCartList) {
-    modalCartList.innerHTML = '';
-    cart.forEach(item => modalCartList.appendChild(createCartItemElement(item, false)));
-  }
-
-  updateTotals();
-  const totalItems = cart.reduce((s, i) => s + i.qty, 0);
-  if (cartCountBadge) cartCountBadge.textContent = totalItems;
+function removeItem(itemId) {
+  // Converte para string para garantir a igualdade
+  cart = cart.filter(i => i.id.toString() !== itemId.toString());
+  renderCart();
 }
 
 function createCartItemElement(item, allowRemove) {
-  const li = document.createElement('li');
-  const totalItem = calculateItemTotal(item);
+    const li = document.createElement('li');
+    const totalItem = calculateItemTotal(item);
 
-  let details = [];
-  if (item.size) details.push(`<strong>Tamanho: ${item.size}</strong>`);
-  if (item.meat) details.push(`Carne: ${item.meat}`);
-  if (item.point) details.push(`Ponto: ${item.point}`);
-  if (item.extras && item.extras.length > 0) {
-    const extrasNames = item.extras.map(e => e.name).join(', ');
-    details.push(`Extras: ${extrasNames}`);
-  }
+    let details = [];
+    if (item.size) details.push(`<strong>Tamanho: ${item.size}</strong>`);
+    if (item.meat) details.push(`Carne: ${item.meat}`);
+    if (item.point) details.push(`Ponto: ${item.point}`);
+    if (item.extras && item.extras.length > 0) {
+        const extrasNames = item.extras.map(e => e.name).join(', ');
+        details.push(`Extras: ${extrasNames}`);
+    }
 
-  const detailsHtml = details.length ? `<br><small>${details.join(' | ')}</small>` : '';
+    const detailsHtml = details.length ? `<br><small>${details.join(' | ')}</small>` : '';
+    
+    li.innerHTML = `
+        <div class="item-content" style="flex-grow: 1;">
+            ${item.qty}x ${item.name}
+            ${detailsHtml}
+            <div style="margin-top: 4px; font-weight:bold;">${formatBRL(totalItem)}</div>
+        </div>
+    `;
 
-  li.innerHTML = `
-    <div style="width: 100%">
-      ${item.qty}x ${item.name}
-      ${detailsHtml}
-      <div style="margin-top: 4px; font-weight:bold;">${formatBRL(totalItem)}</div>
-    </div>
-  `;
+    if (allowRemove) {
+        const btn = document.createElement('button');
+        btn.innerHTML = '<i class="fa-solid fa-trash-can"></i>'; 
+        btn.className = 'remove-item-btn'; // Classe usada no CSS
+        btn.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
+        
+        // Estilos de segurança inline (para garantir display flex)
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.style.alignItems = 'center'; 
+        
+        btn.onclick = () => removeItem(item.id);
+        li.appendChild(btn);
+    }
 
-  if (allowRemove) {
-    const btn = document.createElement('button');
-    btn.textContent = 'Remover';
-    btn.style.marginLeft = '10px';
-    btn.style.color = 'red';
-    btn.style.fontSize = '0.8em';
-    btn.onclick = () => removeItem(item.id);
-    li.style.display = 'flex';
-    li.style.justifyContent = 'space-between';
-    li.style.alignItems = 'flex-start';
-    li.appendChild(btn);
-  }
+    return li;
+}
 
-  return li;
+function renderCart() {
+    const sidebarList = document.getElementById('cart-list');
+    if (sidebarList) {
+        sidebarList.innerHTML = '';
+        cart.forEach(item => sidebarList.appendChild(createCartItemElement(item, true)));
+    }
+
+    if (modalCartList) {
+        modalCartList.innerHTML = '';
+        // 🚨 IMPORTANTE: Passando 'true' para permitir remover no mobile/modal
+        cart.forEach(item => modalCartList.appendChild(createCartItemElement(item, true)));
+    }
+
+    updateTotals();
+    const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+    if (cartCountBadge) cartCountBadge.textContent = totalItems;
 }
 
 function updateTotals() {
@@ -425,83 +407,130 @@ function updateTotals() {
   if (modalTotal) modalTotal.textContent = 'Total: ' + formatBRL(total);
 }
 
-function removeItem(itemId) {
-  cart = cart.filter(i => i.id !== itemId);
-  renderCart();
-}
+// ==========================================
+// 7. MODAL E SINCRONIZAÇÃO
+// ==========================================
 
-// ... (dentro do seu index.js)
 function closeCartModal() {
   if (cartModal) {
     cartModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = ''; // Retira o bloqueio de scroll
+    document.body.style.overflow = '';
   }
 }
-
 
 function openCartModal() {
-  if (cart.length === 0) { alert("Seu carrinho está vazio!"); return; }
+    if (cart.length === 0) { alert("Seu carrinho está vazio!"); return; }
 
-  const syncField = (srcId, destEl) => {
-    const src = document.getElementById(srcId);
-    // Sincroniza o valor da sidebar (src) para o modal (destEl)
-    if (src && destEl) destEl.value = src.value;
-  };
+    const syncField = (srcId, destEl) => {
+        const src = document.getElementById(srcId);
+        if (src && destEl) destEl.value = src.value;
+    };
+    
+    // Campos do formulário
+    syncField('nomecliente', modalNome);
+    syncField('endereco', modalEndereco);
+    syncField('numero-casa', modalNumeroCasa);
+    syncField('obs', modalObs);
 
-  // 1. Sincroniza campos de texto/selects da sidebar para o modal
-  syncField('nomecliente', modalNome);
-  syncField('endereco', modalEndereco);
-  syncField('obs', modalObs);
+    const bairroMain = document.getElementById('bairro');
+    if (bairroMain && modalBairro) {
+        modalBairro.innerHTML = bairroMain.innerHTML;
+        modalBairro.value = bairroMain.value;
+    }
 
-  const bairroMain = document.getElementById('bairro');
-  if (bairroMain && modalBairro) {
-    // Sincroniza as opções do bairro (o HTML interno do select)
-    modalBairro.innerHTML = bairroMain.innerHTML;
-    // E o valor selecionado
-    modalBairro.value = bairroMain.value;
-  }
+    syncField('pagamento', modalPagamento);
+    
+    // Lógica do Troco
+    if (mainTrocoInput && modalTrocoInput) {
+        modalTrocoInput.value = mainTrocoInput.value;
+        modalTrocoInput.disabled = mainTrocoInput.disabled; 
+    }
+    
+    // Checkboxes de "Sem Troco"
+    const mainSemTrocoCheckbox = document.getElementById('sem-troco');
+    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+    if (mainSemTrocoCheckbox && modalSemTrocoCheckbox) {
+        modalSemTrocoCheckbox.checked = mainSemTrocoCheckbox.checked;
+    }
 
-  syncField('pagamento', modalPagamento);
-  // Sincroniza o valor de troco da sidebar (que é formatado) para o modal
-  if (modalTrocoInput && mainTrocoInput) {
-    modalTrocoInput.value = mainTrocoInput.value;
-  }
+    // Handlers
+    handlePagamentoChange(); 
+    handleTrocoInput(); 
+    renderCart(); 
 
-  // 2. Executa handlers para configurar o modal (troco e totais)
-  handlePagamentoChange(); // Garante que o container do troco está visível se for dinheiro
-  handleTrocoInput(); // Re-valida o troco no modal com o valor sincronizado
-  renderCart(); // Re-renderiza o carrinho no modal e atualiza totais
-
-  // 3. Abre o modal
-  cartModal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+    // Abre modal
+    cartModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
 }
 
+// ==========================================
+// 8. GERENCIAMENTO DE PAGAMENTO E TROCO
+// ==========================================
+
 function handlePagamentoChange() {
-  if (modalPagamento.value === 'dinheiro') {
-    modalTrocoContainer.style.display = 'block';
-  } else {
-    modalTrocoContainer.style.display = 'none';
-    modalTrocoInput.value = '';
-    modalTrocoInfo.textContent = '';
-  }
+    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+    
+    if (modalPagamento.value === 'dinheiro') {
+        modalTrocoContainer.style.display = 'block';
+    } else {
+        modalTrocoContainer.style.display = 'none';
+        modalTrocoInput.value = '';
+        modalTrocoInput.disabled = false;
+        modalTrocoInfo.textContent = '';
+        if (modalSemTrocoCheckbox) modalSemTrocoCheckbox.checked = false;
+    }
+
+    if (modalSemTrocoCheckbox) {
+        // Remove listener antigo para não duplicar
+        modalSemTrocoCheckbox.onchange = null;
+        modalSemTrocoCheckbox.onchange = () => {
+            if (modalSemTrocoCheckbox.checked) {
+                modalTrocoInput.value = 'Não preciso de troco';
+                modalTrocoInput.disabled = true;
+                modalTrocoInfo.textContent = '';
+            } else {
+                modalTrocoInput.value = '';
+                modalTrocoInput.disabled = false;
+                modalTrocoInput.focus();
+            }
+        };
+    }
 }
 
 function toggleTroco() {
-  const pagamento = document.getElementById("pagamento").value;
-  const trocoDiv = document.getElementById("troco-container");
+    const pagamento = document.getElementById("pagamento").value;
+    const trocoDiv = document.getElementById("troco-container");
+    const semTrocoCheckbox = document.getElementById("sem-troco");
 
-  if (pagamento === "dinheiro") {
-    trocoDiv.style.display = "block";
-  } else {
-    trocoDiv.style.display = "none";
-    // limpa o troco caso a pessoa mude pra pix ou cartão
-    document.getElementById("troco").value = "";
-  }
+    if (pagamento === "dinheiro") {
+        trocoDiv.style.display = "block";
+    } else {
+        trocoDiv.style.display = "none";
+        document.getElementById("troco").value = "";
+        document.getElementById("troco").disabled = false;
+        if (semTrocoCheckbox) semTrocoCheckbox.checked = false;
+        
+        const info = document.getElementById('troco-info');
+        if (info) info.textContent = '';
+    }
+    
+    if (semTrocoCheckbox) {
+        semTrocoCheckbox.onchange = null;
+        semTrocoCheckbox.onchange = () => {
+            const trInput = document.getElementById('troco');
+            if (semTrocoCheckbox.checked) {
+                trInput.value = 'Não preciso de troco';
+                trInput.disabled = true;
+                document.getElementById('troco-info').textContent = '';
+            } else {
+                trInput.value = '';
+                trInput.disabled = false;
+                trInput.focus();
+            }
+        };
+    }
 }
-// ADICIONE ESTAS DUAS FUNÇÕES AO SEU CÓDIGO:
 
-// Função para obter o total atual da sidebar
 function getSidebarTotal() {
   const totalEl = document.getElementById('total');
   if (!totalEl) return 0;
@@ -509,39 +538,32 @@ function getSidebarTotal() {
   return parseMoney(totalText);
 }
 
-// Handler de Input para o campo de Troco da Sidebar
 function handleMainTrocoInput() {
-  const mainTrocoInput = document.getElementById('troco');
-  const mainTrocoInfo = document.getElementById('troco-info'); // Presumindo que você tem um elemento para a info na sidebar
+  const trInput = document.getElementById('troco');
+  const info = document.getElementById('troco-info');
 
-  if (!mainTrocoInput || !mainTrocoInfo) return;
+  if (!trInput || !info) return;
 
-  let v = mainTrocoInput.value.replace(/\D/g, '');
+  let v = trInput.value.replace(/\D/g, '');
   if (!v) {
-    mainTrocoInput.value = '';
-    mainTrocoInfo.textContent = '';
+    trInput.value = '';
+    info.textContent = '';
     return;
   }
 
   const valFloat = parseInt(v) / 100;
-  mainTrocoInput.value = valFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  trInput.value = valFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
   const total = getSidebarTotal();
 
   if (valFloat >= total) {
-    mainTrocoInfo.style.color = '#007a00';
-    mainTrocoInfo.textContent = `Troco: ${formatBRL(valFloat - total)}`;
+    info.style.color = '#007a00';
+    info.textContent = `Troco: ${formatBRL(valFloat - total)}`;
   } else {
-    mainTrocoInfo.style.color = '#b30000';
-    mainTrocoInfo.textContent = 'Valor menor que o total';
+    info.style.color = '#b30000';
+    info.textContent = 'Valor menor que o total';
   }
 }
-
-// ADICIONE ESTE NO BLOCO DE INICIALIZAÇÃO (event listeners no final do arquivo):
-const mainTrocoInput = document.getElementById('troco');
-if (mainTrocoInput) mainTrocoInput.addEventListener('input', handleMainTrocoInput);
-// E verifique se você tem um <span id="troco-info"></span> correspondente na sidebar.
-
 
 function handleTrocoInput() {
   let v = modalTrocoInput.value.replace(/\D/g, '');
@@ -551,6 +573,7 @@ function handleTrocoInput() {
 
   const totalText = modalTotal.textContent.replace('Total: ', '');
   const total = parseMoney(totalText);
+  
   if (valFloat >= total) {
     modalTrocoInfo.style.color = '#007a00';
     modalTrocoInfo.textContent = `Troco: ${formatBRL(valFloat - total)}`;
@@ -560,100 +583,131 @@ function handleTrocoInput() {
   }
 }
 
+// ==========================================
+// 9. FINALIZAÇÃO E WHATSAPP
+// ==========================================
+
 function enviarWhatsapp() {
-  if (cart.length === 0) return alert('Carrinho vazio.');
+    if (cart.length === 0) return alert('Carrinho vazio.');
 
-  const nome = modalNome.value.trim();
-  const endereco = modalEndereco.value.trim();
-  const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
-  const bairroValor = modalBairro.value;
-  const pagamento = modalPagamento.value;
-  const obs = modalObs.value;
+    const nome = modalNome.value.trim();
+    const enderecoOriginal = modalEndereco.value.trim(); // Renomeado para Original
+    const numeroCasa = modalNumeroCasa ? modalNumeroCasa.value.trim() : '';
+    const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
+    const bairroValor = modalBairro.value;
+    const pagamento = modalPagamento.value;
+    const obs = modalObs.value;
+    
+    // Troco
+    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+    const isSemTroco = modalSemTrocoCheckbox ? modalSemTrocoCheckbox.checked : false;
 
-  if (!nome) return alert('Informe seu nome.');
-  if (!endereco) return alert('Informe o endereço.');
-  if (!bairroValor) return alert('Selecione o bairro.');
-  if (!pagamento) return alert('Selecione o pagamento.');
+    // VALIDAÇÕES
+    if (!nome) return alert('Informe seu nome.');
+    if (!enderecoOriginal) return alert('Informe o endereço (rua/logradouro).');
+    if (!numeroCasa) return alert('Informe o número da casa/apto.'); 
+    if (!bairroValor) return alert('Selecione o bairro.');
+    if (!pagamento) return alert('Selecione o pagamento.');
 
-  let trocoMsg = '';
-  if (pagamento === 'dinheiro') {
-    const valorEntregue = parseMoney(modalTrocoInput.value);
-    const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
-    if (valorEntregue < total) return alert('Valor para troco inválido.');
-    trocoMsg = `\nTroco para: ${formatBRL(valorEntregue)}\nTroco estimado: ${formatBRL(valorEntregue - total)}`;
-  }
-
-  // ... dentro da função enviarWhatsapp()
-  // ... (Após a validação do Troco)
-
-  let texto = `*✅ NOVO PEDIDO - Mineiro Hamburgueria*\n`;
-  texto += `*----------------------------------*\n\n`;
-
-  // 1. DADOS DO CLIENTE
-  texto += `*👤 CLIENTE E ENTREGA:*\n`;
-  texto += `*Nome:* ${nome}\n`;
-  texto += `*Endereço:* ${endereco}\n`;
-  texto += `*Bairro:* ${bairro}\n`;
-  texto += `*----------------------------------*\n\n`;
-
-  // 2. ITENS DO PEDIDO
-  texto += `*🍔 ITENS:*\n`;
-  cart.forEach((item, index) => {
-    // Adiciona número do item para conferência fácil
-    texto += `${index + 1}. ${item.qty}x *${item.name}* ${formatBRL(calculateItemTotal(item))}\n`;
-
-    let detalhes = [];
-    if (item.size) detalhes.push(`Tamanho: ${item.size}`);
-    if (item.meat) detalhes.push(`Carne: ${item.meat} | ${item.point}`);
-    if (item.extras && item.extras.length) detalhes.push(`Extras: ${item.extras.map(e => e.name).join(', ')}`);
-
-    if (detalhes.length) {
-      // Usa o hífen para recuo e clareza na lista
-      detalhes.forEach(d => texto += `   - ${d}\n`);
-    } else {
-      texto += '\n'; // Garante espaço se não houver detalhes
+    let trocoMsg = '';
+    if (pagamento === 'dinheiro') {
+        if (isSemTroco) {
+            trocoMsg = `\nTroco para: NÃO PRECISA DE TROCO.`;
+        } else {
+            const valorEntregue = parseMoney(modalTrocoInput.value);
+            const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
+            
+            if (valorEntregue === 0) return alert('Por favor, informe para quanto será o troco ou marque "Não preciso de troco".');
+            if (valorEntregue < total) return alert('Valor para troco inválido (menor que o total).');
+            
+            trocoMsg = `\nTroco para: ${formatBRL(valorEntregue)}\nTroco estimado: ${formatBRL(valorEntregue - total)}`;
+        }
     }
-  });
 
-  texto += `*----------------------------------*\n\n`;
+    // --- LÓGICA PARA QUEBRAR O ENDEREÇO EM DUAS LINHAS ---
+    let enderecoFormatado = enderecoOriginal;
+    const separadores = ['(', ',', '-']; // Prioriza parênteses, vírgula, depois traço
 
-  // 3. OBSERVAÇÕES
-  if (obs) {
-    texto += `*💡 OBSERVAÇÕES:* ${obs}\n`;
+    for (const sep of separadores) {
+        // Pega a posição do separador, ignorando o início da string (índice > 5)
+        const indiceQuebra = enderecoOriginal.indexOf(sep, 5); 
+        
+        if (indiceQuebra !== -1) {
+            const partePrincipal = enderecoOriginal.substring(0, indiceQuebra).trim();
+            const parteReferencia = enderecoOriginal.substring(indiceQuebra).trim();
+            
+            // Insere a quebra de linha \n na string
+            enderecoFormatado = `${partePrincipal}\n ${parteReferencia}`; 
+            quebraEncontrada = true;
+            break; 
+        }
+    }
+    // -----------------------------------------------------
+
+    // CONSTRUÇÃO DA MENSAGEM
+    let texto = `*✅ NOVO PEDIDO - Mineiro Hamburgueria*\n`;
     texto += `*----------------------------------*\n\n`;
-  }
 
-  // 4. RESUMO FINANCEIRO E PAGAMENTO
-  texto += `*💵 TOTAL:*\n`;
-  texto += `Subtotal: ${modalSubtotal.textContent.replace('Subtotal: ', '')}\n`;
-  texto += `Entrega: ${modalFrete.textContent.replace('Entrega: ', '')}\n`;
-  texto += `*${modalTotal.textContent}*\n`;
-  texto += `*Pagamento:* *${pagamento.toUpperCase()}*${trocoMsg}\n\n`;
+    texto += `*👤 CLIENTE E ENTREGA:*\n`;
+    texto += `*Nome:* ${nome}\n`;
+    texto += `*Endereço:* ${enderecoFormatado}\n`; // <-- AGORA USA A VARIÁVEL FORMATADA
+    texto += `*Nº da Casa/Apto:* ${numeroCasa}\n`;
+    texto += `*Bairro:* ${bairro}\n`;
+    texto += `*----------------------------------*\n\n`;
 
-  // 5. CONFIRMAÇÃO (Para você responder rapidamente)
-  texto += `*----------------------------------*\n`;
-  texto += `*➡️ AÇÃO:* Confirme recebimento com "OK" ou "Aguardando pagamento" se for PIX.`;
+    texto += `*🍔 ITENS:*\n`;
+    cart.forEach((item, index) => {
+        texto += `${item.qty}x *${item.name}* ${formatBRL(calculateItemTotal(item))}\n`;
 
+        let detalhes = [];
+        if (item.size) detalhes.push(`Tamanho: ${item.size}`);
+        if (item.meat) detalhes.push(`Carne: ${item.meat} | ${item.point}`);
+        
+        // Mantive a sua alteração para quebrar os extras em novas linhas, o que é ótimo para impressora 80mm
+        if (item.extras && item.extras.length) detalhes.push(`Extras: ${item.extras.map(e => e.name).join('\n   - ')}`); 
 
-  const numero = '5532984550411';
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+        if (detalhes.length) {
+            detalhes.forEach(d => texto += `   - ${d}\n`);
+        } else {
+            texto += '\n'; 
+        }
+    });
 
-  closeCartModal();
-  window.open(url, '_blank');
+    texto += `*----------------------------------*\n\n`;
+
+    if (obs) {
+        texto += `*💡 OBSERVAÇÕES:* ${obs}\n`;
+        texto += `*----------------------------------*\n\n`;
+    }
+
+    texto += `*💵 TOTAL:*\n`;
+    texto += `Subtotal: ${modalSubtotal.textContent.replace('Subtotal: ', '')}\n`;
+    texto += `Entrega: ${modalFrete.textContent.replace('Entrega: ', '')}\n`;
+    texto += `*${modalTotal.textContent}*\n`;
+    texto += `*Pagamento:* *${pagamento.toUpperCase()}*${trocoMsg}\n\n`;
+
+    texto += `*----------------------------------*\n`;
+    texto += `*➡️ AÇÃO:* Aguarde confirmação.`;
+
+    const numero = '5532984550411';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+
+    closeCartModal();
+    window.open(url, '_blank');
 }
 
-
+// ==========================================
+// 10. HORÁRIO E EVENTOS INICIAIS
+// ==========================================
 
 function verificarHorarioFuncionamento() {
   const agora = new Date();
-  const dia = agora.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+  const dia = agora.getDay(); 
   const hora = agora.getHours();
   const minuto = agora.getMinutes();
   const statusEl = document.getElementById("status-loja");
 
   let aberto = false;
-
-  // Função auxiliar para comparar horário (hora:minuto)
   function dentroDoHorario(h, m, hIni, mIni, hFim, mFim) {
     const atual = h * 60 + m;
     const inicio = hIni * 60 + mIni;
@@ -661,12 +715,9 @@ function verificarHorarioFuncionamento() {
     return atual >= inicio && atual <= fim;
   }
 
-  // QUARTA (3), QUINTA (4), SEXTA (5)
   if (dia >= 3 && dia <= 5) {
     aberto = dentroDoHorario(hora, minuto, 18, 30, 22, 30);
   }
-
-  // SÁBADO (6) e DOMINGO (0)
   if (dia === 6 || dia === 0) {
     aberto = dentroDoHorario(hora, minuto, 17, 0, 22, 30);
   }
@@ -680,30 +731,35 @@ function verificarHorarioFuncionamento() {
   }
 }
 
-
-
-
 // INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', () => {
+  loadTheme();
   buildProducts();
   renderCart();
   verificarHorarioFuncionamento();
+  
   const originalBairro = document.getElementById('bairro');
   if (originalBairro && modalBairro) modalBairro.innerHTML = originalBairro.innerHTML;
+  
+  const pg = document.getElementById('pagamento');
+  if (pg) pg.addEventListener('change', toggleTroco);
 });
 
+// EVENT LISTENERS GLOBAIS
+if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
 if (floatingCartBtn) floatingCartBtn.addEventListener('click', openCartModal);
 if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCartModal);
 if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeCartModal);
-
 if (confirmSendBtn) confirmSendBtn.addEventListener('click', enviarWhatsapp);
-// if (cartModal) cartModal.addEventListener('click', (e) => { if (e.target === cartModal) closeCartModal(); });
+
 if (modalPagamento) modalPagamento.addEventListener('change', handlePagamentoChange);
 if (modalTrocoInput) modalTrocoInput.addEventListener('input', handleTrocoInput);
+if (mainTrocoInput) mainTrocoInput.addEventListener('input', handleMainTrocoInput);
+
 if (modalBairro) modalBairro.addEventListener('change', () => updateTotals());
+
 const mainBairro = document.getElementById('bairro');
 if (mainBairro) mainBairro.addEventListener('change', () => {
   if (modalBairro) modalBairro.value = mainBairro.value;
   updateTotals();
 });
-
