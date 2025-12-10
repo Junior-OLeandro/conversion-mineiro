@@ -276,19 +276,24 @@ function addToCart(ev, id) {
   const hasSizeOptions = prod.prices !== undefined;
   const hasMeatOptions = categoriesWithMeatOptions.includes(prod.category);
 
+  // ...
   let meat = '';
   let point = '';
   if (hasMeatOptions) {
     meat = meatEl ? meatEl.value : 'Bovino';
     point = pointEl ? pointEl.value : '';
-  }
-
-  if (!point) {
+    
+    // 🛑 ADICIONANDO A VALIDAÇÃO AQUI DENTRO, SÓ PARA QUEM TEM OPÇÃO DE CARNE/PONTO
+    if (!point) {
         alert(`Por favor, selecione o ponto da carne para o item "${prod.name}".`);
         // Adicione um destaque visual, se necessário
         if(pointEl) pointEl.focus(); 
         return; // Impede que o item seja adicionado
     }
+  }
+
+
+// ...
 
   let sizeLabel = '';
   let finalPrice = prod.price; 
