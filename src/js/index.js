@@ -194,6 +194,7 @@ function buildProducts() {
             <option value="Frango">Frango</option>
         </select>
         <select id="point-${p.id}" aria-label="Ponto da carne">
+        <option value="">Escolha o ponto</option>
             <option value="Malpassado">Malpassado</option>
             <option value="AoPonto">Ao Ponto</option>
             <option value="BemPassado">Bem Passado</option>
@@ -279,8 +280,15 @@ function addToCart(ev, id) {
   let point = '';
   if (hasMeatOptions) {
     meat = meatEl ? meatEl.value : 'Bovino';
-    point = pointEl ? pointEl.value : 'Ao Ponto';
+    point = pointEl ? pointEl.value : '';
   }
+
+  if (!point) {
+        alert(`Por favor, selecione o ponto da carne para o item "${prod.name}".`);
+        // Adicione um destaque visual, se necessário
+        if(pointEl) pointEl.focus(); 
+        return; // Impede que o item seja adicionado
+    }
 
   let sizeLabel = '';
   let finalPrice = prod.price; 
@@ -743,6 +751,74 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const pg = document.getElementById('pagamento');
   if (pg) pg.addEventListener('change', toggleTroco);
+});
+
+
+
+function exibirAlertaPromocao() {
+    const modal = document.getElementById('quickPromoModal');
+    const closeBtn = document.getElementById('quickPromoClose');
+    const actionBtn = document.getElementById('quickPromoBtnAction');
+
+    // 🛑 CONFIGURAÇÃO PRINCIPAL: DEFINA O DIA EXATO DA PROMOÇÃO
+    const HOJE = new Date();
+    const DIA_PROMO = 10;
+    const MES_PROMO = 11; // Janeiro é 0, Dezembro é 11
+    const ANO_PROMO = 2025;
+    
+    // Verifica se a data atual corresponde à data configurada
+    const isToday = HOJE.getDate() === DIA_PROMO && 
+                    HOJE.getMonth() === MES_PROMO && 
+                    HOJE.getFullYear() === ANO_PROMO;
+
+    // Verifica se o usuário já viu o alerta nesta sessão
+    const promoVisto = sessionStorage.getItem('quick-promo-visto');
+
+    if (modal && isToday && promoVisto !== 'true') {
+        
+        // Exibir o Modal
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Bloqueia scroll
+
+        // Função para fechar e marcar como visto
+        const fecharModal = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            sessionStorage.setItem('quick-promo-visto', 'true');
+        };
+
+        // Event Listeners
+        if (closeBtn) closeBtn.addEventListener('click', fecharModal);
+        
+        if (actionBtn) {
+            actionBtn.addEventListener('click', () => {
+                fecharModal();
+                
+                // Opcional: Rolar para a seção de lanches após fechar
+                const lanches = document.getElementById('grid-hamburgueres');
+                if (lanches) {
+                    lanches.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        // Fechar ao clicar fora (opcional)
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                fecharModal();
+            }
+        });
+    }
+}
+
+// -------------------------------------------------------------
+// CHAME A FUNÇÃO NA INICIALIZAÇÃO, DENTRO DO DOMContentLoaded
+// -------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (restante do código de inicialização)
+
+    // Chame a nova função após carregar o resto do site
+    exibirAlertaPromocao(); 
 });
 
 // EVENT LISTENERS GLOBAIS

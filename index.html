@@ -21,6 +21,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Alice&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
     rel="stylesheet">
+
   <link rel="stylesheet" href="./src/css/reset.css">
   <link rel="stylesheet" href="./src/css/variaveis.css">
   <link rel="stylesheet" href="./src/css/style.css">
@@ -255,6 +256,27 @@
       </div>
     </div>
   </div>
+
+  <div id="quickPromoModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center;">
+    <div style="background-color: white; padding: 20px; border-radius: 10px; max-width: 350px; width: 90%; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
+        
+        <button id="quickPromoClose" style="float: right; font-size: 24px; border: none; background: none; cursor: pointer; color: #333;">&times;</button>
+        
+        <h2 style="color: #FF4500; margin-top: 0; margin-bottom: 15px;">🔥 IMPERDÍVEL HOJE! 🔥</h2>
+        
+        <img src="./src/images/lanches/promocaobatata.webp" alt="Promoção do Dia" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
+        
+        <p style="font-size: 1.1em; color: #333; font-weight: bold;">
+            Na compra de qualquer lanche, leve 1 porção de Batata Frita GRÁTIS!
+        </p>
+        
+        <button id="quickPromoBtnAction" style="padding: 10px 20px; background-color: #008a49ff; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+            Começar a Pedir!
+        </button>
+
+        <p style="font-size: 10px; color:#333;">A promoção não é válida para combos.</p>
+    </div>
+</div>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"
