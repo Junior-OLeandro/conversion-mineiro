@@ -14,8 +14,21 @@
   </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mineiro - Hamburgueria Artesanal</title>
+  <title>Mineiro Hamburgueria Artesanal em Barbacena</title>
+
+  <meta name="description"
+    content="A Mineiro é uma Hamburgueria Artesanal em Barbacena - Os melhores lanches, ingredientes frescos e opções de combos. Peça e receba em casa!">
+
+  <link rel="canonical" href="https://mineiroloja.com.br/">
+
+  <meta property="og:title" content="Mineiro - Hamburgueria Artesanal na Região de Barbacena">
+  <meta property="og:description"
+    content="Peça os lanches mais saborosos, combos e promoções especiais da Mineiro. Entrega rápida!">
+  <meta property="og:image" content="https://mineiroloja.com.br/src/images/lanches/trem-bao.webp">
+  <meta property="og:url" content="https://mineiroloja.com.br/">
+  <meta property="og:type" content="website">
   <link rel="shortcut icon" href="./src/images/favicon-16x16.png" type="image/x-icon">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -60,7 +73,7 @@
       <h2 class="titulo-categoria">Combos</h2>
       <div id="grid-combos" class="grid"></div>
 
-      <h2 class="titulo-categoria">Do Mineiro</h2>
+      <h2 class="titulo-categoria">Mineiros</h2>
       <div id="grid-hamburgueres" class="grid"></div>
 
       <h2 class="titulo-categoria">Smashs</h2>
@@ -93,43 +106,44 @@
 
         <label for="bairro">Bairro (entrega):</label>
         <select id="bairro" required>
-    <option value="" disabled selected>Selecione seu Bairro</option>
-    <option value="10.00">AEROPORTO</option>
-    <option value="5.00">ANDARAÍ</option>
-    <option value="6.00">BOA MORTE</option>
-    <option value="5.00">BOA VISTA</option>
-    <option value="5.00">BOM PASTOR</option>
-    <option value="5.00">CAIÇARAS</option>
-    <option value="7.00">CAMPO</option>
-    <option value="7.00">CARMO</option>
-    <option value="5.00">CENTRO</option>
-    <option value="8.00">CHÁCARA DAS ANDORINHAS</option>
-    <option value="5.00">DINIZ</option>
-    <option value="10.00">DOM BOSCO</option>
-    <option value="5.00">EPCAR</option>
-    <option value="10.00">FÁTIMA</option>
-    <option value="6.00">FUNCIONÁRIOS</option>
-    <option value="6.00">GROGOTÓ</option>
-    <option value="10.00">IPANEMA</option>
-    <option value="10.00">JOÃO PAULO II</option>
-    <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
-    <option value="10.00">MONTE MÁRIO</option>
-    <option value="10.00">N. SRA. APARECIDA</option>
-    <option value="6.00">NOVO HORIZONTE</option>
-    <option value="5.00">PADRE CUNHA</option>
-    <option value="7.00">PENHA</option>
-    <option value="0">RETIRAR NO LOCAL</option>
-    <option value="7.00">SANTA CECÍLIA</option>
-    <option value="5.00">SANTA EFIGÊNIA</option>
-    <option value="5.00">SANTA LUZIA</option>
-    <option value="7.00">SANTA TEREZA</option>
-    <option value="6.00">SANTO ANTÔNIO</option>
-    <option value="7.00">SÃO CRISTÓVÃO</option>
-    <option value="6.00">SÃO JOSÉ</option>
-    <option value="5.00">SÃO SEBASTIÃO</option>
-    <option value="5.00">VILELA</option>
-    <option value="7.00">VISTA ALEGRE</option>
-</select>
+          <option value="" disabled selected>Selecione seu Bairro</option>
+          <option value="10.00">AEROPORTO</option>
+          <option value="5.00">ANDARAÍ</option>
+          <option value="6.00">BOA MORTE</option>
+          <option value="5.00">BOA VISTA</option>
+          <option value="5.00">BOM PASTOR</option>
+          <option value="5.00">CAIÇARAS</option>
+          <option value="7.00">CAMPO</option>
+          <option value="7.00">CARMO</option>
+          <option value="5.00">CENTRO</option>
+          <option value="8.00">CHÁCARA DAS ANDORINHAS</option>
+          <option value="5.00">DINIZ</option>
+          <option value="10.00">DOM BOSCO</option>
+          <option value="5.00">EPCAR</option>
+          <option value="10.00">FÁTIMA</option>
+          <option value="6.00">FUNCIONÁRIOS</option>
+          <option value="6.00">GROGOTÓ</option>
+          <option value="10.00">IPANEMA</option>
+          <option value="10.00">JOÃO PAULO II</option>
+          <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
+          <option value="10.00">MONTE MÁRIO</option>
+          <option value="10.00">N. SRA. APARECIDA</option>
+          <option value="6.00">NOVO HORIZONTE</option>
+          <option value="5.00">PADRE CUNHA</option>
+          <option value="5.00">PASSARINHOS</option>
+          <option value="7.00">PENHA</option>
+          <option value="7.00">SANTA CECÍLIA</option>
+          <option value="5.00">SANTA EFIGÊNIA</option>
+          <option value="5.00">SANTA LUZIA</option>
+          <option value="7.00">SANTA TEREZA</option>
+          <option value="6.00">SANTO ANTÔNIO</option>
+          <option value="7.00">SÃO CRISTÓVÃO</option>
+          <option value="6.00">SÃO JOSÉ</option>
+          <option value="5.00">SÃO SEBASTIÃO</option>
+          <option value="5.00">VILELA</option>
+          <option value="7.00">VISTA ALEGRE</option>
+          <option value="0">RETIRAR NO LOCAL</option>
+        </select>
 
         <label for="pagamento">Forma de pagamento:</label>
         <select id="pagamento" onchange="toggleTroco()">
@@ -257,26 +271,31 @@
     </div>
   </div>
 
-  <div id="quickPromoModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center;">
-    <div style="background-color: white; padding: 20px; border-radius: 10px; max-width: 350px; width: 90%; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
-        
-        <button id="quickPromoClose" style="float: right; font-size: 24px; border: none; background: none; cursor: pointer; color: #333;">&times;</button>
-        
-        <h2 style="color: #FF4500; margin-top: 0; margin-bottom: 15px;">🔥 IMPERDÍVEL HOJE! 🔥</h2>
-        
-        <img src="./src/images/lanches/promocaobatata.webp" alt="Promoção do Dia" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
-        
-        <p style="font-size: 1.1em; color: #333; font-weight: bold;">
-            Na compra de qualquer lanche, leve 1 porção de Batata Frita GRÁTIS!
-        </p>
-        
-        <button id="quickPromoBtnAction" style="padding: 10px 20px; background-color: #008a49ff; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 15px;">
-            Começar a Pedir!
-        </button>
+  <div id="quickPromoModal"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center;">
+    <div
+      style="background-color: white; padding: 20px; border-radius: 10px; max-width: 350px; width: 90%; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
 
-        <p style="font-size: 10px; color:#333;">A promoção não é válida para combos.</p>
+      <button id="quickPromoClose"
+        style="float: right; font-size: 24px; border: none; background: none; cursor: pointer; color: #333;">&times;</button>
+
+      <h2 style="color: #FF4500; margin-top: 0; margin-bottom: 15px;">🔥 IMPERDÍVEL HOJE! 🔥</h2>
+
+      <img src="./src/images/lanches/promocaobatata.webp" alt="Promoção do Dia"
+        style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
+
+      <p style="font-size: 1.1em; color: #333; font-weight: bold;">
+        Na compra de qualquer lanche, leve 1 porção de Batata Frita GRÁTIS!
+      </p>
+
+      <button id="quickPromoBtnAction"
+        style="padding: 10px 20px; background-color: #008a49ff; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 15px;">
+        Começar a Pedir!
+      </button>
+
+      <p style="font-size: 10px; color:#333;">A promoção não é válida para combos.</p>
     </div>
-</div>
+  </div>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"

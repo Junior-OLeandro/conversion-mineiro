@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Bloqueia arquivos sensíveis
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /cgi-bin/
+
+# Sitemap principal
+Sitemap: https://mineiroloja.com.br/sitemap.xml

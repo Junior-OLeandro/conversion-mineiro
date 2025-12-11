@@ -47,43 +47,43 @@ function loadTheme() {
 
 const productsData = [
   // --- COMBOS ---
-  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Combo Trem Bão' },
-  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 60g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Combo Smash' },
-  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/tropical.webp', alt: 'Combo Tropical' },
+  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 60g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer com batata e refri' },
 
   // --- HAMBURGUERES ---
-  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, barbecue, couve crispy e chips de banana. Acompanha maionese mineira.', price: 34.90, img: './src/images/lanches/mineiro.webp', alt: 'Hamburguer Mineiro' },
-  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.webp', alt: 'Hamburguer Chico Bento' },
-  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.webp', alt: 'Hamburguer Romeu e Julieta' },
-  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 150g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.webp', alt: 'Hamburguer Bacon Docinho' },
-  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.webp', alt: 'Hamburguer Chimiburguer' },
-  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer Tropical' },
-  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado' },
-  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão' },
+  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, barbecue, couve crispy e chips de banana. Acompanha maionese mineira.', price: 34.90, img: './src/images/lanches/mineiro.webp', alt: 'Hamburguer Mineiro com queijo bacon' },
+  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.webp', alt: 'Hamburguer Chico Bento com queijo e bacon' },
+  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.webp', alt: 'Hamburguer Romeu e Julieta com queijo e bacon' },
+  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 150g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.webp', alt: 'Hamburguer Bacon Docinho com queijo e bacon' },
+  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.webp', alt: 'Hamburguer Chimiburguer com queijo e bacon' },
+  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer Tropical com queijo e bacon' },
+  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado com queijo e bacon' },
+  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão com queijo e bacon' },
 
   // --- SMASHS ---
   {
     id: 12, category: 'smashs', name: 'Smash Bacon',
     desc: 'Smash burguer 60g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.',
-    img: './src/images/lanches/smash-bacon.webp', alt: 'Smash Bacon',
+    img: './src/images/lanches/smash-bacon.webp', alt: 'Smash burguer com queijo e bacon',
     prices: { simples: 20.90, duplo: 27.90, triplo: 34.90 }
   },
   {
     id: 13, category: 'smashs', name: 'Smash Cheese',
     desc: 'Smash burguer 60g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.',
-    img: './src/images/lanches/smash-cheese.webp', alt: 'Smash Cheese',
+    img: './src/images/lanches/smash-cheese.webp', alt: 'Smash cheese burguer com queijo e bacon',
     prices: { simples: 21.90, duplo: 28.90, triplo: 35.90 }
   },
   {
     id: 14, category: 'smashs', name: 'Smash Mineiro',
     desc: 'Smash burguer 60g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.',
-    img: './src/images/lanches/smash-mineiro.webp', alt: 'Smash Mineiro',
+    img: './src/images/lanches/smash-mineiro.webp', alt: 'Smash Mineiro burguer com queijo e bacon',
     prices: { simples: 22.90, duplo: 29.90, triplo: 36.90 }
   },
   {
     id: 15, category: 'smashs', name: 'Smashizinho',
     desc: 'Smash burguer 60g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.',
-    img: './src/images/lanches/smash-bacon.webp', alt: 'Smashizinho',
+    img: './src/images/lanches/smash-bacon.webp', alt: 'Smashizinho Smash burguer com queijo e salada',
     prices: { simples: 16.90, duplo: 25.90, triplo: 32.90 }
   },
 
@@ -92,8 +92,8 @@ const productsData = [
   { id: 17, category: 'acompanhamentos', name: 'Batata, cheddar e bacon', desc: 'Batata frita com cheddar e bacon', price: 24.90, img: './src/images/lanches/batata-cb.webp', alt: 'Batata Especial' },
   { id: 18, category: 'bebidas', name: 'Coca-Cola Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/cocazero.webp', alt: 'Coca Zero' },
   { id: 19, category: 'bebidas', name: 'Coca-Cola 350ml', desc: '', price: 6.00, img: './src/images/lanches/coca.webp', alt: 'Coca Cola' },
-  { id: 20, category: 'bebidas', name: 'Guaraná Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/guaranazero.webp', alt: 'Guaraná Zero' },
-  { id: 21, category: 'bebidas', name: 'Guaraná 350ml', desc: '', price: 6.00, img: './src/images/lanches/guarana.webp', alt: 'Guaraná' },
+  { id: 20, category: 'bebidas', name: 'Guaraná 350ml', desc: '', price: 6.00, img: './src/images/lanches/guarana.webp', alt: 'Guaraná' },
+  { id: 21, category: 'bebidas', name: 'Coca-Cola 600ml', desc: '', price: 9.00, img: './src/images/lanches/coca600.webp', alt: 'Coca-cola 600ml' },
 ];
 
 const extras = [
@@ -108,7 +108,7 @@ const extras = [
   { id: 'caramel', name: 'Bacon Caramelado', price: 5.00 },
   { id: 'cebolac', name: 'Cebola Caremelizada', price: 5.00 },
   { id: 'piclesc', name: 'Picles de Cebola Roxa', price: 4.00 },
-  { id: 'chutney', name: 'Chutney de Abacaxi', price: 4.00 },
+  { id: 'chutney', name: 'Chutney de Abacaxi', price: 5.00 },
   { id: 'ketchup', name: 'Ketchup de Goiabada', price: 4.00 },
   { id: 'bbq', name: 'Barbecue', price: 4.00 },
   { id: 'bife', name: 'Bife artesanal de boi 150g', price: 13.00 },
@@ -327,6 +327,18 @@ function addToCart(ev, id) {
     extras: chosenExtras
   });
 
+  if (typeof gtag === 'function') {
+        gtag('event', 'add_to_cart', {
+            item_id: prod.id,
+            item_name: prod.name,
+            currency: "BRL",
+            value: finalPrice * qty, // Valor total do item adicionado
+            quantity: qty,
+            item_category: prod.category,
+            item_variant: sizeLabel || '',
+        });
+    }
+
   if (container) {
     container.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
     if (qtyEl) qtyEl.value = "1";
@@ -338,6 +350,15 @@ function addToCart(ev, id) {
 function removeItem(itemId) {
   // Converte para string para garantir a igualdade
   cart = cart.filter(i => i.id.toString() !== itemId.toString());
+  if (removedItem && typeof gtag === 'function') {
+        gtag('event', 'remove_from_cart', {
+            item_id: removedItem.prodId,
+            item_name: removedItem.name,
+            currency: "BRL",
+            value: calculateItemTotal(removedItem), 
+            quantity: removedItem.qty,
+        });
+    }
   renderCart();
 }
 
@@ -438,6 +459,21 @@ function openCartModal() {
         const src = document.getElementById(srcId);
         if (src && destEl) destEl.value = src.value;
     };
+
+    const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
+    if (typeof gtag === 'function') {
+        gtag('event', 'begin_checkout', {
+            currency: "BRL",
+            value: subtotal,
+            items: cart.map(item => ({
+                item_id: item.prodId,
+                item_name: item.name,
+                item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
+                price: item.price,
+                quantity: item.qty,
+            }))
+        });
+    }
     
     // Campos do formulário
     syncField('nomecliente', modalNome);
@@ -655,6 +691,30 @@ function enviarWhatsapp() {
             break; 
         }
     }
+
+    const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
+    const frete = parseMoney(modalFrete.textContent.replace('Entrega: ', ''));
+    
+    if (typeof gtag === 'function') {
+        gtag('event', 'purchase', {
+            transaction_id: 'WAP-' + Date.now(), // ID única para rastreamento
+            affiliation: 'Mineiro Hamburgueria',
+            value: total,
+            shipping: frete, // Custo de entrega
+            currency: "BRL",
+            payment_type: pagamento, // 'pix', 'cartao', 'dinheiro'
+            items: cart.map(item => ({
+                item_id: item.prodId,
+                item_name: item.name,
+                item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
+                price: item.price,
+                quantity: item.qty,
+                item_variant: (item.size || item.meat) ? `${item.size} ${item.meat}`.trim() : '', 
+            }))
+        });
+    }
+
+
     // -----------------------------------------------------
 
     // CONSTRUÇÃO DA MENSAGEM
