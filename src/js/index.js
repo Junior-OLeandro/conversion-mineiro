@@ -828,7 +828,7 @@ function exibirAlertaPromocao() {
 
     // 🛑 CONFIGURAÇÃO PRINCIPAL: DEFINA O DIA EXATO DA PROMOÇÃO
     const HOJE = new Date();
-    const DIA_PROMO = 10;
+    const DIA_PROMO = 17;
     const MES_PROMO = 11; // Janeiro é 0, Dezembro é 11
     const ANO_PROMO = 2025;
     
