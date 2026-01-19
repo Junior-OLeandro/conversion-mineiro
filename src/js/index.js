@@ -630,6 +630,29 @@ function handleTrocoInput() {
     modalTrocoInfo.textContent = 'Valor menor que o total';
   }
 }
+// Dentro da função enviarWhatsapp, antes de salvarPedido(pedido)
+const pedidoParaSalvar = {
+  nome: nome,
+  telefone: "", // Caso queira coletar futuramente
+  itens: cart.map(item => ({
+    nome: item.name,
+    qtd: item.qty,
+    tamanho: item.size || '',
+    carne: item.meat || '',
+    ponto: item.point || '',
+    extras: item.extras || [],
+    subtotal: calculateItemTotal(item)
+  })),
+  endereco: `${enderecoFormatado}, Nº ${numeroCasa} - ${bairro}`, // Endereço completo
+  observacao: obs,
+  pagamento: pagamento.toUpperCase(),
+  troco_info: trocoMsg, // Informação de troco
+  total: total
+};
+
+// Agora envie esse objeto completo
+await salvarPedido(pedidoParaSalvar);
+
 
 // SUPABASE
 async function salvarPedido(pedido) {
@@ -638,15 +661,17 @@ async function salvarPedido(pedido) {
     .insert([{
       pedido_id: "BQ-" + Date.now(),
       nome_cliente: pedido.nome,
-      telefone: pedido.telefone,
-      itens: pedido.itens,
+      itens: pedido.itens, // Esta coluna DEVE ser do tipo JSONB no Supabase
       observacao: pedido.observacao,
       pagamento: pedido.pagamento,
-      total: pedido.total
+      total: pedido.total,
+      endereco: pedido.endereco, // Verifique se criou esta coluna
+      status: 'novo' // Adicione um status padrão
     }]);
 
   if (error) {
-    console.error("Erro ao salvar pedido", error);
+    console.error("Erro detalhado ao salvar:", error.message);
+    alert("Erro ao registrar pedido no banco de dados.");
   }
 }
 
