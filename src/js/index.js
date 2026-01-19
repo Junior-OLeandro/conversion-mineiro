@@ -1,9 +1,3 @@
-const supabase = supabase.createClient(
-  "https://hrryboxebcrlvwlyydnn.supabase.co",
-  "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
-);
-
-
 // ==========================================
 // 1. CONFIGURAÇÕES E TEMA
 // ==========================================
@@ -639,7 +633,7 @@ function handleTrocoInput() {
 
 // SUPABASE
 async function salvarPedido(pedido) {
-  const { data, error } = await supabase
+  const { data, error } = await window.supabase_client
     .from("pedidos")
     .insert([{
       pedido_id: "BQ-" + Date.now(),
@@ -923,6 +917,12 @@ function exibirAlertaPromocao() {
 // CHAME A FUNÇÃO NA INICIALIZAÇÃO, DENTRO DO DOMContentLoaded
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar Supabase quando o DOM estiver pronto
+  window.supabase_client = window.supabase.createClient(
+    "https://hrryboxebcrlvwlyydnn.supabase.co",
+    "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+  );
+
   // ... (restante do código de inicialização)
 
   // Chame a nova função após carregar o resto do site
