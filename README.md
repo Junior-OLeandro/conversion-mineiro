@@ -4,7 +4,7 @@
 Este projeto é um sistema de menu digital e vitrine de produtos desenvolvido para a hamburgueria "Mineiro". Foi projetado para ser uma solução de e-commerce estática, leve e otimizada, que permite aos clientes montar seus pedidos de forma intuitiva, calcular o frete automaticamente e finalizar a compra enviando a requisição formatada diretamente via WhatsApp.
 
 🚀 Funcionalidades Principais
-Menu Completo: Exibição organizada por categorias (Combos, Do Mineiro, Smashs, Acompanhamentos, Bebidas).
+Menu Completo: Exibição organizada por categorias (Combos, Mineirinhos, Smashs, Acompanhamentos, Bebidas).
 
 Carrinho de Compras Dinâmico: Adiciona, remove e atualiza itens em tempo real.
 
