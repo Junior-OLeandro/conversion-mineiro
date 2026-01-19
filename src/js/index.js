@@ -630,31 +630,9 @@ function handleTrocoInput() {
     modalTrocoInfo.textContent = 'Valor menor que o total';
   }
 }
-// Dentro da função enviarWhatsapp, antes de salvarPedido(pedido)
-const pedidoParaSalvar = {
-  nome: nome,
-  telefone: "", // Caso queira coletar futuramente
-  itens: cart.map(item => ({
-    nome: item.name,
-    qtd: item.qty,
-    tamanho: item.size || '',
-    carne: item.meat || '',
-    ponto: item.point || '',
-    extras: item.extras || [],
-    subtotal: calculateItemTotal(item)
-  })),
-  endereco: `${enderecoFormatado}, Nº ${numeroCasa} - ${bairro}`, // Endereço completo
-  observacao: obs,
-  pagamento: pagamento.toUpperCase(),
-  troco_info: trocoMsg, // Informação de troco
-  total: total
-};
 
-// Agora envie esse objeto completo
-await salvarPedido(pedidoParaSalvar);
-
-
-// SUPABASE
+// ==========================================
+// SUPABASE - SALVAR PEDIDO
 async function salvarPedido(pedido) {
   const { data, error } = await window.supabase_client
     .from("pedidos")
@@ -808,6 +786,7 @@ async function enviarWhatsapp() {
   const pedido = {
   nome: nome,
   telefone: '', // se você não coleta telefone, pode deixar vazio por enquanto
+  endereco: enderecoOriginal,
   itens: cart.map(item => ({
     nome: item.name,
     qtd: item.qty,
@@ -938,9 +917,9 @@ function exibirAlertaPromocao() {
   }
 }
 
-// -------------------------------------------------------------
-// CHAME A FUNÇÃO NA INICIALIZAÇÃO, DENTRO DO DOMContentLoaded
-// -------------------------------------------------------------
+// ==========================================
+// 11. INICIALIZAÇÃO - DOMContentLoaded
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar Supabase quando o DOM estiver pronto
   window.supabase_client = window.supabase.createClient(
@@ -948,27 +927,34 @@ document.addEventListener('DOMContentLoaded', () => {
     "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
   );
 
-  // ... (restante do código de inicialização)
+  // Carregar tema
+  loadTheme();
 
-  // Chame a nova função após carregar o resto do site
+  // Verificar horário de funcionamento
+  verificarHorarioFuncionamento();
+
+  // Construir produtos
+  buildProducts();
+
+  // Mostrar alerta de promoção
   exibirAlertaPromocao();
-});
 
-// EVENT LISTENERS GLOBAIS
-if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-if (floatingCartBtn) floatingCartBtn.addEventListener('click', openCartModal);
-if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCartModal);
-if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeCartModal);
-if (confirmSendBtn) confirmSendBtn.addEventListener('click', enviarWhatsapp);
+  // Configurar event listeners
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (floatingCartBtn) floatingCartBtn.addEventListener('click', openCartModal);
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCartModal);
+  if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeCartModal);
+  if (confirmSendBtn) confirmSendBtn.addEventListener('click', enviarWhatsapp);
 
-if (modalPagamento) modalPagamento.addEventListener('change', handlePagamentoChange);
-if (modalTrocoInput) modalTrocoInput.addEventListener('input', handleTrocoInput);
-if (mainTrocoInput) mainTrocoInput.addEventListener('input', handleMainTrocoInput);
+  if (modalPagamento) modalPagamento.addEventListener('change', handlePagamentoChange);
+  if (modalTrocoInput) modalTrocoInput.addEventListener('input', handleTrocoInput);
+  if (mainTrocoInput) mainTrocoInput.addEventListener('input', handleMainTrocoInput);
 
-if (modalBairro) modalBairro.addEventListener('change', () => updateTotals());
+  if (modalBairro) modalBairro.addEventListener('change', () => updateTotals());
 
-const mainBairro = document.getElementById('bairro');
-if (mainBairro) mainBairro.addEventListener('change', () => {
-  if (modalBairro) modalBairro.value = mainBairro.value;
-  updateTotals();
+  const mainBairro = document.getElementById('bairro');
+  if (mainBairro) mainBairro.addEventListener('change', () => {
+    if (modalBairro) modalBairro.value = mainBairro.value;
+    updateTotals();
+  });
 });
