@@ -1,4 +1,8 @@
-/* src/js/index.js - Versão Limpa e Corrigida */
+const supabase = supabase.createClient(
+  "https://hrryboxebcrlvwlyydnn.supabase.co",
+  "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+);
+
 
 // ==========================================
 // 1. CONFIGURAÇÕES E TEMA
@@ -9,7 +13,7 @@ const body = document.body;
 const logoImg = document.getElementById('logo-img');
 const THEME_KEY = 'mineiroloja_theme';
 
-const LIGHT_LOGO_URL = './src/images/logoescura.png'; 
+const LIGHT_LOGO_URL = './src/images/logoescura.png';
 const DARK_LOGO_URL = './src/images/logomarca.png';
 
 function toggleTheme() {
@@ -21,7 +25,7 @@ function toggleTheme() {
   }
 
   localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
-  if(themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+  if (themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
 }
 
 function loadTheme() {
@@ -38,7 +42,7 @@ function loadTheme() {
     logoImg.src = isLight ? LIGHT_LOGO_URL : DARK_LOGO_URL;
   }
 
-  if(themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
+  if (themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
 }
 
 // ==========================================
@@ -283,24 +287,24 @@ function addToCart(ev, id) {
   if (hasMeatOptions) {
     meat = meatEl ? meatEl.value : 'Bovino';
     point = pointEl ? pointEl.value : '';
-    
+
     // 🛑 ADICIONANDO A VALIDAÇÃO AQUI DENTRO, SÓ PARA QUEM TEM OPÇÃO DE CARNE/PONTO
     if (!point) {
-        alert(`Por favor, selecione o ponto da carne para o item "${prod.name}".`);
-        // Adicione um destaque visual, se necessário
-        if(pointEl) pointEl.focus(); 
-        return; // Impede que o item seja adicionado
+      alert(`Por favor, selecione o ponto da carne para o item "${prod.name}".`);
+      // Adicione um destaque visual, se necessário
+      if (pointEl) pointEl.focus();
+      return; // Impede que o item seja adicionado
     }
   }
 
 
-// ...
+  // ...
 
   let sizeLabel = '';
-  let finalPrice = prod.price; 
+  let finalPrice = prod.price;
 
   if (hasSizeOptions && sizeEl) {
-    const selectedSize = sizeEl.value; 
+    const selectedSize = sizeEl.value;
     finalPrice = prod.prices[selectedSize];
     sizeLabel = selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1);
   }
@@ -317,7 +321,7 @@ function addToCart(ev, id) {
 
   cart.push({
     // Usar toString para evitar problemas de comparação com números flutuantes
-    id: (Date.now() + Math.random()).toString(), 
+    id: (Date.now() + Math.random()).toString(),
     prodId: prod.id,
     name: prod.name,
     price: finalPrice,
@@ -329,16 +333,16 @@ function addToCart(ev, id) {
   });
 
   if (typeof gtag === 'function') {
-        gtag('event', 'add_to_cart', {
-            item_id: prod.id,
-            item_name: prod.name,
-            currency: "BRL",
-            value: finalPrice * qty, // Valor total do item adicionado
-            quantity: qty,
-            item_category: prod.category,
-            item_variant: sizeLabel || '',
-        });
-    }
+    gtag('event', 'add_to_cart', {
+      item_id: prod.id,
+      item_name: prod.name,
+      currency: "BRL",
+      value: finalPrice * qty, // Valor total do item adicionado
+      quantity: qty,
+      item_category: prod.category,
+      item_variant: sizeLabel || '',
+    });
+  }
 
   if (container) {
     container.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
@@ -352,33 +356,33 @@ function removeItem(itemId) {
   // Converte para string para garantir a igualdade
   cart = cart.filter(i => i.id.toString() !== itemId.toString());
   if (removedItem && typeof gtag === 'function') {
-        gtag('event', 'remove_from_cart', {
-            item_id: removedItem.prodId,
-            item_name: removedItem.name,
-            currency: "BRL",
-            value: calculateItemTotal(removedItem), 
-            quantity: removedItem.qty,
-        });
-    }
+    gtag('event', 'remove_from_cart', {
+      item_id: removedItem.prodId,
+      item_name: removedItem.name,
+      currency: "BRL",
+      value: calculateItemTotal(removedItem),
+      quantity: removedItem.qty,
+    });
+  }
   renderCart();
 }
 
 function createCartItemElement(item, allowRemove) {
-    const li = document.createElement('li');
-    const totalItem = calculateItemTotal(item);
+  const li = document.createElement('li');
+  const totalItem = calculateItemTotal(item);
 
-    let details = [];
-    if (item.size) details.push(`<strong>Tamanho: ${item.size}</strong>`);
-    if (item.meat) details.push(`Carne: ${item.meat}`);
-    if (item.point) details.push(`Ponto: ${item.point}`);
-    if (item.extras && item.extras.length > 0) {
-        const extrasNames = item.extras.map(e => e.name).join(', ');
-        details.push(`Extras: ${extrasNames}`);
-    }
+  let details = [];
+  if (item.size) details.push(`<strong>Tamanho: ${item.size}</strong>`);
+  if (item.meat) details.push(`Carne: ${item.meat}`);
+  if (item.point) details.push(`Ponto: ${item.point}`);
+  if (item.extras && item.extras.length > 0) {
+    const extrasNames = item.extras.map(e => e.name).join(', ');
+    details.push(`Extras: ${extrasNames}`);
+  }
 
-    const detailsHtml = details.length ? `<br><small>${details.join(' | ')}</small>` : '';
-    
-    li.innerHTML = `
+  const detailsHtml = details.length ? `<br><small>${details.join(' | ')}</small>` : '';
+
+  li.innerHTML = `
         <div class="item-content" style="flex-grow: 1;">
             ${item.qty}x ${item.name}
             ${detailsHtml}
@@ -386,40 +390,40 @@ function createCartItemElement(item, allowRemove) {
         </div>
     `;
 
-    if (allowRemove) {
-        const btn = document.createElement('button');
-        btn.innerHTML = '<i class="fa-solid fa-trash-can"></i>'; 
-        btn.className = 'remove-item-btn'; // Classe usada no CSS
-        btn.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
-        
-        // Estilos de segurança inline (para garantir display flex)
-        li.style.display = 'flex';
-        li.style.justifyContent = 'space-between';
-        li.style.alignItems = 'center'; 
-        
-        btn.onclick = () => removeItem(item.id);
-        li.appendChild(btn);
-    }
+  if (allowRemove) {
+    const btn = document.createElement('button');
+    btn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    btn.className = 'remove-item-btn'; // Classe usada no CSS
+    btn.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
 
-    return li;
+    // Estilos de segurança inline (para garantir display flex)
+    li.style.display = 'flex';
+    li.style.justifyContent = 'space-between';
+    li.style.alignItems = 'center';
+
+    btn.onclick = () => removeItem(item.id);
+    li.appendChild(btn);
+  }
+
+  return li;
 }
 
 function renderCart() {
-    const sidebarList = document.getElementById('cart-list');
-    if (sidebarList) {
-        sidebarList.innerHTML = '';
-        cart.forEach(item => sidebarList.appendChild(createCartItemElement(item, true)));
-    }
+  const sidebarList = document.getElementById('cart-list');
+  if (sidebarList) {
+    sidebarList.innerHTML = '';
+    cart.forEach(item => sidebarList.appendChild(createCartItemElement(item, true)));
+  }
 
-    if (modalCartList) {
-        modalCartList.innerHTML = '';
-        // 🚨 IMPORTANTE: Passando 'true' para permitir remover no mobile/modal
-        cart.forEach(item => modalCartList.appendChild(createCartItemElement(item, true)));
-    }
+  if (modalCartList) {
+    modalCartList.innerHTML = '';
+    // 🚨 IMPORTANTE: Passando 'true' para permitir remover no mobile/modal
+    cart.forEach(item => modalCartList.appendChild(createCartItemElement(item, true)));
+  }
 
-    updateTotals();
-    const totalItems = cart.reduce((s, i) => s + i.qty, 0);
-    if (cartCountBadge) cartCountBadge.textContent = totalItems;
+  updateTotals();
+  const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+  if (cartCountBadge) cartCountBadge.textContent = totalItems;
 }
 
 function updateTotals() {
@@ -454,63 +458,63 @@ function closeCartModal() {
 }
 
 function openCartModal() {
-    if (cart.length === 0) { alert("Seu carrinho está vazio!"); return; }
+  if (cart.length === 0) { alert("Seu carrinho está vazio!"); return; }
 
-    const syncField = (srcId, destEl) => {
-        const src = document.getElementById(srcId);
-        if (src && destEl) destEl.value = src.value;
-    };
+  const syncField = (srcId, destEl) => {
+    const src = document.getElementById(srcId);
+    if (src && destEl) destEl.value = src.value;
+  };
 
-    const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
-    if (typeof gtag === 'function') {
-        gtag('event', 'begin_checkout', {
-            currency: "BRL",
-            value: subtotal,
-            items: cart.map(item => ({
-                item_id: item.prodId,
-                item_name: item.name,
-                item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
-                price: item.price,
-                quantity: item.qty,
-            }))
-        });
-    }
-    
-    // Campos do formulário
-    syncField('nomecliente', modalNome);
-    syncField('endereco', modalEndereco);
-    syncField('numero-casa', modalNumeroCasa);
-    syncField('obs', modalObs);
+  const subtotal = cart.reduce((s, i) => s + calculateItemTotal(i), 0);
+  if (typeof gtag === 'function') {
+    gtag('event', 'begin_checkout', {
+      currency: "BRL",
+      value: subtotal,
+      items: cart.map(item => ({
+        item_id: item.prodId,
+        item_name: item.name,
+        item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
+        price: item.price,
+        quantity: item.qty,
+      }))
+    });
+  }
 
-    const bairroMain = document.getElementById('bairro');
-    if (bairroMain && modalBairro) {
-        modalBairro.innerHTML = bairroMain.innerHTML;
-        modalBairro.value = bairroMain.value;
-    }
+  // Campos do formulário
+  syncField('nomecliente', modalNome);
+  syncField('endereco', modalEndereco);
+  syncField('numero-casa', modalNumeroCasa);
+  syncField('obs', modalObs);
 
-    syncField('pagamento', modalPagamento);
-    
-    // Lógica do Troco
-    if (mainTrocoInput && modalTrocoInput) {
-        modalTrocoInput.value = mainTrocoInput.value;
-        modalTrocoInput.disabled = mainTrocoInput.disabled; 
-    }
-    
-    // Checkboxes de "Sem Troco"
-    const mainSemTrocoCheckbox = document.getElementById('sem-troco');
-    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
-    if (mainSemTrocoCheckbox && modalSemTrocoCheckbox) {
-        modalSemTrocoCheckbox.checked = mainSemTrocoCheckbox.checked;
-    }
+  const bairroMain = document.getElementById('bairro');
+  if (bairroMain && modalBairro) {
+    modalBairro.innerHTML = bairroMain.innerHTML;
+    modalBairro.value = bairroMain.value;
+  }
 
-    // Handlers
-    handlePagamentoChange(); 
-    handleTrocoInput(); 
-    renderCart(); 
+  syncField('pagamento', modalPagamento);
 
-    // Abre modal
-    cartModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+  // Lógica do Troco
+  if (mainTrocoInput && modalTrocoInput) {
+    modalTrocoInput.value = mainTrocoInput.value;
+    modalTrocoInput.disabled = mainTrocoInput.disabled;
+  }
+
+  // Checkboxes de "Sem Troco"
+  const mainSemTrocoCheckbox = document.getElementById('sem-troco');
+  const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+  if (mainSemTrocoCheckbox && modalSemTrocoCheckbox) {
+    modalSemTrocoCheckbox.checked = mainSemTrocoCheckbox.checked;
+  }
+
+  // Handlers
+  handlePagamentoChange();
+  handleTrocoInput();
+  renderCart();
+
+  // Abre modal
+  cartModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
 }
 
 // ==========================================
@@ -518,67 +522,67 @@ function openCartModal() {
 // ==========================================
 
 function handlePagamentoChange() {
-    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
-    
-    if (modalPagamento.value === 'dinheiro') {
-        modalTrocoContainer.style.display = 'block';
-    } else {
-        modalTrocoContainer.style.display = 'none';
+  const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+
+  if (modalPagamento.value === 'dinheiro') {
+    modalTrocoContainer.style.display = 'block';
+  } else {
+    modalTrocoContainer.style.display = 'none';
+    modalTrocoInput.value = '';
+    modalTrocoInput.disabled = false;
+    modalTrocoInfo.textContent = '';
+    if (modalSemTrocoCheckbox) modalSemTrocoCheckbox.checked = false;
+  }
+
+  if (modalSemTrocoCheckbox) {
+    // Remove listener antigo para não duplicar
+    modalSemTrocoCheckbox.onchange = null;
+    modalSemTrocoCheckbox.onchange = () => {
+      if (modalSemTrocoCheckbox.checked) {
+        modalTrocoInput.value = 'Não preciso de troco';
+        modalTrocoInput.disabled = true;
+        modalTrocoInfo.textContent = '';
+      } else {
         modalTrocoInput.value = '';
         modalTrocoInput.disabled = false;
-        modalTrocoInfo.textContent = '';
-        if (modalSemTrocoCheckbox) modalSemTrocoCheckbox.checked = false;
-    }
-
-    if (modalSemTrocoCheckbox) {
-        // Remove listener antigo para não duplicar
-        modalSemTrocoCheckbox.onchange = null;
-        modalSemTrocoCheckbox.onchange = () => {
-            if (modalSemTrocoCheckbox.checked) {
-                modalTrocoInput.value = 'Não preciso de troco';
-                modalTrocoInput.disabled = true;
-                modalTrocoInfo.textContent = '';
-            } else {
-                modalTrocoInput.value = '';
-                modalTrocoInput.disabled = false;
-                modalTrocoInput.focus();
-            }
-        };
-    }
+        modalTrocoInput.focus();
+      }
+    };
+  }
 }
 
 function toggleTroco() {
-    const pagamento = document.getElementById("pagamento").value;
-    const trocoDiv = document.getElementById("troco-container");
-    const semTrocoCheckbox = document.getElementById("sem-troco");
+  const pagamento = document.getElementById("pagamento").value;
+  const trocoDiv = document.getElementById("troco-container");
+  const semTrocoCheckbox = document.getElementById("sem-troco");
 
-    if (pagamento === "dinheiro") {
-        trocoDiv.style.display = "block";
-    } else {
-        trocoDiv.style.display = "none";
-        document.getElementById("troco").value = "";
-        document.getElementById("troco").disabled = false;
-        if (semTrocoCheckbox) semTrocoCheckbox.checked = false;
-        
-        const info = document.getElementById('troco-info');
-        if (info) info.textContent = '';
-    }
-    
-    if (semTrocoCheckbox) {
-        semTrocoCheckbox.onchange = null;
-        semTrocoCheckbox.onchange = () => {
-            const trInput = document.getElementById('troco');
-            if (semTrocoCheckbox.checked) {
-                trInput.value = 'Não preciso de troco';
-                trInput.disabled = true;
-                document.getElementById('troco-info').textContent = '';
-            } else {
-                trInput.value = '';
-                trInput.disabled = false;
-                trInput.focus();
-            }
-        };
-    }
+  if (pagamento === "dinheiro") {
+    trocoDiv.style.display = "block";
+  } else {
+    trocoDiv.style.display = "none";
+    document.getElementById("troco").value = "";
+    document.getElementById("troco").disabled = false;
+    if (semTrocoCheckbox) semTrocoCheckbox.checked = false;
+
+    const info = document.getElementById('troco-info');
+    if (info) info.textContent = '';
+  }
+
+  if (semTrocoCheckbox) {
+    semTrocoCheckbox.onchange = null;
+    semTrocoCheckbox.onchange = () => {
+      const trInput = document.getElementById('troco');
+      if (semTrocoCheckbox.checked) {
+        trInput.value = 'Não preciso de troco';
+        trInput.disabled = true;
+        document.getElementById('troco-info').textContent = '';
+      } else {
+        trInput.value = '';
+        trInput.disabled = false;
+        trInput.focus();
+      }
+    };
+  }
 }
 
 function getSidebarTotal() {
@@ -623,7 +627,7 @@ function handleTrocoInput() {
 
   const totalText = modalTotal.textContent.replace('Total: ', '');
   const total = parseMoney(totalText);
-  
+
   if (valFloat >= total) {
     modalTrocoInfo.style.color = '#007a00';
     modalTrocoInfo.textContent = `Troco: ${formatBRL(valFloat - total)}`;
@@ -633,141 +637,179 @@ function handleTrocoInput() {
   }
 }
 
+// SUPABASE
+async function salvarPedido(pedido) {
+  const { data, error } = await supabase
+    .from("pedidos")
+    .insert([{
+      pedido_id: "BQ-" + Date.now(),
+      nome_cliente: pedido.nome,
+      telefone: pedido.telefone,
+      itens: pedido.itens,
+      observacao: pedido.observacao,
+      pagamento: pedido.pagamento,
+      total: pedido.total
+    }]);
+
+  if (error) {
+    console.error("Erro ao salvar pedido", error);
+  }
+}
+
 // ==========================================
 // 9. FINALIZAÇÃO E WHATSAPP
 // ==========================================
 
-function enviarWhatsapp() {
-    if (cart.length === 0) return alert('Carrinho vazio.');
+async function enviarWhatsapp() {
+  if (cart.length === 0) return alert('Carrinho vazio.');
 
-    const nome = modalNome.value.trim();
-    const enderecoOriginal = modalEndereco.value.trim(); // Renomeado para Original
-    const numeroCasa = modalNumeroCasa ? modalNumeroCasa.value.trim() : '';
-    const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
-    const bairroValor = modalBairro.value;
-    const pagamento = modalPagamento.value;
-    const obs = modalObs.value;
-    
-    // Troco
-    const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
-    const isSemTroco = modalSemTrocoCheckbox ? modalSemTrocoCheckbox.checked : false;
+  const nome = modalNome.value.trim();
+  const enderecoOriginal = modalEndereco.value.trim(); // Renomeado para Original
+  const numeroCasa = modalNumeroCasa ? modalNumeroCasa.value.trim() : '';
+  const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
+  const bairroValor = modalBairro.value;
+  const pagamento = modalPagamento.value;
+  const obs = modalObs.value;
 
-    // VALIDAÇÕES
-    if (!nome) return alert('Informe seu nome.');
-    if (!enderecoOriginal) return alert('Informe o endereço (rua/logradouro).');
-    if (!numeroCasa) return alert('Informe o número da casa/apto.'); 
-    if (!bairroValor) return alert('Selecione o bairro.');
-    if (!pagamento) return alert('Selecione o pagamento.');
+  // Troco
+  const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+  const isSemTroco = modalSemTrocoCheckbox ? modalSemTrocoCheckbox.checked : false;
 
-    let trocoMsg = '';
-    if (pagamento === 'dinheiro') {
-        if (isSemTroco) {
-            trocoMsg = `\nTroco para: NÃO PRECISA DE TROCO.`;
-        } else {
-            const valorEntregue = parseMoney(modalTrocoInput.value);
-            const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
-            
-            if (valorEntregue === 0) return alert('Por favor, informe para quanto será o troco ou marque "Não preciso de troco".');
-            if (valorEntregue < total) return alert('Valor para troco inválido (menor que o total).');
-            
-            trocoMsg = `\nTroco para: ${formatBRL(valorEntregue)}\nTroco estimado: ${formatBRL(valorEntregue - total)}`;
-        }
+  // VALIDAÇÕES
+  if (!nome) return alert('Informe seu nome.');
+  if (!enderecoOriginal) return alert('Informe o endereço (rua/logradouro).');
+  if (!numeroCasa) return alert('Informe o número da casa/apto.');
+  if (!bairroValor) return alert('Selecione o bairro.');
+  if (!pagamento) return alert('Selecione o pagamento.');
+
+  let trocoMsg = '';
+  if (pagamento === 'dinheiro') {
+    if (isSemTroco) {
+      trocoMsg = `\nTroco para: NÃO PRECISA DE TROCO.`;
+    } else {
+      const valorEntregue = parseMoney(modalTrocoInput.value);
+      const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
+
+      if (valorEntregue === 0) return alert('Por favor, informe para quanto será o troco ou marque "Não preciso de troco".');
+      if (valorEntregue < total) return alert('Valor para troco inválido (menor que o total).');
+
+      trocoMsg = `\nTroco para: ${formatBRL(valorEntregue)}\nTroco estimado: ${formatBRL(valorEntregue - total)}`;
     }
+  }
 
-    // --- LÓGICA PARA QUEBRAR O ENDEREÇO EM DUAS LINHAS ---
-    let enderecoFormatado = enderecoOriginal;
-    const separadores = ['(', ',', '-']; // Prioriza parênteses, vírgula, depois traço
+  // --- LÓGICA PARA QUEBRAR O ENDEREÇO EM DUAS LINHAS ---
+  let enderecoFormatado = enderecoOriginal;
+  const separadores = ['(', ',', '-']; // Prioriza parênteses, vírgula, depois traço
 
-    for (const sep of separadores) {
-        // Pega a posição do separador, ignorando o início da string (índice > 5)
-        const indiceQuebra = enderecoOriginal.indexOf(sep, 5); 
-        
-        if (indiceQuebra !== -1) {
-            const partePrincipal = enderecoOriginal.substring(0, indiceQuebra).trim();
-            const parteReferencia = enderecoOriginal.substring(indiceQuebra).trim();
-            
-            // Insere a quebra de linha \n na string
-            enderecoFormatado = `${partePrincipal}\n ${parteReferencia}`; 
-            quebraEncontrada = true;
-            break; 
-        }
+  for (const sep of separadores) {
+    // Pega a posição do separador, ignorando o início da string (índice > 5)
+    const indiceQuebra = enderecoOriginal.indexOf(sep, 5);
+
+    if (indiceQuebra !== -1) {
+      const partePrincipal = enderecoOriginal.substring(0, indiceQuebra).trim();
+      const parteReferencia = enderecoOriginal.substring(indiceQuebra).trim();
+
+      // Insere a quebra de linha \n na string
+      enderecoFormatado = `${partePrincipal}\n ${parteReferencia}`;
+      quebraEncontrada = true;
+      break;
     }
+  }
 
-    const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
-    const frete = parseMoney(modalFrete.textContent.replace('Entrega: ', ''));
-    
-    if (typeof gtag === 'function') {
-        gtag('event', 'purchase', {
-            transaction_id: 'WAP-' + Date.now(), // ID única para rastreamento
-            affiliation: 'Mineiro Hamburgueria',
-            value: total,
-            shipping: frete, // Custo de entrega
-            currency: "BRL",
-            payment_type: pagamento, // 'pix', 'cartao', 'dinheiro'
-            items: cart.map(item => ({
-                item_id: item.prodId,
-                item_name: item.name,
-                item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
-                price: item.price,
-                quantity: item.qty,
-                item_variant: (item.size || item.meat) ? `${item.size} ${item.meat}`.trim() : '', 
-            }))
-        });
-    }
+  const total = parseMoney(modalTotal.textContent.replace('Total: ', ''));
+  const frete = parseMoney(modalFrete.textContent.replace('Entrega: ', ''));
 
-
-    // -----------------------------------------------------
-
-    // CONSTRUÇÃO DA MENSAGEM
-    let texto = `*✅ NOVO PEDIDO - Mineiro Hamburgueria*\n`;
-    texto += `*----------------------------------*\n\n`;
-
-    texto += `*👤 CLIENTE E ENTREGA:*\n`;
-    texto += `*Nome:* ${nome}\n`;
-    texto += `*Endereço:* ${enderecoFormatado}\n`; // <-- AGORA USA A VARIÁVEL FORMATADA
-    texto += `*Nº da Casa/Apto:* ${numeroCasa}\n`;
-    texto += `*Bairro:* ${bairro}\n`;
-    texto += `*----------------------------------*\n\n`;
-
-    texto += `*🍔 ITENS:*\n`;
-    cart.forEach((item, index) => {
-        texto += `${item.qty}x *${item.name}* ${formatBRL(calculateItemTotal(item))}\n`;
-
-        let detalhes = [];
-        if (item.size) detalhes.push(`Tamanho: ${item.size}`);
-        if (item.meat) detalhes.push(`Carne: ${item.meat} | ${item.point}`);
-        
-        // Mantive a sua alteração para quebrar os extras em novas linhas, o que é ótimo para impressora 80mm
-        if (item.extras && item.extras.length) detalhes.push(`Extras: ${item.extras.map(e => e.name).join('\n   - ')}`); 
-
-        if (detalhes.length) {
-            detalhes.forEach(d => texto += `   - ${d}\n`);
-        } else {
-            texto += '\n'; 
-        }
+  if (typeof gtag === 'function') {
+    gtag('event', 'purchase', {
+      transaction_id: 'WAP-' + Date.now(), // ID única para rastreamento
+      affiliation: 'Mineiro Hamburgueria',
+      value: total,
+      shipping: frete, // Custo de entrega
+      currency: "BRL",
+      payment_type: pagamento, // 'pix', 'cartao', 'dinheiro'
+      items: cart.map(item => ({
+        item_id: item.prodId,
+        item_name: item.name,
+        item_category: productsData.find(p => p.id === item.prodId)?.category || 'unknown',
+        price: item.price,
+        quantity: item.qty,
+        item_variant: (item.size || item.meat) ? `${item.size} ${item.meat}`.trim() : '',
+      }))
     });
+  }
 
-    texto += `*----------------------------------*\n\n`;
 
-    if (obs) {
-        texto += `*💡 OBSERVAÇÕES:* ${obs}\n`;
-        texto += `*----------------------------------*\n\n`;
+  // -----------------------------------------------------
+
+  // CONSTRUÇÃO DA MENSAGEM
+  let texto = `*✅ NOVO PEDIDO - Mineiro Hamburgueria*\n`;
+  texto += `*----------------------------------*\n\n`;
+
+  texto += `*👤 CLIENTE E ENTREGA:*\n`;
+  texto += `*Nome:* ${nome}\n`;
+  texto += `*Endereço:* ${enderecoFormatado}\n`; // <-- AGORA USA A VARIÁVEL FORMATADA
+  texto += `*Nº da Casa/Apto:* ${numeroCasa}\n`;
+  texto += `*Bairro:* ${bairro}\n`;
+  texto += `*----------------------------------*\n\n`;
+
+  texto += `*🍔 ITENS:*\n`;
+  cart.forEach((item, index) => {
+    texto += `${item.qty}x *${item.name}* ${formatBRL(calculateItemTotal(item))}\n`;
+
+    let detalhes = [];
+    if (item.size) detalhes.push(`Tamanho: ${item.size}`);
+    if (item.meat) detalhes.push(`Carne: ${item.meat} | ${item.point}`);
+
+    // Mantive a sua alteração para quebrar os extras em novas linhas, o que é ótimo para impressora 80mm
+    if (item.extras && item.extras.length) detalhes.push(`Extras: ${item.extras.map(e => e.name).join('\n   - ')}`);
+
+    if (detalhes.length) {
+      detalhes.forEach(d => texto += `   - ${d}\n`);
+    } else {
+      texto += '\n';
     }
+  });
 
-    texto += `*💵 TOTAL:*\n`;
-    texto += `Subtotal: ${modalSubtotal.textContent.replace('Subtotal: ', '')}\n`;
-    texto += `Entrega: ${modalFrete.textContent.replace('Entrega: ', '')}\n`;
-    texto += `*${modalTotal.textContent}*\n`;
-    texto += `*Pagamento:* *${pagamento.toUpperCase()}*${trocoMsg}\n\n`;
+  texto += `*----------------------------------*\n\n`;
 
-    texto += `*----------------------------------*\n`;
-    texto += `*➡️ AÇÃO:* Aguarde confirmação.`;
+  if (obs) {
+    texto += `*💡 OBSERVAÇÕES:* ${obs}\n`;
+    texto += `*----------------------------------*\n\n`;
+  }
 
-    const numero = '5532984550411';
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+  texto += `*💵 TOTAL:*\n`;
+  texto += `Subtotal: ${modalSubtotal.textContent.replace('Subtotal: ', '')}\n`;
+  texto += `Entrega: ${modalFrete.textContent.replace('Entrega: ', '')}\n`;
+  texto += `*${modalTotal.textContent}*\n`;
+  texto += `*Pagamento:* *${pagamento.toUpperCase()}*${trocoMsg}\n\n`;
 
-    closeCartModal();
-    window.open(url, '_blank');
+  texto += `*----------------------------------*\n`;
+  texto += `*➡️ AÇÃO:* Aguarde confirmação.`;
+
+  const pedido = {
+  nome: nome,
+  telefone: '', // se você não coleta telefone, pode deixar vazio por enquanto
+  itens: cart.map(item => ({
+    nome: item.name,
+    qtd: item.qty,
+    total: calculateItemTotal(item),
+    extras: item.extras || []
+  })),
+  observacao: obs,
+  pagamento: pagamento,
+  total: total
+};
+
+  const numero = '5532984550411';
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+
+  // 🔴 PRIMEIRO: salva no Supabase
+await salvarPedido(pedido);
+
+// 🟢 DEPOIS: abre WhatsApp
+closeCartModal();
+window.open(url, '_blank');
+
 }
 
 // ==========================================
@@ -776,7 +818,7 @@ function enviarWhatsapp() {
 
 function verificarHorarioFuncionamento() {
   const agora = new Date();
-  const dia = agora.getDay(); 
+  const dia = agora.getDay();
   const hora = agora.getHours();
   const minuto = agora.getMinutes();
   const statusEl = document.getElementById("status-loja");
@@ -811,10 +853,10 @@ document.addEventListener('DOMContentLoaded', () => {
   buildProducts();
   renderCart();
   verificarHorarioFuncionamento();
-  
+
   const originalBairro = document.getElementById('bairro');
   if (originalBairro && modalBairro) modalBairro.innerHTML = originalBairro.innerHTML;
-  
+
   const pg = document.getElementById('pagamento');
   if (pg) pg.addEventListener('change', toggleTroco);
 });
@@ -822,69 +864,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function exibirAlertaPromocao() {
-    const modal = document.getElementById('quickPromoModal');
-    const closeBtn = document.getElementById('quickPromoClose');
-    const actionBtn = document.getElementById('quickPromoBtnAction');
+  const modal = document.getElementById('quickPromoModal');
+  const closeBtn = document.getElementById('quickPromoClose');
+  const actionBtn = document.getElementById('quickPromoBtnAction');
 
-    // 🛑 CONFIGURAÇÃO PRINCIPAL: DEFINA O DIA EXATO DA PROMOÇÃO
-    const HOJE = new Date();
-    const DIA_PROMO = 17;
-    const MES_PROMO = 11; // Janeiro é 0, Dezembro é 11
-    const ANO_PROMO = 2025;
-    
-    // Verifica se a data atual corresponde à data configurada
-    const isToday = HOJE.getDate() === DIA_PROMO && 
-                    HOJE.getMonth() === MES_PROMO && 
-                    HOJE.getFullYear() === ANO_PROMO;
+  // 🛑 CONFIGURAÇÃO PRINCIPAL: DEFINA O DIA EXATO DA PROMOÇÃO
+  const HOJE = new Date();
+  const DIA_PROMO = 17;
+  const MES_PROMO = 11; // Janeiro é 0, Dezembro é 11
+  const ANO_PROMO = 2025;
 
-    // Verifica se o usuário já viu o alerta nesta sessão
-    const promoVisto = sessionStorage.getItem('quick-promo-visto');
+  // Verifica se a data atual corresponde à data configurada
+  const isToday = HOJE.getDate() === DIA_PROMO &&
+    HOJE.getMonth() === MES_PROMO &&
+    HOJE.getFullYear() === ANO_PROMO;
 
-    if (modal && isToday && promoVisto !== 'true') {
-        
-        // Exibir o Modal
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Bloqueia scroll
+  // Verifica se o usuário já viu o alerta nesta sessão
+  const promoVisto = sessionStorage.getItem('quick-promo-visto');
 
-        // Função para fechar e marcar como visto
-        const fecharModal = () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-            sessionStorage.setItem('quick-promo-visto', 'true');
-        };
+  if (modal && isToday && promoVisto !== 'true') {
 
-        // Event Listeners
-        if (closeBtn) closeBtn.addEventListener('click', fecharModal);
-        
-        if (actionBtn) {
-            actionBtn.addEventListener('click', () => {
-                fecharModal();
-                
-                // Opcional: Rolar para a seção de lanches após fechar
-                const lanches = document.getElementById('grid-hamburgueres');
-                if (lanches) {
-                    lanches.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
+    // Exibir o Modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Bloqueia scroll
+
+    // Função para fechar e marcar como visto
+    const fecharModal = () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      sessionStorage.setItem('quick-promo-visto', 'true');
+    };
+
+    // Event Listeners
+    if (closeBtn) closeBtn.addEventListener('click', fecharModal);
+
+    if (actionBtn) {
+      actionBtn.addEventListener('click', () => {
+        fecharModal();
+
+        // Opcional: Rolar para a seção de lanches após fechar
+        const lanches = document.getElementById('grid-hamburgueres');
+        if (lanches) {
+          lanches.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        // Fechar ao clicar fora (opcional)
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                fecharModal();
-            }
-        });
+      });
     }
+
+    // Fechar ao clicar fora (opcional)
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        fecharModal();
+      }
+    });
+  }
 }
 
 // -------------------------------------------------------------
 // CHAME A FUNÇÃO NA INICIALIZAÇÃO, DENTRO DO DOMContentLoaded
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (restante do código de inicialização)
+  // ... (restante do código de inicialização)
 
-    // Chame a nova função após carregar o resto do site
-    exibirAlertaPromocao(); 
+  // Chame a nova função após carregar o resto do site
+  exibirAlertaPromocao();
 });
 
 // EVENT LISTENERS GLOBAIS

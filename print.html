@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@media print {
+  body { width: 80mm; font-family: monospace; }
+}
+</style>
+</head>
+<body>
+
+<div id="cupom"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = supabase.createClient(
+  "https://SEU-PROJETO.supabase.co",
+  "SUA_PUBLIC_ANON_KEY"
+);
+
+const id = new URLSearchParams(window.location.search).get("id");
+
+async function carregarPedido() {
+  const { data } = await supabase
+    .from("pedidos")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  document.getElementById("cupom").innerHTML = `
+    <strong>BBQ - BurguerBQ</strong><br>
+    Pedido: ${data.pedido_id}<br><hr>
+    ${data.itens.map(i => `${i.qtd}x ${i.nome}`).join("<br>")}
+    <hr>
+    Total: R$ ${data.total}
+  `;
+
+  window.print();
+}
+
+carregarPedido();
+</script>
+
+</body>
+</html>

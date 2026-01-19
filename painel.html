@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel de Pedidos</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 15px;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    .pedido {
+      background: #fff;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .pedido.novo {
+      border-left: 6px solid #2ecc71;
+    }
+
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .btn-print {
+      background: #000;
+      color: #fff;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #2ecc71;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📦 Pedidos</h1>
+<div id="lista-pedidos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabase = supabase.createClient(
+    "https://hrryboxebcrlvwlyydnn.supabase.co",
+  "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+  );
+
+  async function carregarPedidos() {
+    const { data, error } = await supabase
+      .from("pedidos")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      alert("Erro ao carregar pedidos");
+      console.error(error);
+      return;
+    }
+
+    const container = document.getElementById("lista-pedidos");
+    container.innerHTML = "";
+
+    data.forEach(p => {
+      const div = document.createElement("div");
+      div.className = `pedido ${p.status}`;
+
+      div.innerHTML = `
+        <div class="linha">
+          <strong>${p.pedido_id}</strong>
+          <span class="status">${p.status.toUpperCase()}</span>
+        </div>
+
+        <div class="linha">
+          <span>${p.nome_cliente || "Cliente"}</span>
+          <span>R$ ${Number(p.total).toFixed(2)}</span>
+        </div>
+
+        <div class="linha">
+          <small>${new Date(p.created_at).toLocaleString("pt-BR")}</small>
+          <button class="btn btn-print" onclick="imprimirPedido('${p.id}')">
+            🖨 Imprimir
+          </button>
+        </div>
+      `;
+
+      container.appendChild(div);
+    });
+  }
+
+  function imprimirPedido(id) {
+    window.open(`print.html?id=${id}`, "_blank");
+  }
+
+  carregarPedidos();
+</script>
+
+</body>
+</html>
