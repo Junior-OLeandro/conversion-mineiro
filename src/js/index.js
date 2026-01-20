@@ -638,19 +638,36 @@ function handleTrocoInput() {
 // ==========================================
 // SUPABASE - SALVAR PEDIDO
 async function salvarPedido(pedido) {
+  // Buscar o próximo número de pedido
+  const { data: ultimoPedido, error: erroConsulta } = await window.supabase_client
+    .from("pedidos")
+    .select("pedido_id")
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  let proximoNumero = 0;
+  if (!erroConsulta && ultimoPedido && ultimoPedido.length > 0) {
+    // Extrai o número do último pedido_id (ex: "Nº123" -> 123)
+    const ultimoId = ultimoPedido[0].pedido_id;
+    const match = ultimoId.match(/\d+/);
+    if (match) {
+      proximoNumero = parseInt(match[0]) + 1;
+    }
+  }
+
   const { data, error } = await window.supabase_client
     .from("pedidos")
     .insert([{
-      pedido_id: "Nº" + Date.now(),
+      pedido_id: `Nº${proximoNumero}`,
       nome_cliente: pedido.nome,
-      itens: pedido.itens, // Esta coluna DEVE ser do tipo JSONB no Supabase
+      itens: pedido.itens,
       observacao: pedido.observacao,
       pagamento: pedido.pagamento,
       total: pedido.total,
-      endereco: pedido.endereco, // Verifique se criou esta coluna
+      endereco: pedido.endereco,
       numero_casa: pedido.numero_casa,
       bairro: pedido.bairro,
-      status: 'novo', // Adicione um status padrão
+      status: 'novo',
       data_criacao: new Date().toISOString()
     }]);
 

@@ -51,7 +51,7 @@
   const urlParams = new URLSearchParams(window.location.search);
   const pedidoId = urlParams.get('id');
 
-  const supabase = window.supabase.createClient(
+  const supabase_client = window.supabase_client || window.supabase.createClient(
     "https://hrryboxebcrlvwlyydnn.supabase.co",
     "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
   );
@@ -59,7 +59,7 @@
   async function buscarPedidoParaImpressao() {
     if (!pedidoId) return;
 
-    const { data: p, error } = await supabase
+    const { data: p, error } = await supabase_client
       .from("pedidos")
       .select("*")
       .eq("id", pedidoId)
@@ -67,6 +67,7 @@
 
     if (error || !p) {
       document.getElementById("dados-pedido").innerHTML = "Erro ao carregar pedido.";
+      console.error("Erro:", error);
       return;
     }
 
@@ -74,29 +75,46 @@
     let htmlItens = "";
     if (Array.isArray(p.itens)) {
       p.itens.forEach(item => {
+        let detalhes = '';
+        if (item.tamanho && item.tamanho !== 'Padrão') {
+          detalhes += `<small>📏 Tam: ${item.tamanho}</small><br>`;
+        }
+        if (item.carne) {
+          detalhes += `<small>🥩 Carne: ${item.carne}</small><br>`;
+        }
+        if (item.ponto) {
+          detalhes += `<small>🔥 Ponto: ${item.ponto}</small><br>`;
+        }
+        if (item.extras && Array.isArray(item.extras) && item.extras.length > 0) {
+          detalhes += `<div class="extras">➕ Adicionais:<br>`;
+          item.extras.forEach(extra => {
+            detalhes += `&nbsp;&nbsp;• ${extra.name}<br>`;
+          });
+          detalhes += `</div>`;
+        }
+
         htmlItens += `
           <div class="item">
             <span class="bold">${item.qtd}x ${item.nome.toUpperCase()}</span><br>
-            ${item.tamanho ? `<small>Tam: ${item.tamanho}</small><br>` : ''}
-            ${item.carne ? `<small>Carne: ${item.carne} (${item.ponto})</small><br>` : ''}
-            ${item.extras && item.extras.length > 0 ? 
-              `<div class="extras">+ ${item.extras.map(e => e.name).join('<br>+ ')}</div>` : ''}
+            ${detalhes}
           </div>`;
       });
     }
 
+    const dataPedido = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
+
     const conteudo = `
       <div class="centralizado bold">PEDIDO: ${p.pedido_id}</div>
-      <div>DATA: ${new Date(p.created_at).toLocaleString("pt-BR")}</div>
+      <div>DATA: ${dataPedido}</div>
       <div class="linha"></div>
       
       <div class="bold">CLIENTE:</div>
-      <div>${p.nome_cliente}</div>
-      <div>END: ${p.endereco || 'Retirada'}</div>
+      <div>${p.nome_cliente || 'Não informado'}</div>
+      <div>END: ${p.endereco || 'Retirada'}${p.numero_casa ? `, ${p.numero_casa}` : ''}${p.bairro ? ` - ${p.bairro}` : ''}</div>
       <div class="linha"></div>
 
       <div class="bold">ITENS:</div>
-      ${htmlItens}
+      ${htmlItens || '<div>Sem itens</div>'}
       
       <div class="linha"></div>
       ${p.observacao ? `<div><strong>OBS:</strong> ${p.observacao}</div><div class="linha"></div>` : ''}

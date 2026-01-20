@@ -25,20 +25,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const supabase = window.supabase.createClient(
+  // Criar cliente Supabase se não existir (compatível com index.js)
+  let supabase_client = window.supabase_client || window.supabase.createClient(
     "https://hrryboxebcrlvwlyydnn.supabase.co",
     "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
   );
 
   async function carregarPedidos() {
-    const { data, error } = await supabase
+    const { data, error } = await supabase_client
       .from("pedidos")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("data_criacao", { ascending: false });
 
     if (error) {
-      console.error(error);
-      document.getElementById("lista-pedidos").innerText = "Erro ao carregar dados.";
+      console.error("Erro ao carregar pedidos:", error.message);
+      document.getElementById("lista-pedidos").innerHTML = `<p style="color: red;"><strong>Erro ao carregar dados:</strong> ${error.message}</p>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      document.getElementById("lista-pedidos").innerHTML = "<p style='color: #999;'>Nenhum pedido registrado ainda.</p>";
       return;
     }
 
@@ -57,6 +63,8 @@
         });
       }
 
+      const dataCriacao = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
+
       div.innerHTML = `
         <div class="linha">
           <strong>🆔 ${p.pedido_id}</strong>
@@ -64,8 +72,10 @@
         </div>
 
         <div class="detalhes">
-          <strong>👤 Cliente:</strong> ${p.nome_cliente}<br>
+          <strong>👤 Cliente:</strong> ${p.nome_cliente || 'Não informado'}<br>
           <strong>📍 Endereço:</strong> <span class="endereco">${p.endereco || 'Não informado'}</span>
+          ${p.numero_casa ? `<strong>Nº:</strong> ${p.numero_casa}<br>` : ''}
+          ${p.bairro ? `<strong>Bairro:</strong> ${p.bairro}<br>` : ''}
           <strong>💳 Pagamento:</strong> ${p.pagamento || 'Não informado'}
         </div>
 
@@ -75,7 +85,7 @@
 
         <div class="linha">
           <span><strong>TOTAL: R$ ${Number(p.total).toFixed(2)}</strong></span>
-          <small>${new Date(p.created_at).toLocaleString("pt-BR")}</small>
+          <small>${dataCriacao}</small>
         </div>
 
         <div style="text-align: right; margin-top: 10px;">
