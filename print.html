@@ -1,45 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<style>
-@media print {
-  body { width: 80mm; font-family: monospace; }
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Imprimir Pedido</title>
+  <style>
+    /* Configuração para Impressora Térmica 80mm */
+    @page { margin: 0; }
+    body {
+      font-family: 'Courier New', Courier, monospace; /* Fonte tipo cupom */
+      width: 280px; /* Aproximadamente 80mm */
+      margin: 0;
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .centralizado { text-align: center; }
+    .bold { font-weight: bold; }
+    .linha { border-bottom: 1px dashed #000; margin: 5px 0; }
+    .item { margin-bottom: 5px; }
+    .extras { font-size: 10px; margin-left: 10px; }
+    
+    /* Esconde o botão na hora da impressão real */
+    @media print {
+      .no-print { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-<div id="cupom"></div>
+<div class="no-print" style="margin-bottom: 20px;">
+  <button onclick="window.print()" style="padding: 10px; cursor: pointer;">🖨 IMPRIMIR AGORA</button>
+  <button onclick="window.close()" style="padding: 10px; cursor: pointer;">❌ FECHAR</button>
+</div>
+
+<div id="cupom">
+  <div class="centralizado bold">
+    MINEIRO HAMBURGUERIA<br>
+    --------------------------------
+  </div>
+  
+  <div id="dados-pedido">Carregando...</div>
+
+  <div class="linha"></div>
+  <div class="centralizado">Obrigado pela preferência!</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const id = new URLSearchParams(window.location.search).get("id");
+  // Pega o ID do pedido que veio pela URL (?id=...)
+  const urlParams = new URLSearchParams(window.location.search);
+  const pedidoId = urlParams.get('id');
 
-async function carregarPedido() {
   const supabase = window.supabase.createClient(
     "https://hrryboxebcrlvwlyydnn.supabase.co",
     "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
   );
 
-  const { data } = await supabase
-    .from("pedidos")
-    .select("*")
-    .eq("id", id)
-    .single();
+  async function buscarPedidoParaImpressao() {
+    if (!pedidoId) return;
 
-  document.getElementById("cupom").innerHTML = `
-    <strong>BBQ - BurguerBQ</strong><br>
-    Pedido: ${data.pedido_id}<br><hr>
-    ${data.itens.map(i => `${i.qtd}x ${i.nome}`).join("<br>")}
-    <hr>
-    Total: R$ ${data.total}
-  `;
+    const { data: p, error } = await supabase
+      .from("pedidos")
+      .select("*")
+      .eq("id", pedidoId)
+      .single();
 
-  window.print();
-}
+    if (error || !p) {
+      document.getElementById("dados-pedido").innerHTML = "Erro ao carregar pedido.";
+      return;
+    }
 
-carregarPedido();
+    // Monta a lista de itens detalhada
+    let htmlItens = "";
+    if (Array.isArray(p.itens)) {
+      p.itens.forEach(item => {
+        htmlItens += `
+          <div class="item">
+            <span class="bold">${item.qtd}x ${item.nome.toUpperCase()}</span><br>
+            ${item.tamanho ? `<small>Tam: ${item.tamanho}</small><br>` : ''}
+            ${item.carne ? `<small>Carne: ${item.carne} (${item.ponto})</small><br>` : ''}
+            ${item.extras && item.extras.length > 0 ? 
+              `<div class="extras">+ ${item.extras.map(e => e.name).join('<br>+ ')}</div>` : ''}
+          </div>`;
+      });
+    }
+
+    const conteudo = `
+      <div class="centralizado bold">PEDIDO: ${p.pedido_id}</div>
+      <div>DATA: ${new Date(p.created_at).toLocaleString("pt-BR")}</div>
+      <div class="linha"></div>
+      
+      <div class="bold">CLIENTE:</div>
+      <div>${p.nome_cliente}</div>
+      <div>END: ${p.endereco || 'Retirada'}</div>
+      <div class="linha"></div>
+
+      <div class="bold">ITENS:</div>
+      ${htmlItens}
+      
+      <div class="linha"></div>
+      ${p.observacao ? `<div><strong>OBS:</strong> ${p.observacao}</div><div class="linha"></div>` : ''}
+
+      <div class="bold">PAGAMENTO: ${p.pagamento || 'N/A'}</div>
+      <div class="bold">TOTAL: R$ ${Number(p.total).toFixed(2)}</div>
+    `;
+
+    document.getElementById("dados-pedido").innerHTML = conteudo;
+
+    // Opcional: Abre a caixa de impressão automaticamente após carregar
+    // setTimeout(() => { window.print(); }, 500);
+  }
+
+  buscarPedidoParaImpressao();
 </script>
 
 </body>

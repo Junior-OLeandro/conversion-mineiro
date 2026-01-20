@@ -637,14 +637,17 @@ async function salvarPedido(pedido) {
   const { data, error } = await window.supabase_client
     .from("pedidos")
     .insert([{
-      pedido_id: "BQ-" + Date.now(),
+      pedido_id: "Nº" + Date.now(),
       nome_cliente: pedido.nome,
       itens: pedido.itens, // Esta coluna DEVE ser do tipo JSONB no Supabase
       observacao: pedido.observacao,
       pagamento: pedido.pagamento,
       total: pedido.total,
       endereco: pedido.endereco, // Verifique se criou esta coluna
-      status: 'novo' // Adicione um status padrão
+      numero_casa: pedido.numero_casa,
+      bairro: pedido.bairro,
+      status: 'novo', // Adicione um status padrão
+      data_criacao: new Date().toISOString()
     }]);
 
   if (error) {
@@ -787,11 +790,16 @@ async function enviarWhatsapp() {
   nome: nome,
   telefone: '', // se você não coleta telefone, pode deixar vazio por enquanto
   endereco: enderecoOriginal,
+  numero_casa: numeroCasa,
+  bairro: bairro,
   itens: cart.map(item => ({
     nome: item.name,
     qtd: item.qty,
-    total: calculateItemTotal(item),
-    extras: item.extras || []
+    tamanho: item.size || 'Padrão',
+    carne: item.meat || '',
+    ponto: item.point || '',
+    extras: item.extras || [],
+    total: calculateItemTotal(item)
   })),
   observacao: obs,
   pagamento: pagamento,

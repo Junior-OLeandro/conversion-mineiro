@@ -2,80 +2,43 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel de Pedidos</title>
-
+  <title>Painel de Pedidos - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 15px;
-    }
-
-    h1 {
-      margin-bottom: 15px;
-    }
-
-    .pedido {
-      background: #fff;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-
-    .pedido.novo {
-      border-left: 6px solid #2ecc71;
-    }
-
-    .linha {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .btn {
-      padding: 6px 10px;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .btn-print {
-      background: #000;
-      color: #fff;
-    }
-
-    .status {
-      font-weight: bold;
-      color: #2ecc71;
-    }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 15px; }
+    h1 { margin-bottom: 15px; }
+    .pedido { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 6px solid #ccc; }
+    .pedido.novo { border-left-color: #2ecc71; }
+    .linha { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px inset #f9f9f9; padding-bottom: 4px; }
+    .detalhes { font-size: 0.9em; color: #555; background: #fefefe; padding: 8px; border-radius: 4px; }
+    .itens-lista { margin: 10px 0; padding-left: 20px; }
+    .btn { padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    .btn-print { background: #000; color: #fff; }
+    .status { font-weight: bold; color: #2ecc71; }
+    .endereco { font-style: italic; color: #333; margin: 5px 0; display: block; }
   </style>
 </head>
-
 <body>
 
-<h1>📦 Pedidos</h1>
-<div id="lista-pedidos"></div>
+<h1>📦 Pedidos Recebidos</h1>
+<div id="lista-pedidos">Carregando pedidos...</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  async function carregarPedidos() {
-    const supabase = window.supabase.createClient(
-      "https://hrryboxebcrlvwlyydnn.supabase.co",
-      "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
-    );
+  const supabase = window.supabase.createClient(
+    "https://hrryboxebcrlvwlyydnn.supabase.co",
+    "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+  );
 
+  async function carregarPedidos() {
     const { data, error } = await supabase
       .from("pedidos")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (error) {
-      alert("Erro ao carregar pedidos");
       console.error(error);
+      document.getElementById("lista-pedidos").innerText = "Erro ao carregar dados.";
       return;
     }
 
@@ -84,23 +47,40 @@
 
     data.forEach(p => {
       const div = document.createElement("div");
-      div.className = `pedido ${p.status}`;
+      div.className = `pedido ${p.status || 'novo'}`;
+
+      // Lógica para listar os itens formatados
+      let htmlItens = "";
+      if (Array.isArray(p.itens)) {
+        p.itens.forEach(item => {
+          htmlItens += `<li>${item.qtd}x ${item.nome} - R$ ${Number(item.total).toFixed(2)}</li>`;
+        });
+      }
 
       div.innerHTML = `
         <div class="linha">
-          <strong>${p.pedido_id}</strong>
-          <span class="status">${p.status.toUpperCase()}</span>
+          <strong>🆔 ${p.pedido_id}</strong>
+          <span class="status">${(p.status || 'NOVO').toUpperCase()}</span>
         </div>
 
-        <div class="linha">
-          <span>${p.nome_cliente || "Cliente"}</span>
-          <span>R$ ${Number(p.total).toFixed(2)}</span>
+        <div class="detalhes">
+          <strong>👤 Cliente:</strong> ${p.nome_cliente}<br>
+          <strong>📍 Endereço:</strong> <span class="endereco">${p.endereco || 'Não informado'}</span>
+          <strong>💳 Pagamento:</strong> ${p.pagamento || 'Não informado'}
         </div>
 
+        <ul class="itens-lista">
+          ${htmlItens || "<li>Sem itens registrados</li>"}
+        </ul>
+
         <div class="linha">
+          <span><strong>TOTAL: R$ ${Number(p.total).toFixed(2)}</strong></span>
           <small>${new Date(p.created_at).toLocaleString("pt-BR")}</small>
+        </div>
+
+        <div style="text-align: right; margin-top: 10px;">
           <button class="btn btn-print" onclick="imprimirPedido('${p.id}')">
-            🖨 Imprimir
+            🖨 Imprimir Cupom
           </button>
         </div>
       `;
@@ -113,8 +93,9 @@
     window.open(`print.html?id=${id}`, "_blank");
   }
 
+  // Recarrega a cada 30 segundos automaticamente
+  setInterval(carregarPedidos, 30000);
   carregarPedidos();
 </script>
-
 </body>
 </html>
