@@ -347,8 +347,12 @@ function addToCart(ev, id) {
 }
 
 function removeItem(itemId) {
+  // Encontra o item antes de remover
+  const removedItem = cart.find(i => i.id.toString() === itemId.toString());
+  
   // Converte para string para garantir a igualdade
   cart = cart.filter(i => i.id.toString() !== itemId.toString());
+  
   if (removedItem && typeof gtag === 'function') {
     gtag('event', 'remove_from_cart', {
       item_id: removedItem.prodId,
