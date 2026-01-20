@@ -8,14 +8,25 @@
     body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 15px; }
     h1 { margin-bottom: 15px; }
     .pedido { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 6px solid #ccc; }
-    .pedido.novo { border-left-color: #2ecc71; }
+    .pedido.novo { border-left-color: #3498db; }
+    .pedido.preparando { border-left-color: #f39c12; }
+    .pedido.pronto { border-left-color: #2ecc71; }
+    .pedido.entregue { border-left-color: #95a5a6; }
+    .pedido.lido { opacity: 0.6; background: #f8f8f8; }
     .linha { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px inset #f9f9f9; padding-bottom: 4px; }
     .detalhes { font-size: 0.9em; color: #555; background: #fefefe; padding: 8px; border-radius: 4px; }
     .itens-lista { margin: 10px 0; padding-left: 20px; }
-    .btn { padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    .btn { padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; margin-right: 5px; transition: 0.2s; }
+    .btn:hover { opacity: 0.8; }
     .btn-print { background: #000; color: #fff; }
+    .btn-status { background: #95a5a6; color: #fff; padding: 5px 10px; font-size: 11px; }
+    .btn-status.novo { background: #3498db; }
+    .btn-status.preparando { background: #f39c12; }
+    .btn-status.pronto { background: #2ecc71; }
+    .btn-status.entregue { background: #95a5a6; }
     .status { font-weight: bold; color: #2ecc71; }
     .endereco { font-style: italic; color: #333; margin: 5px 0; display: block; }
+    .botoes-status { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
   </style>
 </head>
 <body>
@@ -53,7 +64,13 @@
 
     data.forEach(p => {
       const div = document.createElement("div");
-      div.className = `pedido ${p.status || 'novo'}`;
+      const statusClass = p.status || 'novo';
+      
+      // Verifica se o pedido foi marcado como lido no localStorage
+      const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
+      const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
+      
+      div.className = classeDiv;
 
       // Lógica para listar os itens formatados
       let htmlItens = "";
@@ -68,7 +85,7 @@
       div.innerHTML = `
         <div class="linha">
           <strong>🆔 ${p.pedido_id}</strong>
-          <span class="status">${(p.status || 'NOVO').toUpperCase()}</span>
+          <span class="status">${foiLido ? '👁️ LIDO' : (p.status || 'NOVO').toUpperCase()}</span>
         </div>
 
         <div class="detalhes">
@@ -92,11 +109,47 @@
           <button class="btn btn-print" onclick="imprimirPedido('${p.id}')">
             🖨 Imprimir Cupom
           </button>
+          <button class="btn" style="background: #9b59b6; color: #fff;" onclick="marcarComoLido('${p.id}')">
+            ${foiLido ? '👁️ Marcar como Não Lido' : '📖 Marcar como Lido'}
+          </button>
+        </div>
+
+        <div class="botoes-status">
+          <button class="btn btn-status novo" onclick="atualizarStatus('${p.id}', 'novo')">📨 Novo</button>
+          <button class="btn btn-status preparando" onclick="atualizarStatus('${p.id}', 'preparando')">👨‍🍳 Preparando</button>
+          <button class="btn btn-status pronto" onclick="atualizarStatus('${p.id}', 'pronto')">✅ Pronto</button>
+          <button class="btn btn-status entregue" onclick="atualizarStatus('${p.id}', 'entregue')">🚚 Entregue</button>
         </div>
       `;
 
       container.appendChild(div);
     });
+  }
+
+  function marcarComoLido(pedidoId) {
+    const estavaLido = localStorage.getItem(`pedido-lido-${pedidoId}`) === 'true';
+    if (estavaLido) {
+      localStorage.removeItem(`pedido-lido-${pedidoId}`);
+    } else {
+      localStorage.setItem(`pedido-lido-${pedidoId}`, 'true');
+    }
+    carregarPedidos();
+  }
+
+  async function atualizarStatus(pedidoId, novoStatus) {
+    const { data, error } = await supabase_client
+      .from("pedidos")
+      .update({ status: novoStatus })
+      .eq("id", pedidoId);
+
+    if (error) {
+      console.error("Erro ao atualizar status:", error.message);
+      alert("Erro ao atualizar status do pedido");
+      return;
+    }
+
+    console.log(`Pedido ${pedidoId} atualizado para: ${novoStatus}`);
+    carregarPedidos(); // Recarrega a lista
   }
 
   function imprimirPedido(id) {
