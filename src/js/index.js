@@ -853,22 +853,6 @@ function verificarHorarioFuncionamento() {
   }
 }
 
-// INICIALIZAÇÃO
-document.addEventListener('DOMContentLoaded', () => {
-  loadTheme();
-  buildProducts();
-  renderCart();
-  verificarHorarioFuncionamento();
-
-  const originalBairro = document.getElementById('bairro');
-  if (originalBairro && modalBairro) modalBairro.innerHTML = originalBairro.innerHTML;
-
-  const pg = document.getElementById('pagamento');
-  if (pg) pg.addEventListener('change', toggleTroco);
-});
-
-
-
 function exibirAlertaPromocao() {
   const modal = document.getElementById('quickPromoModal');
   const closeBtn = document.getElementById('quickPromoClose');
