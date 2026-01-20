@@ -5,8 +5,47 @@
   <title>Painel de Pedidos - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 15px; }
-    h1 { margin-bottom: 15px; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 15px; } 
+    
+    /* LOGIN */
+    .login-container { 
+      max-width: 400px; 
+      margin: 100px auto; 
+      background: #fff; 
+      padding: 40px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .login-container h1 { color: #333; margin-bottom: 30px; }
+    .login-container input { 
+      width: 100%; 
+      padding: 12px; 
+      margin-bottom: 15px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .login-container button { 
+      width: 100%; 
+      padding: 12px; 
+      background: #2ecc71; 
+      color: #fff; 
+      border: none; 
+      border-radius: 4px; 
+      font-size: 16px; 
+      font-weight: bold; 
+      cursor: pointer;
+    }
+    .login-container button:hover { background: #27ae60; }
+    .erro-login { color: #e74c3c; margin-bottom: 15px; font-weight: bold; }
+    
+    /* PAINEL */
+    h1 { margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .btn-logout { background: #e74c3c; color: #fff; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-logout:hover { background: #c0392b; }
+    
     .pedido { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 6px solid #ccc; }
     .pedido.novo { border-left-color: #3498db; }
     .pedido.preparando { border-left-color: #f39c12; }
@@ -27,15 +66,77 @@
     .status { font-weight: bold; color: #2ecc71; }
     .endereco { font-style: italic; color: #333; margin: 5px 0; display: block; }
     .botoes-status { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
+    
+    #painel { display: none; }
+    #painel.visible { display: block; }
   </style>
 </head>
 <body>
 
-<h1>📦 Pedidos Recebidos</h1>
-<div id="lista-pedidos">Carregando pedidos...</div>
+<!-- TELA DE LOGIN -->
+<div id="login" class="login-container">
+  <h1>🔐 Painel Admin</h1>
+  <div id="erro-login" class="erro-login"></div>
+  <input type="password" id="senha-input" placeholder="Digite sua senha..." onkeypress="if(event.key==='Enter') fazerLogin()">
+  <button onclick="fazerLogin()">Entrar</button>
+</div>
+
+<!-- PAINEL DE PEDIDOS -->
+<div id="painel">
+  <h1>
+    📦 Pedidos Recebidos
+    <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+  </h1>
+  <div id="lista-pedidos">Carregando pedidos...</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // ==========================================
+  // AUTENTICAÇÃO
+  // ==========================================
+  
+  const SENHA_ADMIN = "admin123"; // MUDE ISSO PARA SUA SENHA!
+  
+  function fazerLogin() {
+    const senhaInput = document.getElementById("senha-input").value;
+    const erroDiv = document.getElementById("erro-login");
+    
+    if (senhaInput === SENHA_ADMIN) {
+      localStorage.setItem("painel-autenticado", "true");
+      erroDiv.textContent = "";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("painel").classList.add("visible");
+      carregarPedidos();
+      setInterval(carregarPedidos, 30000);
+    } else {
+      erroDiv.textContent = "❌ Senha incorreta!";
+      document.getElementById("senha-input").value = "";
+    }
+  }
+  
+  function fazerLogout() {
+    localStorage.removeItem("painel-autenticado");
+    document.getElementById("painel").classList.remove("visible");
+    document.getElementById("login").style.display = "block";
+    document.getElementById("erro-login").textContent = "";
+    document.getElementById("senha-input").value = "";
+  }
+  
+  // Verificar se já está autenticado ao carregar
+  window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("painel-autenticado") === "true") {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("painel").classList.add("visible");
+      carregarPedidos();
+      setInterval(carregarPedidos, 30000);
+    }
+  });
+  
+  // ==========================================
+  // CARREGAMENTO DE PEDIDOS
+  // ==========================================
+  
   // Criar cliente Supabase se não existir (compatível com index.js)
   let supabase_client = window.supabase_client || window.supabase.createClient(
     "https://hrryboxebcrlvwlyydnn.supabase.co",
@@ -155,10 +256,6 @@
   function imprimirPedido(id) {
     window.open(`print.html?id=${id}`, "_blank");
   }
-
-  // Recarrega a cada 30 segundos automaticamente
-  setInterval(carregarPedidos, 30000);
-  carregarPedidos();
 </script>
 </body>
 </html>
