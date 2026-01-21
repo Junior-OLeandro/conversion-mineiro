@@ -1,109 +1,145 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Imprimir Pedido</title>
   <style>
     /* Configuração para Impressora Térmica 80mm */
-    @page { margin: 0; }
+    @page {
+      margin: 0;
+    }
+
+    * {
+      color: #000;
+    }
+
     body {
-      font-family: 'Courier New', Courier, monospace; /* Fonte tipo cupom */
-      width: 280px; /* Aproximadamente 80mm */
+      font-family: 'Courier New', Courier, monospace;
+      width: 280px;
       margin: 0;
       padding: 10px;
-      font-size: 12px;
-      line-height: 1.2;
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 500;
     }
-    .centralizado { text-align: center; }
-    .bold { font-weight: bold; }
-    .linha { border-bottom: 1px dashed #000; margin: 5px 0; }
-    .item { margin-bottom: 5px; }
-    .extras { font-size: 10px; margin-left: 10px; }
-    
+
+    small {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+
+    .centralizado {
+      text-align: center;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .linha {
+      border-bottom: 1px dashed #000;
+      margin: 5px 0;
+    }
+
+    .item {
+      margin-bottom: 5px;
+    }
+
+    .extras {
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
     /* Esconde o botão na hora da impressão real */
     @media print {
-      .no-print { display: none; }
+      .no-print {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="no-print" style="margin-bottom: 20px;">
-  <button onclick="window.print()" style="padding: 10px; cursor: pointer;">🖨 IMPRIMIR AGORA</button>
-  <button onclick="window.close()" style="padding: 10px; cursor: pointer;">❌ FECHAR</button>
-</div>
-
-<div id="cupom">
-  <div class="centralizado bold">
-    MINEIRO HAMBURGUERIA<br>
-    --------------------------------
+  <div class="no-print" style="margin-bottom: 20px;">
+    <button onclick="window.print()" style="padding: 10px; cursor: pointer;">🖨 IMPRIMIR AGORA</button>
+    <button onclick="window.close()" style="padding: 10px; cursor: pointer;">❌ FECHAR</button>
   </div>
-  
-  <div id="dados-pedido">Carregando...</div>
 
-  <div class="linha"></div>
-  <div class="centralizado">Obrigado pela preferência!</div>
-</div>
+  <div id="cupom">
+    <div class="centralizado bold">
+      MINEIRO HAMBURGUERIA<br>
+      --------------------------------
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // Pega o ID do pedido que veio pela URL (?id=...)
-  const urlParams = new URLSearchParams(window.location.search);
-  const pedidoId = urlParams.get('id');
+    <div id="dados-pedido">Carregando...</div>
 
-  const supabase_client = window.supabase_client || window.supabase.createClient(
-    "https://hrryboxebcrlvwlyydnn.supabase.co",
-    "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
-  );
+    <div class="linha"></div>
+    <div class="centralizado">Obrigado pela preferência!</div>
+  </div>
 
-  async function buscarPedidoParaImpressao() {
-    if (!pedidoId) return;
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Pega o ID do pedido que veio pela URL (?id=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const pedidoId = urlParams.get('id');
 
-    const { data: p, error } = await supabase_client
-      .from("pedidos")
-      .select("*")
-      .eq("id", pedidoId)
-      .single();
+    const supabase_client = window.supabase_client || window.supabase.createClient(
+      "https://hrryboxebcrlvwlyydnn.supabase.co",
+      "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+    );
 
-    if (error || !p) {
-      document.getElementById("dados-pedido").innerHTML = "Erro ao carregar pedido.";
-      console.error("Erro:", error);
-      return;
-    }
+    async function buscarPedidoParaImpressao() {
+      if (!pedidoId) return;
 
-    // Monta a lista de itens detalhada
-    let htmlItens = "";
-    if (Array.isArray(p.itens)) {
-      p.itens.forEach(item => {
-        let detalhes = '';
-        if (item.tamanho && item.tamanho !== 'Padrão') {
-          detalhes += `<small>📏 Tam: ${item.tamanho}</small><br>`;
-        }
-        if (item.carne) {
-          detalhes += `<small>🥩 Carne: ${item.carne}</small><br>`;
-        }
-        if (item.ponto) {
-          detalhes += `<small>🔥 Ponto: ${item.ponto}</small><br>`;
-        }
-        if (item.extras && Array.isArray(item.extras) && item.extras.length > 0) {
-          detalhes += `<div class="extras">➕ Adicionais:<br>`;
-          item.extras.forEach(extra => {
-            detalhes += `&nbsp;&nbsp;• ${extra.name}<br>`;
-          });
-          detalhes += `</div>`;
-        }
+      const { data: p, error } = await supabase_client
+        .from("pedidos")
+        .select("*")
+        .eq("id", pedidoId)
+        .single();
 
-        htmlItens += `
+      if (error || !p) {
+        document.getElementById("dados-pedido").innerHTML = "Erro ao carregar pedido.";
+        console.error("Erro:", error);
+        return;
+      }
+
+      // Monta a lista de itens detalhada
+      let htmlItens = "";
+      if (Array.isArray(p.itens)) {
+        p.itens.forEach(item => {
+          let detalhes = '';
+          if (item.tamanho && item.tamanho !== 'Padrão') {
+            detalhes += `<small>📏 Tam: ${item.tamanho}</small><br>`;
+          }
+          if (item.carne) {
+            detalhes += `<small>🥩 Carne: ${item.carne}</small><br>`;
+          }
+          if (item.ponto) {
+            detalhes += `<small>🔥 Ponto: ${item.ponto}</small><br>`;
+          }
+          if (item.extras && Array.isArray(item.extras) && item.extras.length > 0) {
+            detalhes += `<div class="extras">➕ Adicionais:<br>`;
+            item.extras.forEach(extra => {
+              detalhes += `&nbsp;&nbsp;• ${extra.name}<br>`;
+            });
+            detalhes += `</div>`;
+          }
+
+          htmlItens += `
           <div class="item">
             <span class="bold">${item.qtd}x ${item.nome.toUpperCase()}</span><br>
             ${detalhes}
           </div>`;
-      });
-    }
+        });
+      }
 
-    const dataPedido = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
+      const dataPedido = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
 
-    const conteudo = `
+      const conteudo = `
       <div class="centralizado bold">PEDIDO: ${p.pedido_id}</div>
       <div>DATA: ${dataPedido}</div>
       <div class="linha"></div>
@@ -123,14 +159,15 @@
       <div class="bold">TOTAL: R$ ${Number(p.total).toFixed(2)}</div>
     `;
 
-    document.getElementById("dados-pedido").innerHTML = conteudo;
+      document.getElementById("dados-pedido").innerHTML = conteudo;
 
-    // Opcional: Abre a caixa de impressão automaticamente após carregar
-    // setTimeout(() => { window.print(); }, 500);
-  }
+      // Opcional: Abre a caixa de impressão automaticamente após carregar
+      // setTimeout(() => { window.print(); }, 500);
+    }
 
-  buscarPedidoParaImpressao();
-</script>
+    buscarPedidoParaImpressao();
+  </script>
 
 </body>
+
 </html>
