@@ -1,189 +1,356 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <title>Painel de Pedidos - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 15px; } 
-    
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 15px;
+    }
+
     /* LOGIN */
-    .login-container { 
-      max-width: 400px; 
-      margin: 100px auto; 
-      background: #fff; 
-      padding: 40px; 
-      border-radius: 8px; 
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
-    .login-container h1 { color: #333; margin-bottom: 30px; }
-    .login-container input { 
-      width: 100%; 
-      padding: 12px; 
-      margin-bottom: 15px; 
-      border: 1px solid #ddd; 
-      border-radius: 4px; 
+
+    .login-container h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
       font-size: 16px;
       box-sizing: border-box;
     }
-    .login-container button { 
-      width: 100%; 
-      padding: 12px; 
-      background: #2ecc71; 
-      color: #fff; 
-      border: none; 
-      border-radius: 4px; 
-      font-size: 16px; 
-      font-weight: bold; 
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #2ecc71;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
     }
-    .login-container button:hover { background: #27ae60; }
-    .erro-login { color: #e74c3c; margin-bottom: 15px; font-weight: bold; }
-    
+
+    .login-container button:hover {
+      background: #27ae60;
+    }
+
+    .erro-login {
+      color: #e74c3c;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
     /* PAINEL */
-    h1 { margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    .btn-logout { background: #e74c3c; color: #fff; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    .btn-logout:hover { background: #c0392b; }
-    
-    .pedido { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 6px solid #ccc; }
-    .pedido.novo { border-left-color: #3498db; }
-    .pedido.preparando { border-left-color: #f39c12; }
-    .pedido.pronto { border-left-color: #2ecc71; }
-    .pedido.entregue { border-left-color: #95a5a6; }
-    .pedido.lido { opacity: 0.6; background: #f8f8f8; }
-    .linha { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px inset #f9f9f9; padding-bottom: 4px; }
-    .detalhes { font-size: 0.9em; color: #555; background: #fefefe; padding: 8px; border-radius: 4px; }
-    .itens-lista { margin: 10px 0; padding-left: 20px; }
-    .btn { padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; margin-right: 5px; transition: 0.2s; }
-    .btn:hover { opacity: 0.8; }
-    .btn-print { background: #000; color: #fff; }
-    .btn-status { background: #95a5a6; color: #fff; padding: 5px 10px; font-size: 11px; }
-    .btn-status.novo { background: #3498db; }
-    .btn-status.preparando { background: #f39c12; }
-    .btn-status.pronto { background: #2ecc71; }
-    .btn-status.entregue { background: #95a5a6; }
-    .status { font-weight: bold; color: #2ecc71; }
-    .endereco { font-style: italic; color: #333; margin: 5px 0; display: block; }
-    .botoes-status { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
-    
-    #painel { display: none; }
-    #painel.visible { display: block; }
+    h1 {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-logout {
+      background: #e74c3c;
+      color: #fff;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-logout:hover {
+      background: #c0392b;
+    }
+
+    .pedido {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-left: 6px solid #ccc;
+    }
+
+    .pedido.novo {
+      border-left-color: #3498db;
+    }
+
+    .pedido.preparando {
+      border-left-color: #f39c12;
+    }
+
+    .pedido.pronto {
+      border-left-color: #2ecc71;
+    }
+
+    .pedido.entregue {
+      border-left-color: #95a5a6;
+    }
+
+    .pedido.lido {
+      opacity: 0.6;
+      background: #f8f8f8;
+    }
+
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-bottom: 1px inset #f9f9f9;
+      padding-bottom: 4px;
+    }
+
+    .detalhes {
+      font-size: 0.9em;
+      color: #555;
+      background: #fefefe;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .itens-lista {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-right: 5px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-print {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-status {
+      background: #95a5a6;
+      color: #fff;
+      padding: 5px 10px;
+      font-size: 11px;
+    }
+
+    .btn-status.novo {
+      background: #3498db;
+    }
+
+    .btn-status.preparando {
+      background: #f39c12;
+    }
+
+    .btn-status.pronto {
+      background: #2ecc71;
+    }
+
+    .btn-status.entregue {
+      background: #95a5a6;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #2ecc71;
+    }
+
+    .endereco {
+      font-style: italic;
+      color: #333;
+      margin: 5px 0;
+      display: block;
+    }
+
+    .botoes-status {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    #painel {
+      display: none;
+    }
+
+    #painel.visible {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- TELA DE LOGIN -->
-<div id="login" class="login-container">
-  <h1>🔐 Painel Admin</h1>
-  <div id="erro-login" class="erro-login"></div>
-  <input type="password" id="senha-input" placeholder="Digite sua senha..." onkeypress="if(event.key==='Enter') fazerLogin()">
-  <button onclick="fazerLogin()">Entrar</button>
-</div>
+  <!-- TELA DE LOGIN -->
+  <div id="login" class="login-container">
+    <h1>🔐 Painel Admin</h1>
+    <div id="erro-login" class="erro-login"></div>
+    <input type="password" id="senha-input" placeholder="Digite sua senha..."
+      onkeypress="if(event.key==='Enter') fazerLogin()">
+    <button onclick="fazerLogin()">Entrar</button>
+  </div>
 
-<!-- PAINEL DE PEDIDOS -->
-<div id="painel">
-  <h1>
-    📦 Pedidos Recebidos
-    <button class="btn-logout" onclick="fazerLogout()">Sair</button>
-  </h1>
-  <div id="lista-pedidos">Carregando pedidos...</div>
-</div>
+  <!-- PAINEL DE PEDIDOS -->
+  <div id="painel">
+    <h1>
+      📦 Pedidos Recebidos
+      <button class="btn-logout" onclick="fazerLogout()">Sair</button>
+    </h1>
+    <div id="lista-pedidos">Carregando pedidos...</div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // ==========================================
-  // AUTENTICAÇÃO
-  // ==========================================
-  
-  const SENHA_ADMIN = "admin123"; // MUDE ISSO PARA SUA SENHA!
-  
-  function fazerLogin() {
-    const senhaInput = document.getElementById("senha-input").value;
-    const erroDiv = document.getElementById("erro-login");
-    
-    if (senhaInput === SENHA_ADMIN) {
-      localStorage.setItem("painel-autenticado", "true");
-      erroDiv.textContent = "";
-      document.getElementById("login").style.display = "none";
-      document.getElementById("painel").classList.add("visible");
-      carregarPedidos();
-      setInterval(carregarPedidos, 30000);
-    } else {
-      erroDiv.textContent = "❌ Senha incorreta!";
-      document.getElementById("senha-input").value = "";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ==========================================
+    // AUTENTICAÇÃO
+    // ==========================================
+
+    const SENHA_ADMIN = "admin123"; // MUDE ISSO PARA SUA SENHA!
+    let canalPedidos = null;
+    let ultimoPedidoId = null;
+    function fazerLogin() {
+  const senhaInput = document.getElementById("senha-input").value;
+  const erroDiv = document.getElementById("erro-login");
+
+  if (senhaInput === SENHA_ADMIN) {
+    localStorage.setItem("painel-autenticado", "true");
+    erroDiv.textContent = "";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("painel").classList.add("visible");
+
+    carregarPedidos();
+
+    // Evita múltiplas inscrições
+    if (!canalPedidos) {
+      canalPedidos = supabase_client
+        .channel('pedidos-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'pedidos' },
+          payload => {
+
+            // 🔔 Som apenas para pedido novo REAL
+            if (payload.eventType === 'INSERT') {
+              if (payload.new?.id !== ultimoPedidoId) {
+                ultimoPedidoId = payload.new.id;
+                const audio = new Audio('.audio/notification.mp3');
+                audio.play();
+              }
+            }
+
+            console.log('Realtime pedidos:', payload);
+            carregarPedidos();
+          }
+        )
+        .subscribe();
     }
-  }
-  
-  function fazerLogout() {
-    localStorage.removeItem("painel-autenticado");
-    document.getElementById("painel").classList.remove("visible");
-    document.getElementById("login").style.display = "block";
-    document.getElementById("erro-login").textContent = "";
+
+  } else {
+    erroDiv.textContent = "❌ Senha incorreta!";
     document.getElementById("senha-input").value = "";
   }
-  
-  // Verificar se já está autenticado ao carregar
-  window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("painel-autenticado") === "true") {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("painel").classList.add("visible");
-      carregarPedidos();
-      setInterval(carregarPedidos, 30000);
-    }
-  });
-  
-  // ==========================================
-  // CARREGAMENTO DE PEDIDOS
-  // ==========================================
-  
-  // Criar cliente Supabase se não existir (compatível com index.js)
-  let supabase_client = window.supabase_client || window.supabase.createClient(
-    "https://hrryboxebcrlvwlyydnn.supabase.co",
-    "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
-  );
+}
 
-  async function carregarPedidos() {
-    const { data, error } = await supabase_client
-      .from("pedidos")
-      .select("*")
-      .order("data_criacao", { ascending: false });
 
-    if (error) {
-      console.error("Erro ao carregar pedidos:", error.message);
-      document.getElementById("lista-pedidos").innerHTML = `<p style="color: red;"><strong>Erro ao carregar dados:</strong> ${error.message}</p>`;
-      return;
-    }
+    function fazerLogout() {
+  localStorage.removeItem("painel-autenticado");
 
-    if (!data || data.length === 0) {
-      document.getElementById("lista-pedidos").innerHTML = "<p style='color: #999;'>Nenhum pedido registrado ainda.</p>";
-      return;
-    }
+  if (canalPedidos) {
+    supabase_client.removeChannel(canalPedidos);
+    canalPedidos = null;
+  }
 
-    const container = document.getElementById("lista-pedidos");
-    container.innerHTML = "";
+  document.getElementById("painel").classList.remove("visible");
+  document.getElementById("login").style.display = "block";
+}
 
-    data.forEach(p => {
-      const div = document.createElement("div");
-      const statusClass = p.status || 'novo';
-      
-      // Verifica se o pedido foi marcado como lido no localStorage
-      const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
-      const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
-      
-      div.className = classeDiv;
+    // Verificar se já está autenticado ao carregar
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("painel-autenticado") === "true") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("painel").classList.add("visible");
+        carregarPedidos();
 
-      // Lógica para listar os itens formatados
-      let htmlItens = "";
-      if (Array.isArray(p.itens)) {
-        p.itens.forEach(item => {
-          htmlItens += `<li>${item.qtd}x ${item.nome} - R$ ${Number(item.total).toFixed(2)}</li>`;
-        });
+      }
+    });
+
+    // ==========================================
+    // CARREGAMENTO DE PEDIDOS
+    // ==========================================
+
+    // Criar cliente Supabase se não existir (compatível com index.js)
+    let supabase_client = window.supabase_client || window.supabase.createClient(
+      "https://hrryboxebcrlvwlyydnn.supabase.co",
+      "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+    );
+
+    async function carregarPedidos() {
+      const { data, error } = await supabase_client
+        .from("pedidos")
+        .select("*")
+        .order("data_criacao", { ascending: false });
+
+      if (error) {
+        console.error("Erro ao carregar pedidos:", error.message);
+        document.getElementById("lista-pedidos").innerHTML = `<p style="color: red;"><strong>Erro ao carregar dados:</strong> ${error.message}</p>`;
+        return;
       }
 
-      const dataCriacao = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
+      if (!data || data.length === 0) {
+        document.getElementById("lista-pedidos").innerHTML = "<p style='color: #999;'>Nenhum pedido registrado ainda.</p>";
+        return;
+      }
 
-      div.innerHTML = `
+      const container = document.getElementById("lista-pedidos");
+      container.innerHTML = "";
+
+      data.forEach(p => {
+        const div = document.createElement("div");
+        const statusClass = p.status || 'novo';
+
+        // Verifica se o pedido foi marcado como lido no localStorage
+        const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
+        const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
+
+        div.className = classeDiv;
+
+        // Lógica para listar os itens formatados
+        let htmlItens = "";
+        if (Array.isArray(p.itens)) {
+          p.itens.forEach(item => {
+            htmlItens += `<li>${item.qtd}x ${item.nome} - R$ ${Number(item.total).toFixed(2)}</li>`;
+          });
+        }
+
+        const dataCriacao = p.data_criacao ? new Date(p.data_criacao).toLocaleString("pt-BR") : "Data não disponível";
+
+        div.innerHTML = `
         <div class="linha">
           <strong>🆔 ${p.pedido_id}</strong>
           <span class="status">${foiLido ? '👁️ LIDO' : (p.status || 'NOVO').toUpperCase()}</span>
@@ -223,39 +390,40 @@
         </div>
       `;
 
-      container.appendChild(div);
-    });
-  }
-
-  function marcarComoLido(pedidoId) {
-    const estavaLido = localStorage.getItem(`pedido-lido-${pedidoId}`) === 'true';
-    if (estavaLido) {
-      localStorage.removeItem(`pedido-lido-${pedidoId}`);
-    } else {
-      localStorage.setItem(`pedido-lido-${pedidoId}`, 'true');
-    }
-    carregarPedidos();
-  }
-
-  async function atualizarStatus(pedidoId, novoStatus) {
-    const { data, error } = await supabase_client
-      .from("pedidos")
-      .update({ status: novoStatus })
-      .eq("id", pedidoId);
-
-    if (error) {
-      console.error("Erro ao atualizar status:", error.message);
-      alert("Erro ao atualizar status do pedido");
-      return;
+        container.appendChild(div);
+      });
     }
 
-    console.log(`Pedido ${pedidoId} atualizado para: ${novoStatus}`);
-    carregarPedidos(); // Recarrega a lista
-  }
+    function marcarComoLido(pedidoId) {
+      const estavaLido = localStorage.getItem(`pedido-lido-${pedidoId}`) === 'true';
+      if (estavaLido) {
+        localStorage.removeItem(`pedido-lido-${pedidoId}`);
+      } else {
+        localStorage.setItem(`pedido-lido-${pedidoId}`, 'true');
+      }
+      carregarPedidos();
+    }
 
-  function imprimirPedido(id) {
-    window.open(`print.html?id=${id}`, "_blank");
-  }
-</script>
+    async function atualizarStatus(pedidoId, novoStatus) {
+      const { data, error } = await supabase_client
+        .from("pedidos")
+        .update({ status: novoStatus })
+        .eq("id", pedidoId);
+
+      if (error) {
+        console.error("Erro ao atualizar status:", error.message);
+        alert("Erro ao atualizar status do pedido");
+        return;
+      }
+
+      console.log(`Pedido ${pedidoId} atualizado para: ${novoStatus}`);
+      carregarPedidos(); // Recarrega a lista
+    }
+
+    function imprimirPedido(id) {
+      window.open(`print.html?id=${id}`, "_blank");
+    }
+  </script>
 </body>
+
 </html>
