@@ -259,7 +259,7 @@
             if (payload.eventType === 'INSERT') {
               if (payload.new?.id !== ultimoPedidoId) {
                 ultimoPedidoId = payload.new.id;
-                const audio = new Audio('.audio/notification.mp3');
+                const audio = new Audio('./src/audio/notification.mp3');
                 audio.play();
               }
             }
@@ -297,6 +297,31 @@
         document.getElementById("painel").classList.add("visible");
         carregarPedidos();
 
+        // ✅ REINICIALIZAR O LISTENER REALTIME
+        if (!canalPedidos) {
+          canalPedidos = supabase_client
+            .channel('pedidos-realtime')
+            .on(
+              'postgres_changes',
+              { event: '*', schema: 'public', table: 'pedidos' },
+              payload => {
+                // 🔔 Som apenas para pedido novo REAL
+                if (payload.eventType === 'INSERT') {
+                  if (payload.new?.id !== ultimoPedidoId) {
+                    ultimoPedidoId = payload.new.id;
+                    const audio = new Audio('./src/audio/notification.mp3');
+                    audio.play();
+                  }
+                }
+
+                console.log('Realtime pedidos:', payload);
+                carregarPedidos();
+              }
+            )
+            .subscribe();
+        }
+
+        setInterval(carregarPedidos, 5000);
       }
     });
 
@@ -304,7 +329,6 @@
     // CARREGAMENTO DE PEDIDOS
     // ==========================================
 
-    // Criar cliente Supabase se não existir (compatível com index.js)
     let supabase_client = window.supabase_client || window.supabase.createClient(
       "https://hrryboxebcrlvwlyydnn.supabase.co",
       "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
@@ -334,13 +358,11 @@
         const div = document.createElement("div");
         const statusClass = p.status || 'novo';
 
-        // Verifica se o pedido foi marcado como lido no localStorage
         const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
         const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
 
         div.className = classeDiv;
 
-        // Lógica para listar os itens formatados
         let htmlItens = "";
         if (Array.isArray(p.itens)) {
           p.itens.forEach(item => {
@@ -417,7 +439,7 @@
       }
 
       console.log(`Pedido ${pedidoId} atualizado para: ${novoStatus}`);
-      carregarPedidos(); // Recarrega a lista
+      carregarPedidos(); 
     }
 
     function imprimirPedido(id) {
