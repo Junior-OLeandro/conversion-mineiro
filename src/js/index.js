@@ -74,42 +74,42 @@ function mostrarTempoEntrega(config) {
 
 const productsData = [
   // --- COMBOS ---
-  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Hamburguer com batata e refri' },
-  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 60g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Hamburguer com batata e refri' },
-  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/combo-tropical.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 160g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 70g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 160g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/combo-tropical.webp', alt: 'Hamburguer com batata e refri' },
 
   // --- HAMBURGUERES ---
-  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 150g, queijo canastra, banana da terra frita, tiras de bacon, melado de cana e couve crispy. Acompanha maionese caseira', price: 34.90, img: './src/images/lanches/mineiro.webp', alt: 'Hamburguer Mineiro com queijo bacon' },
-  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.webp', alt: 'Hamburguer Chico Bento com queijo e bacon' },
-  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 150g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.webp', alt: 'Hamburguer Romeu e Julieta com queijo e bacon' },
-  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 150g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.webp', alt: 'Hamburguer Bacon Docinho com queijo e bacon' },
-  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.webp', alt: 'Hamburguer Chimiburguer com queijo e bacon' },
-  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 150g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer Tropical com queijo e bacon' },
-  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 150g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado com queijo e bacon' },
-  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 150g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão com queijo e bacon' },
+  { id: 4, category: 'hamburgueres', name: 'Mineiro', desc: 'Bife artesanal 160g, queijo canastra, banana da terra frita, tiras de bacon, melado de cana e couve crispy. Acompanha maionese caseira', price: 34.90, img: './src/images/lanches/mineiro.webp', alt: 'Hamburguer Mineiro com queijo bacon' },
+  { id: 5, category: 'hamburgueres', name: 'Chico Bento no Shopping', desc: 'Bife artesanal 160g, fatias de cheddar, tiras de bacon e pesto mineiro com amendoim. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/chico-bento.webp', alt: 'Hamburguer Chico Bento com queijo e bacon' },
+  { id: 6, category: 'hamburgueres', name: 'Romeu e Julieta', desc: 'Bife artesanal 160g, queijo canastra, tiras de bacon, ketchup de goiabada e salada de alface e tomate. Acompanha maionese mineira.', price: 32.90, img: './src/images/lanches/romeu.webp', alt: 'Hamburguer Romeu e Julieta com queijo e bacon' },
+  { id: 7, category: 'hamburgueres', name: 'Bacon Docinho', desc: 'Bife artesanal 160g, fatias de cheddar, requeijão, bacon caramelado e picles de cebola roxa. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/bacon-docinho.webp', alt: 'Hamburguer Bacon Docinho com queijo e bacon' },
+  { id: 8, category: 'hamburgueres', name: 'Chimiburguer', desc: 'Bife artesanal 160g, fatias de cheddar, tiras de bacon, tomate confiti e chimichurri. Acompanha maionese mineira.', price: 35.90, img: './src/images/lanches/chimiburguer.webp', alt: 'Hamburguer Chimiburguer com queijo e bacon' },
+  { id: 9, category: 'hamburgueres', name: 'Tropical', desc: 'Bife artesanal 160g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.', price: 33.90, img: './src/images/lanches/tropical.webp', alt: 'Hamburguer Tropical com queijo e bacon' },
+  { id: 10, category: 'hamburgueres', name: 'Caramelizado', desc: 'Bife artesanal 160g, fatias de cheddar, tiras de bacon e cebola caramelizada. Acompanha maionese mineira.', price: 29.90, img: './src/images/lanches/caramelizado.webp', alt: 'Hamburguer Caramelizado com queijo e bacon' },
+  { id: 11, category: 'hamburgueres', name: 'Trem Bão', desc: '2 Bifes artesanais de 160g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.', price: 43.90, img: './src/images/lanches/trem-bao.webp', alt: 'Hamburguer Trem Bão com queijo e bacon' },
 
   // --- SMASHS ---
   {
     id: 12, category: 'smashs', name: 'Smash Bacon',
-    desc: 'Smash burguer 60g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.',
+    desc: 'Smash burguer 70g, cheddar fatiado, tiras de bacon, barbecue e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-bacon.webp', alt: 'Smash burguer com queijo e bacon',
     prices: { simples: 20.90, duplo: 27.90, triplo: 34.90 }
   },
   {
     id: 13, category: 'smashs', name: 'Smash Cheese',
-    desc: 'Smash burguer 60g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.',
+    desc: 'Smash burguer 70g, cream cheese, bacon e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-cheese.webp', alt: 'Smash cheese burguer com queijo e bacon',
     prices: { simples: 21.90, duplo: 28.90, triplo: 35.90 }
   },
   {
     id: 14, category: 'smashs', name: 'Smash Mineiro',
-    desc: 'Smash burguer 60g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.',
+    desc: 'Smash burguer 70g, cheddar fatiado, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-mineiro.webp', alt: 'Smash Mineiro burguer com queijo e bacon',
     prices: { simples: 22.90, duplo: 29.90, triplo: 36.90 }
   },
   {
     id: 15, category: 'smashs', name: 'Smashizinho',
-    desc: 'Smash burguer 60g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.',
+    desc: 'Smash burguer 70g, cheddar fatiado e salada de alface e tomate. Acompanha maionese mineira.',
     img: './src/images/lanches/smash-bacon.webp', alt: 'Smashizinho Smash burguer com queijo e salada',
     prices: { simples: 16.90, duplo: 25.90, triplo: 32.90 }
   },
@@ -139,7 +139,7 @@ const extras = [
   { id: 'chutney', name: 'Chutney de Abacaxi', price: 5.00 },
   { id: 'ketchup', name: 'Ketchup de Goiabada', price: 4.00 },
   { id: 'bbq', name: 'Barbecue', price: 4.00 },
-  { id: 'bife', name: 'Bife artesanal de boi 150g', price: 13.00 },
+  { id: 'bife', name: 'Bife artesanal de boi 160g', price: 13.00 },
 ];
 
 const categoriesWithExtras = ['combos', 'hamburgueres', 'smashs'];
