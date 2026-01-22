@@ -218,12 +218,26 @@
 
   <!-- PAINEL DE PEDIDOS -->
   <div id="painel">
+    <div id="tempo-entrega" style="margin-bottom:15px; padding:10px; background:#fff; border-radius:6px;">
+  ⏱ <strong>Tempo de Entrega:</strong><br><br>
+
+  <input id="tempoMin" type="number" min="0" style="width:70px;"> min
+  até
+  <input id="tempoMax" type="number" min="0" style="width:70px;"> min
+
+  <button class="btn" style="margin-left:10px;" onclick="salvarTempoEntrega()">
+    💾 Salvar
+  </button>
+</div>
+
     <h1>
       📦 Pedidos Recebidos
       <button class="btn-logout" onclick="fazerLogout()">Sair</button>
     </h1>
+    
     <div id="lista-pedidos">Carregando pedidos...</div>
   </div>
+  
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -270,6 +284,9 @@
         )
         .subscribe();
     }
+
+    // ✅ CARREGAR TEMPO APÓS LOGIN
+    carregarTempoEntrega();
 
   } else {
     erroDiv.textContent = "❌ Senha incorreta!";
@@ -321,18 +338,68 @@
             .subscribe();
         }
 
+        // ✅ CARREGAR TEMPO APÓS LOGIN/RELOAD
+        carregarTempoEntrega();
+
         setInterval(carregarPedidos, 5000);
       }
     });
 
+
+    async function carregarTempoEntrega() {
+  const { data, error } = await supabase_client
+    .from('configuracoes_loja')
+    .select('*')
+    .eq('id', 1)
+    .single();
+
+  if (error) {
+    console.error('Erro ao carregar tempo:', error);
+    return;
+  }
+
+  document.getElementById('tempoMin').value = data.tempo_min;
+  document.getElementById('tempoMax').value = data.tempo_max;
+}
+
+async function salvarTempoEntrega() {
+  const min = Number(document.getElementById('tempoMin').value);
+  const max = Number(document.getElementById('tempoMax').value);
+
+  if (!min || !max || min <= 0 || max <= 0 || min > max) {
+    alert('⛔ Informe um tempo válido (mínimo 1 min)');
+    return;
+  }
+
+  const { error } = await supabase_client
+    .from('configuracoes_loja')
+    .update({
+      tempo_min: min,
+      tempo_max: max
+    })
+    .eq('id', 1);
+
+  if (error) {
+    alert('Erro ao salvar tempo');
+    console.error(error);
+  } else {
+    alert('✅ Tempo de entrega atualizado!');
+  }
+}
+    carregarTempoEntrega();
+
     // ==========================================
     // CARREGAMENTO DE PEDIDOS
     // ==========================================
+    
 
     let supabase_client = window.supabase_client || window.supabase.createClient(
       "https://hrryboxebcrlvwlyydnn.supabase.co",
       "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
     );
+
+    // ✅ CARREGAR TEMPO APÓS CRIAR CLIENTE SUPABASE
+    carregarTempoEntrega();
 
     async function carregarPedidos() {
       const { data, error } = await supabase_client

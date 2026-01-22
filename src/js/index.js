@@ -39,6 +39,35 @@ function loadTheme() {
   if (themeToggle) themeToggle.textContent = isLight ? 'Tema Padrão' : 'Tema Claro';
 }
 
+
+// ==========================================
+// TEMPO DE ENTREGA
+// ==========================================
+
+async function carregarTempoEntregaSite() {
+  const { data, error } = await supabase_client
+    .from('configuracoes_loja')
+    .select('*')
+    .eq('id', 1)
+    .single();
+
+  if (error || !data) {
+    console.error('Erro ao carregar tempo:', error);
+    return;
+  }
+
+  mostrarTempoEntrega(data);
+}
+
+function mostrarTempoEntrega(config) {
+  const el = document.getElementById('tempo-estimado');
+
+  if (el) {
+    el.innerText = `⏱ Tempo: ${config.tempo_min} a ${config.tempo_max} min`;
+  }
+}
+
+
 // ==========================================
 // 2. DADOS DOS PRODUTOS
 // ==========================================
@@ -965,4 +994,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalBairro) modalBairro.value = mainBairro.value;
     updateTotals();
   });
+
+  // ==========================================
+  // CARREGAR TEMPO DE ENTREGA DO SUPABASE
+  // ==========================================
+  carregarTempoEntregaSite();
+
+  // Atualizar em tempo real
+  supabase_client
+    .channel('tempo-entrega-realtime')
+    .on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'configuracoes_loja' },
+      payload => {
+        mostrarTempoEntrega(payload.new);
+      }
+    )
+    .subscribe();
 });
