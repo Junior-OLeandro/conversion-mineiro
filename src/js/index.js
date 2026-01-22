@@ -879,41 +879,39 @@ function exibirAlertaPromocao() {
   const closeBtn = document.getElementById('quickPromoClose');
   const actionBtn = document.getElementById('quickPromoBtnAction');
 
-  // 🛑 CONFIGURAÇÃO PRINCIPAL: DEFINA O DIA EXATO DA PROMOÇÃO
   const HOJE = new Date();
-  const DIA_PROMO = 17;
-  const MES_PROMO = 11; // Janeiro é 0, Dezembro é 11
-  const ANO_PROMO = 2025;
 
-  // Verifica se a data atual corresponde à data configurada
-  const isToday = HOJE.getDate() === DIA_PROMO &&
-    HOJE.getMonth() === MES_PROMO &&
-    HOJE.getFullYear() === ANO_PROMO;
+  // 3 = Quarta-feira
+  const isQuarta = HOJE.getDay() === 3;
 
-  // Verifica se o usuário já viu o alerta nesta sessão
-  const promoVisto = sessionStorage.getItem('quick-promo-visto');
+  // Data no formato YYYY-MM-DD (ex: 2026-01-21)
+  const hojeFormatado = HOJE.toISOString().split('T')[0];
 
-  if (modal && isToday && promoVisto !== 'true') {
+  // Recupera a última quarta que o usuário viu a promo
+  const ultimaQuartaVista = localStorage.getItem('quick-promo-quarta');
 
-    // Exibir o Modal
+  // Só exibe se:
+  // - for quarta
+  // - ainda não foi exibido hoje
+  if (modal && isQuarta && ultimaQuartaVista !== hojeFormatado) {
+
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Bloqueia scroll
+    document.body.style.overflow = 'hidden';
 
-    // Função para fechar e marcar como visto
     const fecharModal = () => {
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      sessionStorage.setItem('quick-promo-visto', 'true');
+
+      // Marca que o usuário já viu a promo nesta quarta
+      localStorage.setItem('quick-promo-quarta', hojeFormatado);
     };
 
-    // Event Listeners
     if (closeBtn) closeBtn.addEventListener('click', fecharModal);
 
     if (actionBtn) {
       actionBtn.addEventListener('click', () => {
         fecharModal();
 
-        // Opcional: Rolar para a seção de lanches após fechar
         const lanches = document.getElementById('grid-hamburgueres');
         if (lanches) {
           lanches.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -921,11 +919,8 @@ function exibirAlertaPromocao() {
       });
     }
 
-    // Fechar ao clicar fora (opcional)
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        fecharModal();
-      }
+      if (e.target === modal) fecharModal();
     });
   }
 }
