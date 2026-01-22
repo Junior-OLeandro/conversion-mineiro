@@ -45,7 +45,7 @@ function loadTheme() {
 // ==========================================
 
 async function carregarTempoEntregaSite() {
-  const { data, error } = await supabase_client
+  const { data, error } = await window.supabase_client
     .from('configuracoes_loja')
     .select('*')
     .eq('id', 1)
@@ -1001,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarTempoEntregaSite();
 
   // Atualizar em tempo real
-  supabase_client
+  window.supabase_client
     .channel('tempo-entrega-realtime')
     .on(
       'postgres_changes',
