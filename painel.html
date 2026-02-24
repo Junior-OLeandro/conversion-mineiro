@@ -511,56 +511,64 @@ async function salvarTempoEntrega() {
 
     // Função auxiliar para enviar mensagem automática via Edge Function
     async function enviarMensagemStatusViaWhatsApp(pedido, novoStatus) {
-      try {
-        // Montar mensagem baseada no status
-        let mensagem = '';
-        switch (novoStatus) {
-          case 'preparando':
-            mensagem = `Ótimo! 👨‍🍳\n\nEstamos preparando seu pedido.\nAvisamos em breve! 🍔`;
-            break;
-          case 'pronto':
-            mensagem = `Pronto! ✅\n\nSeu pedido está pronto.\nSaindo para você agora! 🚀`;
-            break;
-          case 'despachado':
-            mensagem = `Saiu para entrega! 🚚\n\nSeu pedido está a caminho.\nChega em breve! ⏱️`;
-            break;
-          case 'entregue':
-            mensagem = `Entregue! 😋\n\nSeu pedido chegou!\nBom apetite e volte sempre! ❤️`;
-            break;
-          default:
-            return; // Não envia para outros status
-        }
-
-        const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
-        const FUNC_PATH = '/functions/v1/send-whatsapp';
-        const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
-
-        const payload = {
-          nome_cliente: pedido.nome_cliente,
-          telefone: pedido.telefone,
-          pedido_id: pedido.pedido_id,
-          texto_whatsapp: mensagem
-        };
-
-        const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON,
-            'Authorization': `Bearer ${SUPABASE_ANON}`
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          console.log(`✅ Mensagem automática enviada para status "${novoStatus}"`);
-        } else {
-          console.error(`⚠️ Erro ao enviar mensagem:`, res.status);
-        }
-      } catch (err) {
-        console.error('Erro ao chamar Edge Function:', err);
-      }
+  try {
+    // 1. Limpa o telefone para garantir que só tenha números e o código 55
+    let telefoneLimpo = pedido.telefone.replace(/\D/g, '');
+    if (!telefoneLimpo.startsWith('55')) {
+      telefoneLimpo = '55' + telefoneLimpo;
     }
+
+    // 2. Define a frase baseada no status do painel
+    let mensagem = '';
+    switch (novoStatus) {
+      case 'preparando':
+        mensagem = `Olá ${pedido.nome_cliente}! 👨‍🍳\n\nSeu pedido está sendo preparado com muito carinho e logo sairá para entrega!`;
+        break;
+      case 'pronto':
+        mensagem = `Boas notícias, ${pedido.nome_cliente}! ✅\n\nSeu pedido está pronto e sendo embalado!`;
+        break;
+      case 'despachado':
+        mensagem = `A caminho! 🚚\n\nSeu pedido acabou de sair para entrega. Prepare a mesa!`;
+        break;
+      case 'entregue':
+        mensagem = `Entregue! 😋\n\nSeu pedido chegou. Bom apetite! Se puder, nos avalie no site.`;
+        break;
+      default:
+        return;
+    }
+
+    const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
+    const FUNC_PATH = '/functions/v1/send-whatsapp';
+    const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
+
+    const payload = {
+      nome_cliente: pedido.nome_cliente,
+      telefone: telefoneLimpo,
+      pedido_id: pedido.pedido_id,
+      texto_whatsapp: mensagem
+    };
+
+    // 3. Faz a chamada real para o seu Supabase
+    const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON,
+        'Authorization': `Bearer ${SUPABASE_ANON}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      console.log(`✅ WhatsApp enviado: ${novoStatus}`);
+    } else {
+      const errorData = await res.json();
+      console.error('❌ Erro na Edge Function:', errorData);
+    }
+  } catch (err) {
+    console.error('❌ Erro de conexão:', err);
+  }
+}
 
     // Versão melhorada de atualizarStatus com notificações automáticas
     async function atualizarStatus(pedidoId, novoStatus) {
