@@ -246,79 +246,79 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     // ==========================================
-    // AUTENTICAÇÃO
+    // 1. CRIAR CLIENTE SUPABASE (PRIMEIRO)
     // ==========================================
+    
+    const supabase_client = window.supabase.createClient(
+      "https://hrryboxebcrlvwlyydnn.supabase.co",
+      "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
+    );
 
-    const SENHA_ADMIN = "admin123"; // MUDE ISSO PARA SUA SENHA!
+    const SENHA_ADMIN = "admin123";
     let canalPedidos = null;
     let ultimoPedidoId = null;
-    function fazerLogin() {
-  const senhaInput = document.getElementById("senha-input").value;
-  const erroDiv = document.getElementById("erro-login");
 
-  if (senhaInput === SENHA_ADMIN) {
-    localStorage.setItem("painel-autenticado", "true");
-    erroDiv.textContent = "";
-    document.getElementById("login").style.display = "none";
-    document.getElementById("painel").classList.add("visible");
+    // ==========================================
+    // 2. TEMPO DE ENTREGA
+    // ==========================================
 
-    carregarPedidos();
+    async function carregarTempoEntrega() {
+      const { data, error } = await supabase_client
+        .from('configuracoes_loja')
+        .select('*')
+        .eq('id', 1)
+        .single();
 
-    // Evita múltiplas inscrições
-    if (!canalPedidos) {
-      canalPedidos = supabase_client
-        .channel('pedidos-realtime')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'pedidos' },
-          payload => {
+      if (error) {
+        console.error('Erro ao carregar tempo:', error);
+        return;
+      }
 
-            // 🔔 Som apenas para pedido novo REAL
-            if (payload.eventType === 'INSERT') {
-              if (payload.new?.id !== ultimoPedidoId) {
-                ultimoPedidoId = payload.new.id;
-                const audio = new Audio('./src/audio/notification.mp3');
-                audio.play();
-              }
-            }
-
-            console.log('Realtime pedidos:', payload);
-            carregarPedidos();
-          }
-        )
-        .subscribe();
+      document.getElementById('tempoMin').value = data.tempo_min;
+      document.getElementById('tempoMax').value = data.tempo_max;
     }
 
-    // ✅ CARREGAR TEMPO APÓS LOGIN
-    carregarTempoEntrega();
+    async function salvarTempoEntrega() {
+      const min = Number(document.getElementById('tempoMin').value);
+      const max = Number(document.getElementById('tempoMax').value);
 
-  } else {
-    erroDiv.textContent = "❌ Senha incorreta!";
-    document.getElementById("senha-input").value = "";
-  }
-}
+      if (!min || !max || min <= 0 || max <= 0 || min > max) {
+        alert('⛔ Informe um tempo válido (mínimo 1 min)');
+        return;
+      }
 
+      const { error } = await supabase_client
+        .from('configuracoes_loja')
+        .update({
+          tempo_min: min,
+          tempo_max: max
+        })
+        .eq('id', 1);
 
-    function fazerLogout() {
-  localStorage.removeItem("painel-autenticado");
+      if (error) {
+        alert('Erro ao salvar tempo');
+        console.error(error);
+      } else {
+        alert('✅ Tempo de entrega atualizado!');
+      }
+    }
 
-  if (canalPedidos) {
-    supabase_client.removeChannel(canalPedidos);
-    canalPedidos = null;
-  }
+    // ==========================================
+    // 3. AUTENTICAÇÃO
+    // ==========================================
 
-  document.getElementById("painel").classList.remove("visible");
-  document.getElementById("login").style.display = "block";
-}
+    function fazerLogin() {
+      const senhaInput = document.getElementById("senha-input").value;
+      const erroDiv = document.getElementById("erro-login");
 
-    // Verificar se já está autenticado ao carregar
-    window.addEventListener("DOMContentLoaded", () => {
-      if (localStorage.getItem("painel-autenticado") === "true") {
+      if (senhaInput === SENHA_ADMIN) {
+        localStorage.setItem("painel-autenticado", "true");
+        erroDiv.textContent = "";
         document.getElementById("login").style.display = "none";
         document.getElementById("painel").classList.add("visible");
+
         carregarPedidos();
 
-        // ✅ REINICIALIZAR O LISTENER REALTIME
         if (!canalPedidos) {
           canalPedidos = supabase_client
             .channel('pedidos-realtime')
@@ -326,7 +326,6 @@
               'postgres_changes',
               { event: '*', schema: 'public', table: 'pedidos' },
               payload => {
-                // 🔔 Som apenas para pedido novo REAL
                 if (payload.eventType === 'INSERT') {
                   if (payload.new?.id !== ultimoPedidoId) {
                     ultimoPedidoId = payload.new.id;
@@ -334,79 +333,67 @@
                     audio.play();
                   }
                 }
-
-                console.log('Realtime pedidos:', payload);
+                console.log('Realtime:', payload);
                 carregarPedidos();
               }
             )
             .subscribe();
         }
 
-        // ✅ CARREGAR TEMPO APÓS LOGIN/RELOAD
         carregarTempoEntrega();
+      } else {
+        erroDiv.textContent = "❌ Senha incorreta!";
+        document.getElementById("senha-input").value = "";
+      }
+    }
 
+    function fazerLogout() {
+      localStorage.removeItem("painel-autenticado");
+      if (canalPedidos) {
+        supabase_client.removeChannel(canalPedidos);
+        canalPedidos = null;
+      }
+      document.getElementById("painel").classList.remove("visible");
+      document.getElementById("login").style.display = "block";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("painel-autenticado") === "true") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("painel").classList.add("visible");
+        carregarPedidos();
+
+        if (!canalPedidos) {
+          canalPedidos = supabase_client
+            .channel('pedidos-realtime')
+            .on(
+              'postgres_changes',
+              { event: '*', schema: 'public', table: 'pedidos' },
+              payload => {
+                if (payload.eventType === 'INSERT') {
+                  if (payload.new?.id !== ultimoPedidoId) {
+                    ultimoPedidoId = payload.new.id;
+                    const audio = new Audio('./src/audio/notification.mp3');
+                    audio.play();
+                  }
+                }
+                console.log('Realtime:', payload);
+                carregarPedidos();
+              }
+            )
+            .subscribe();
+        }
+
+        carregarTempoEntrega();
         setInterval(carregarPedidos, 5000);
       }
     });
 
-
-    async function carregarTempoEntrega() {
-  const { data, error } = await supabase_client
-    .from('configuracoes_loja')
-    .select('*')
-    .eq('id', 1)
-    .single();
-
-  if (error) {
-    console.error('Erro ao carregar tempo:', error);
-    return;
-  }
-
-  document.getElementById('tempoMin').value = data.tempo_min;
-  document.getElementById('tempoMax').value = data.tempo_max;
-}
-
-async function salvarTempoEntrega() {
-  const min = Number(document.getElementById('tempoMin').value);
-  const max = Number(document.getElementById('tempoMax').value);
-
-  if (!min || !max || min <= 0 || max <= 0 || min > max) {
-    alert('⛔ Informe um tempo válido (mínimo 1 min)');
-    return;
-  }
-
-  const { error } = await supabase_client
-    .from('configuracoes_loja')
-    .update({
-      tempo_min: min,
-      tempo_max: max
-    })
-    .eq('id', 1);
-
-  if (error) {
-    alert('Erro ao salvar tempo');
-    console.error(error);
-  } else {
-    alert('✅ Tempo de entrega atualizado!');
-  }
-}
-    carregarTempoEntrega();
-
     // ==========================================
-    // CARREGAMENTO DE PEDIDOS
+    // 4. CARREGAMENTO DE PEDIDOS
     // ==========================================
-    
-
-    let supabase_client = window.supabase_client || window.supabase.createClient(
-      "https://hrryboxebcrlvwlyydnn.supabase.co",
-      "sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR"
-    );
-
-    // ✅ CARREGAR TEMPO APÓS CRIAR CLIENTE SUPABASE
-    carregarTempoEntrega();
 
     async function carregarPedidos() {
-      // Mapeamento de status para labels mais descritivos
       const statusLabel = {
         novo: '🕓 Aguardando',
         confirmado: '✔️ Confirmado',
@@ -424,7 +411,7 @@ async function salvarTempoEntrega() {
 
       if (error) {
         console.error("Erro ao carregar pedidos:", error.message);
-        document.getElementById("lista-pedidos").innerHTML = `<p style="color: red;"><strong>Erro ao carregar dados:</strong> ${error.message}</p>`;
+        document.getElementById("lista-pedidos").innerHTML = `<p style="color: red;"><strong>Erro:</strong> ${error.message}</p>`;
         return;
       }
 
@@ -439,7 +426,6 @@ async function salvarTempoEntrega() {
       data.forEach(p => {
         const div = document.createElement("div");
         const statusClass = p.status || 'novo';
-
         const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
         const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
 
@@ -509,108 +495,105 @@ async function salvarTempoEntrega() {
       carregarPedidos();
     }
 
-    // Função auxiliar para enviar mensagem automática via Edge Function
+    // ==========================================
+    // 5. ENVIAR MENSAGEM WHATSAPP
+    // ==========================================
+
     async function enviarMensagemStatusViaWhatsApp(pedido, novoStatus) {
-  try {
-    // 1. Limpa o telefone para garantir que só tenha números e o código 55
-    let telefoneLimpo = pedido.telefone.replace(/\D/g, '');
-    if (!telefoneLimpo.startsWith('55')) {
-      telefoneLimpo = '55' + telefoneLimpo;
+      try {
+        let telefoneLimpo = pedido.telefone.replace(/\D/g, '');
+        if (!telefoneLimpo.startsWith('55')) {
+          telefoneLimpo = '55' + telefoneLimpo;
+        }
+
+        let mensagem = '';
+        switch (novoStatus) {
+          case 'preparando':
+            mensagem = `Olá ${pedido.nome_cliente}! 👨‍🍳\n\nSeu pedido está sendo preparado com muito carinho!`;
+            break;
+          case 'pronto':
+            mensagem = `Boas notícias, ${pedido.nome_cliente}! ✅\n\nSeu pedido está pronto!`;
+            break;
+          case 'despachado':
+            mensagem = `A caminho! 🚚\n\nSeu pedido acabou de sair para entrega. Prepare a mesa!`;
+            break;
+          case 'entregue':
+            mensagem = `Entregue! 😋\n\nSeu pedido chegou. Bom apetite!`;
+            break;
+          default:
+            return;
+        }
+
+        const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
+        const FUNC_PATH = '/functions/v1/send-whatsapp';
+        const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
+
+        const payload = {
+          nome_cliente: pedido.nome_cliente,
+          telefone: telefoneLimpo,
+          pedido_id: pedido.pedido_id,
+          texto_whatsapp: mensagem
+        };
+
+        const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          console.log(`✅ WhatsApp enviado para ${novoStatus}`);
+        } else {
+          const errorData = await res.json();
+          console.error('❌ Erro:', errorData);
+        }
+      } catch (err) {
+        console.error('❌ Erro de conexão:', err);
+      }
     }
 
-    // 2. Define a frase baseada no status do painel
-    let mensagem = '';
-    switch (novoStatus) {
-      case 'preparando':
-        mensagem = `Olá ${pedido.nome_cliente}! 👨‍🍳\n\nSeu pedido está sendo preparado com muito carinho e logo sairá para entrega!`;
-        break;
-      case 'pronto':
-        mensagem = `Boas notícias, ${pedido.nome_cliente}! ✅\n\nSeu pedido está pronto e sendo embalado!`;
-        break;
-      case 'despachado':
-        mensagem = `A caminho! 🚚\n\nSeu pedido acabou de sair para entrega. Prepare a mesa!`;
-        break;
-      case 'entregue':
-        mensagem = `Entregue! 😋\n\nSeu pedido chegou. Bom apetite! Se puder, nos avalie no site.`;
-        break;
-      default:
-        return;
-    }
+    // ==========================================
+    // 6. ATUALIZAR STATUS
+    // ==========================================
 
-    const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
-    const FUNC_PATH = '/functions/v1/send-whatsapp';
-    const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
-
-    const payload = {
-      nome_cliente: pedido.nome_cliente,
-      telefone: telefoneLimpo,
-      pedido_id: pedido.pedido_id,
-      texto_whatsapp: mensagem
-    };
-
-    // 3. Faz a chamada real para o seu Supabase
-    const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON,
-        'Authorization': `Bearer ${SUPABASE_ANON}`
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (res.ok) {
-      console.log(`✅ WhatsApp enviado: ${novoStatus}`);
-    } else {
-      const errorData = await res.json();
-      console.error('❌ Erro na Edge Function:', errorData);
-    }
-  } catch (err) {
-    console.error('❌ Erro de conexão:', err);
-  }
-}
-
-    // Versão melhorada de atualizarStatus com notificações automáticas
     async function atualizarStatus(pedidoId, novoStatus) {
+      const { data: pedidoAtual, error: fetchError } = await supabase_client
+        .from("pedidos")
+        .select("*")
+        .eq("id", pedidoId)
+        .single();
 
-  // 1️⃣ Buscar pedido atual
-  const { data: pedidoAtual, error: fetchError } = await supabase_client
-    .from("pedidos")
-    .select("*")
-    .eq("id", pedidoId)
-    .single();
+      if (fetchError || !pedidoAtual) {
+        alert("Erro ao buscar pedido");
+        return;
+      }
 
-  if (fetchError || !pedidoAtual) {
-    alert("Erro ao buscar pedido");
-    return;
-  }
+      if (pedidoAtual.ultima_notificacao === novoStatus) {
+        console.log("⚠️ Mensagem já enviada para esse status");
+        return;
+      }
 
-  // 🛑 EVITA DUPLICAÇÃO
-  if (pedidoAtual.ultima_notificacao === novoStatus) {
-    console.log("⚠️ Mensagem já enviada para esse status");
-    return;
-  }
+      const { error: updateError } = await supabase_client
+        .from("pedidos")
+        .update({
+          status: novoStatus,
+          ultima_notificacao: novoStatus,
+          notificacao_enviada_em: new Date()
+        })
+        .eq("id", pedidoId);
 
-  // 2️⃣ Atualizar status + controle de notificação
-  const { error: updateError } = await supabase_client
-    .from("pedidos")
-    .update({
-      status: novoStatus,
-      ultima_notificacao: novoStatus,
-      notificacao_enviada_em: new Date()
-    })
-    .eq("id", pedidoId);
+      if (updateError) {
+        alert("Erro ao atualizar status");
+        return;
+      }
 
-  if (updateError) {
-    alert("Erro ao atualizar status");
-    return;
-  }
-
-  // 3️⃣ Enviar WhatsApp
-  await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
-
-  carregarPedidos();
-}
+      await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
+      carregarPedidos();
+    }
 
     function imprimirPedido(id) {
       window.open(`print.html?id=${id}`, "_blank");
