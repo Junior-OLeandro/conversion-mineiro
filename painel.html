@@ -176,6 +176,10 @@
       background: #95a5a6;
     }
 
+    .btn-status.despachado {
+      background: #1abc9c;
+    }
+
     .status {
       font-weight: bold;
       color: #2ecc71;
@@ -402,6 +406,17 @@ async function salvarTempoEntrega() {
     carregarTempoEntrega();
 
     async function carregarPedidos() {
+      // Mapeamento de status para labels mais descritivos
+      const statusLabel = {
+        novo: '🕓 Aguardando',
+        confirmado: '✔️ Confirmado',
+        preparando: '👨‍🍳 Preparando',
+        pronto: '✅ Pronto',
+        despachado: '🚚 Saiu p/ Entrega',
+        entregue: '📦 Entregue',
+        cancelado: '❌ Cancelado'
+      };
+
       const { data, error } = await supabase_client
         .from("pedidos")
         .select("*")
@@ -442,11 +457,12 @@ async function salvarTempoEntrega() {
         div.innerHTML = `
         <div class="linha">
           <strong>🆔 ${p.pedido_id}</strong>
-          <span class="status">${foiLido ? '👁️ LIDO' : (p.status || 'NOVO').toUpperCase()}</span>
+          <span class="status">${foiLido ? '👁️ LIDO' : statusLabel[p.status || 'novo']}</span>
         </div>
 
         <div class="detalhes">
           <strong>👤 Cliente:</strong> ${p.nome_cliente}<br>
+          ${p.telefone ? `<strong>📱 Telefone:</strong> ${p.telefone}<br>` : ''}
           <strong>📍 Endereço:</strong> <span class="endereco">${p.endereco}</span>
           ${p.numero_casa ? `<strong>Nº:</strong> ${p.numero_casa}<br>` : ''}
           ${p.bairro ? `<strong>Bairro:</strong> ${p.bairro}<br>` : ''}
@@ -472,10 +488,10 @@ async function salvarTempoEntrega() {
         </div>
 
         <div class="botoes-status">
-          <button class="btn btn-status novo" onclick="atualizarStatus('${p.id}', 'novo')">📨 Novo</button>
           <button class="btn btn-status preparando" onclick="atualizarStatus('${p.id}', 'preparando')">👨‍🍳 Preparando</button>
           <button class="btn btn-status pronto" onclick="atualizarStatus('${p.id}', 'pronto')">✅ Pronto</button>
-          <button class="btn btn-status entregue" onclick="atualizarStatus('${p.id}', 'entregue')">🚚 Entregue</button>
+          <button class="btn btn-status despachado" onclick="atualizarStatus('${p.id}', 'despachado')">🚚 Saiu p/ Entrega</button>
+          <button class="btn btn-status entregue" onclick="atualizarStatus('${p.id}', 'entregue')">📦 Entregue</button>
         </div>
       `;
 
@@ -493,21 +509,100 @@ async function salvarTempoEntrega() {
       carregarPedidos();
     }
 
-    async function atualizarStatus(pedidoId, novoStatus) {
-      const { data, error } = await supabase_client
-        .from("pedidos")
-        .update({ status: novoStatus })
-        .eq("id", pedidoId);
+    // Função auxiliar para enviar mensagem automática via Edge Function
+    async function enviarMensagemStatusViaWhatsApp(pedido, novoStatus) {
+      try {
+        // Montar mensagem baseada no status
+        let mensagem = '';
+        switch (novoStatus) {
+          case 'preparando':
+            mensagem = `Ótimo! 👨‍🍳\n\nEstamos preparando seu pedido.\nAvisamos em breve! 🍔`;
+            break;
+          case 'pronto':
+            mensagem = `Pronto! ✅\n\nSeu pedido está pronto.\nSaindo para você agora! 🚀`;
+            break;
+          case 'despachado':
+            mensagem = `Saiu para entrega! 🚚\n\nSeu pedido está a caminho.\nChega em breve! ⏱️`;
+            break;
+          case 'entregue':
+            mensagem = `Entregue! 😋\n\nSeu pedido chegou!\nBom apetite e volte sempre! ❤️`;
+            break;
+          default:
+            return; // Não envia para outros status
+        }
 
-      if (error) {
-        console.error("Erro ao atualizar status:", error.message);
-        alert("Erro ao atualizar status do pedido");
-        return;
+        const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
+        const FUNC_PATH = '/functions/v1/send-whatsapp';
+        const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
+
+        const payload = {
+          nome_cliente: pedido.nome_cliente,
+          telefone: pedido.telefone,
+          pedido_id: pedido.pedido_id,
+          texto_whatsapp: mensagem
+        };
+
+        const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON,
+            'Authorization': `Bearer ${SUPABASE_ANON}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          console.log(`✅ Mensagem automática enviada para status "${novoStatus}"`);
+        } else {
+          console.error(`⚠️ Erro ao enviar mensagem:`, res.status);
+        }
+      } catch (err) {
+        console.error('Erro ao chamar Edge Function:', err);
       }
-
-      console.log(`Pedido ${pedidoId} atualizado para: ${novoStatus}`);
-      carregarPedidos(); 
     }
+
+    // Versão melhorada de atualizarStatus com notificações automáticas
+    async function atualizarStatus(pedidoId, novoStatus) {
+
+  // 1️⃣ Buscar pedido atual
+  const { data: pedidoAtual, error: fetchError } = await supabase_client
+    .from("pedidos")
+    .select("*")
+    .eq("id", pedidoId)
+    .single();
+
+  if (fetchError || !pedidoAtual) {
+    alert("Erro ao buscar pedido");
+    return;
+  }
+
+  // 🛑 EVITA DUPLICAÇÃO
+  if (pedidoAtual.ultima_notificacao === novoStatus) {
+    console.log("⚠️ Mensagem já enviada para esse status");
+    return;
+  }
+
+  // 2️⃣ Atualizar status + controle de notificação
+  const { error: updateError } = await supabase_client
+    .from("pedidos")
+    .update({
+      status: novoStatus,
+      ultima_notificacao: novoStatus,
+      notificacao_enviada_em: new Date()
+    })
+    .eq("id", pedidoId);
+
+  if (updateError) {
+    alert("Erro ao atualizar status");
+    return;
+  }
+
+  // 3️⃣ Enviar WhatsApp
+  await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
+
+  carregarPedidos();
+}
 
     function imprimirPedido(id) {
       window.open(`print.html?id=${id}`, "_blank");

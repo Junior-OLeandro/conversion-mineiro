@@ -21,7 +21,7 @@
       padding: 10px;
       font-size: 13px;
       line-height: 1.3;
-      font-weight: 500;
+      font-weight: bold;
     }
 
     small {
@@ -32,10 +32,6 @@
 
     .centralizado {
       text-align: center;
-    }
-
-    .bold {
-      font-weight: bold;
     }
 
     .linha {
@@ -146,7 +142,8 @@
       
       <div class="bold">CLIENTE:</div>
       <div>${p.nome_cliente || 'Não informado'}</div>
-      <div>END: ${p.endereco || 'Retirada'}${p.numero_casa ? `, ${p.numero_casa}` : ''}${p.bairro ? ` - ${p.bairro}` : ''}</div>
+      ${p.telefone ? `<div class="bold">TEL: ${p.telefone}</div>` : ''}
+      <div class="bold">END: ${p.endereco || 'Retirada'}${p.numero_casa ? `, ${p.numero_casa}` : ''}${p.bairro ? ` - ${p.bairro}` : ''}</div>
       <div class="linha"></div>
 
       <div class="bold">ITENS:</div>

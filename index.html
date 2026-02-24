@@ -97,6 +97,10 @@
           <input id="nomecliente" type="text" placeholder="Digite seu nome">
         </label>
 
+        <label for="tel-cliente">Telefone:
+          <input id="tel-cliente" type="text" placeholder="Digite seu telefone">
+        </label>
+
         <label for="endereco">Endereço (rua, complemento...):
           <input id="endereco" type="text" placeholder="Digite o endereço completo">
         </label>
@@ -186,9 +190,7 @@
   </main>
   <footer class="footer">
     <div class="social">
-      <!-- <a href="#" class="icons">
-        <i class="fa-brands fa-facebook-f"></i>
-      </a> -->
+
       <a href="https://wa.me/5532984550411" class="icons">
         <i class="fa-brands fa-whatsapp"></i>
       </a>
@@ -230,6 +232,10 @@
           <h3>Dados do pedido</h3>
           <label>Nome:
             <input id="modal-nome" type="text" placeholder="Digite seu nome">
+          </label>
+
+          <label for="modal-tel-cliente">Telefone:
+            <input id="modal-tel-cliente" type="text" placeholder="Digite seu telefone">
           </label>
 
           <label>Endereço:
@@ -275,6 +281,36 @@
           <button id="confirmCloseBtn" class="btn-secondary">Voltar</button>
           <button id="confirmSendBtn" class="btn-primary">Confirmar e Enviar por WhatsApp</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE SUCESSO DO PEDIDO -->
+  <div id="successModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="successTitle"
+    style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+      <h2 id="successTitle" style="color: #2ecc71; margin-bottom: 20px; background: #f0f9f4; padding: 20px; border-radius: 8px;">✅ Pedido Enviado!</h2>
+
+      <div style="margin-bottom: 15px;">
+        <p><strong>Cliente:</strong> <span id="pedido-cliente">-</span></p>
+        <p><strong>Total:</strong> <span id="pedido-total" style="color: #e74c3c; font-weight: bold;">R$ 0,00</span></p>
+      </div>
+
+      <div
+        style="background:#fff3cd; padding:16px; border-radius:10px; margin-bottom:18px; border-left:4px solid #f0ad4e;">
+        <p style="margin:0; font-size:0.95em; color:#5a4a00;">
+          Seu pedido foi enviado para nossa equipe 🍔<br>
+          <strong>Aguarde a confirmação</strong> — em instantes entraremos em contato pelo WhatsApp.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnAbrirWhatsApp" class="btn-primary" style="width: 100%">
+          💬 Falar com a loja
+        </button>
+        <button id="btnContinuarComprando" class="btn-secondary" style="width: 100%;">
+          ✕ Fechar
+        </button>
       </div>
     </div>
   </div>

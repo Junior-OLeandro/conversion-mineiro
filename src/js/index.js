@@ -125,7 +125,7 @@ const productsData = [
 
 const extras = [
   { id: 'canastra', name: 'Queijo Canastra', price: 6.00 },
-  { id: 'cheddar', name: 'Fatias de Cheddar', price: 4.00 },
+  { id: 'cheddar', name: 'Fatias de Cheddar', price: 5.00 },
   { id: 'cheese', name: 'Cream Cheese', price: 5.00 },
   { id: 'requei', name: 'Requeijão', price: 5.00 },
   { id: 'bacon', name: 'Tiras de Bacon', price: 5.00 },
@@ -137,8 +137,9 @@ const extras = [
   { id: 'cebolac', name: 'Cebola Caremelizada', price: 5.00 },
   { id: 'piclesc', name: 'Picles de Cebola Roxa', price: 4.00 },
   { id: 'chutney', name: 'Chutney de Abacaxi', price: 5.00 },
-  { id: 'ketchup', name: 'Ketchup de Goiabada', price: 4.00 },
-  { id: 'bbq', name: 'Barbecue', price: 4.00 },
+  { id: 'maionese', name: 'Maionese Mineira (Potinho 30ml)', price: 5.00 },
+  { id: 'ketchup', name: 'Ketchup de Goiabada (Potinho 30ml)', price: 5.00 },
+  { id: 'bbq', name: 'Barbecue (Potinho 30ml)', price: 5.00 },
   { id: 'bife', name: 'Bife artesanal de boi 160g', price: 13.00 },
 ];
 
@@ -161,6 +162,7 @@ const modalTotal = document.getElementById('modal-total');
 
 const modalNome = document.getElementById('modal-nome');
 const modalEndereco = document.getElementById('modal-endereco');
+const modalTelefone = document.getElementById('modal-tel-cliente');
 const modalNumeroCasa = document.getElementById('modal-numero-casa'); // Novo campo
 const modalBairro = document.getElementById('modal-bairro');
 const modalPagamento = document.getElementById('modal-pagamento');
@@ -173,6 +175,12 @@ const confirmSendBtn = document.getElementById('confirmSendBtn');
 
 const mainTrocoInfo = document.getElementById('troco-info');
 const mainTrocoInput = document.getElementById('troco');
+
+// ==========================================
+// CONTROLE DE ESTADO (Evitar Duplicação)
+// ==========================================
+let pedidoEnviando = false;
+let ultimoPedidoId = null;
 
 // ==========================================
 // 4. FUNÇÕES DE FORMATAÇÃO E CÁLCULO
@@ -509,6 +517,7 @@ function openCartModal() {
 
   // Campos do formulário
   syncField('nomecliente', modalNome);
+  syncField('tel-cliente', modalTelefone);
   syncField('endereco', modalEndereco);
   syncField('numero-casa', modalNumeroCasa);
   syncField('obs', modalObs);
@@ -667,14 +676,25 @@ function handleTrocoInput() {
 // ==========================================
 // SUPABASE - SALVAR PEDIDO
 async function salvarPedido(pedido) {
+  // ==========================================
+  // ESTADOS DISPONÍVEIS PARA O PEDIDO:
+  // - novo: Pedido recebido, aguardando confirmação
+  // - confirmado: Confirmado pelo admin no painel
+  // - preparando: Sendo preparado
+  // - pronto: Pronto para entrega/retirada
+  // - despachado: Saiu para entrega
+  // - entregue: Entregue ao cliente
+  // - cancelado: Pedido cancelado
+  // ==========================================
+  
   // Buscar o próximo número de pedido
   const { data: ultimoPedido, error: erroConsulta } = await window.supabase_client
     .from("pedidos")
     .select("pedido_id")
-    .order("created_at", { ascending: false })
+    .order("data_criacao", { ascending: false })
     .limit(1);
 
-  let proximoNumero = 0;
+  let proximoNumero = 1;
   if (!erroConsulta && ultimoPedido && ultimoPedido.length > 0) {
     // Extrai o número do último pedido_id (ex: "Nº123" -> 123)
     const ultimoId = ultimoPedido[0].pedido_id;
@@ -689,6 +709,7 @@ async function salvarPedido(pedido) {
     .insert([{
       pedido_id: `Nº${proximoNumero}`,
       nome_cliente: pedido.nome,
+      telefone: pedido.telefone,
       itens: pedido.itens,
       observacao: pedido.observacao,
       pagamento: pedido.pagamento,
@@ -698,12 +719,16 @@ async function salvarPedido(pedido) {
       bairro: pedido.bairro,
       status: 'novo',
       data_criacao: new Date().toISOString()
-    }]);
+    }])
+    .select();
 
   if (error) {
     console.error("Erro detalhado ao salvar:", error.message);
-    alert("Erro ao registrar pedido no banco de dados.");
+    throw new Error("Erro ao registrar pedido no banco de dados.");
   }
+
+  // Retornar os dados do pedido criado
+  return data && data.length > 0 ? data[0] : null;
 }
 
 // ==========================================
@@ -714,6 +739,7 @@ async function enviarWhatsapp() {
   if (cart.length === 0) return alert('Carrinho vazio.');
 
   const nome = modalNome.value.trim();
+  const telefone = modalTelefone.value.trim();
   const enderecoOriginal = modalEndereco.value.trim(); // Renomeado para Original
   const numeroCasa = modalNumeroCasa ? modalNumeroCasa.value.trim() : '';
   const bairro = modalBairro.options[modalBairro.selectedIndex]?.text || '';
@@ -727,6 +753,7 @@ async function enviarWhatsapp() {
 
   // VALIDAÇÕES
   if (!nome) return alert('Informe seu nome.');
+  if (!telefone) return alert('Informe seu telefone para contato.');
   if (!enderecoOriginal) return alert('Informe o endereço (rua/logradouro).');
   if (!numeroCasa) return alert('Informe o número da casa/apto.');
   if (!bairroValor) return alert('Selecione o bairro.');
@@ -796,6 +823,7 @@ async function enviarWhatsapp() {
   texto += `*----------------------------------*\n\n`;
 
   texto += `*👤 CLIENTE E ENTREGA:*\n`;
+  texto += `*Telefone:* ${telefone}\n`;
   texto += `*Nome:* ${nome}\n`;
   texto += `*Endereço:* ${enderecoFormatado}\n`; // <-- AGORA USA A VARIÁVEL FORMATADA
   texto += `*Nº da Casa/Apto:* ${numeroCasa}\n`;
@@ -838,7 +866,7 @@ async function enviarWhatsapp() {
 
   const pedido = {
   nome: nome,
-  telefone: '', // se você não coleta telefone, pode deixar vazio por enquanto
+  telefone: telefone,
   endereco: enderecoOriginal,
   numero_casa: numeroCasa,
   bairro: bairro,
@@ -859,14 +887,187 @@ async function enviarWhatsapp() {
   const numero = '5532984550411';
   const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
 
-  // 🔴 PRIMEIRO: salva no Supabase
-await salvarPedido(pedido);
+  // 🔴 PRIMEIRO: Verificar se já está enviando (evita duplicação)
+  if (pedidoEnviando) {
+    alert('Seu pedido está sendo processado... Aguarde!');
+    return;
+  }
 
-// 🟢 DEPOIS: abre WhatsApp
-closeCartModal();
-window.open(url, '_blank');
+  // Desabilitar botão durante o envio
+  pedidoEnviando = true;
+  confirmSendBtn.disabled = true;
+  confirmSendBtn.innerText = '⏳ Enviando pedido...';
 
+  try {
+    // Salvar no Supabase
+    const resultado = await salvarPedido(pedido);
+    
+    if (resultado && resultado.pedido_id) {
+      // ✅ SUCESSO: Mostrar tela de confirmação
+      closeCartModal();
+      mostrarTelaConfirmacao(resultado, texto);
+      
+      // Limpar carrinho
+      cart = [];
+      // Atualiza a UI do carrinho (função existente)
+      renderCart();
+      
+    } else {
+      throw new Error('Erro ao salvar pedido');
+    }
+  } catch (erro) {
+    console.error('Erro ao processar pedido:', erro);
+    alert('❌ Erro ao processar seu pedido. Tente novamente.');
+  } finally {
+    // Reabilitar botão
+    pedidoEnviando = false;
+    confirmSendBtn.disabled = false;
+    confirmSendBtn.innerText = 'Confirmar e Enviar por WhatsApp';
+  }
 }
+
+// ==========================================
+// TELA DE CONFIRMAÇÃO (Sucesso do Pedido)
+// ==========================================
+
+function mostrarTelaConfirmacao(pedidoData, textoWhatsApp) {
+  const numero = '5532984550411';
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(textoWhatsApp)}`;
+  
+  const modal = document.getElementById('successModal');
+  if (!modal) {
+    console.error('Modal de sucesso não encontrado');
+    return;
+  }
+  // Atualizar dados no modal com verificações para evitar exceções
+  try {
+    const elNumero = document.getElementById('pedido-numero');
+    const elCliente = document.getElementById('pedido-cliente');
+    const elTotal = document.getElementById('pedido-total');
+    const elTempo = document.getElementById('pedido-tempo');
+
+    if (elNumero) elNumero.innerText = pedidoData.pedido_id || '';
+    if (elCliente) elCliente.innerText = pedidoData.nome_cliente || '';
+    if (elTotal) elTotal.innerText = (typeof formatBRL === 'function') ? formatBRL(pedidoData.total) : (pedidoData.total || 'R$ 0,00');
+    if (elTempo) elTempo.innerText = '20-30';
+
+    // Botão enviar para WhatsApp (opcional)
+    const btnWhatsApp = document.getElementById('btnAbrirWhatsApp');
+    if (btnWhatsApp) btnWhatsApp.onclick = () => { window.open(url, '_blank'); };
+
+    // Botão continuar comprando
+    const btnContinuar = document.getElementById('btnContinuarComprando');
+    if (btnContinuar) btnContinuar.onclick = () => { fecharTelaConfirmacao(); };
+
+  } catch (err) {
+    console.error('Erro ao atualizar modal de confirmação:', err);
+    // Não rethrow — queremos garantir que o fluxo do pedido continue
+  }
+
+  // Exibir modal (sempre tentar exibir mesmo que alguns campos falhem)
+  try {
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  } catch (err) {
+    console.error('Erro ao exibir modal de confirmação:', err);
+  }
+
+  // 🚀 PREPARADO PARA INTEGRAÇÃO COM API
+  // Aqui você pode adicionar uma chamada à sua API para enviar mensagem automática
+  // Dispara a Edge Function (não bloqueante) para enviar WhatsApp automático
+  try {
+    if (typeof enviarMensagemAutomaticaViaAPI === 'function') {
+      // Passa o objeto pedidoData e também o texto formatado caso prefira manter a mensagem atual
+      const payload = Object.assign({}, pedidoData, { texto: textoWhatsApp });
+      enviarMensagemAutomaticaViaAPI(payload);
+    }
+  } catch (err) {
+    console.error('Erro ao iniciar envio automático via API:', err);
+  }
+}
+
+function fecharTelaConfirmacao() {
+  const modal = document.getElementById('successModal');
+  if (modal) {
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+// ==========================================
+// INTEGRAÇÃO COM API (para o futuro)
+// ==========================================
+
+/**
+ * ESTRUTURA PRONTA PARA INTEGRAÇÃO COM WhatsApp Cloud API
+ * 
+ * Quando quiser automatizar:
+ * 1. Crie um backend (Node.js, Python, etc)
+ * 2. Configure sua conta WhatsApp Business API
+ * 3. Descomente a função abaixo e ajuste a URL
+ * 4. O sistema enviará mensagens automáticas baseado em status
+ */
+
+async function enviarMensagemAutomaticaViaAPI(pedidoData) {
+  // Chamará a Edge Function do Supabase que contém as credenciais (seguras no servidor)
+  // Configure a função no Supabase com o nome `send-whatsapp` e adicione os secrets
+  try {
+    const PROJECT_URL = 'https://hrryboxebcrlvwlyydnn.supabase.co';
+    const FUNC_PATH = '/functions/v1/send-whatsapp';
+
+    // Se quiser usar a anon key do projeto (opcional), cole-a aqui ou deixe em branco
+    const SUPABASE_ANON = 'sb_publishable_1ykTwghNLzY3nKKdeLE7Rg_zEHqrJbR';
+
+    const body = Object.assign({}, pedidoData, { texto_whatsapp: pedidoData.texto_whatsapp || pedidoData.texto });
+
+    const res = await fetch(`${PROJECT_URL}${FUNC_PATH}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'apikey' header pode ser necessário dependendo das configurações da sua função
+        'apikey': SUPABASE_ANON,
+        'Authorization': `Bearer ${SUPABASE_ANON}`
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      const err = await res.text().catch(() => 'No body');
+      console.error('Erro ao chamar Edge Function send-whatsapp:', res.status, err);
+    } else {
+      console.log('Edge Function send-whatsapp disparada com sucesso');
+    }
+  } catch (err) {
+    console.error('Erro ao chamar enviarMensagemAutomaticaViaAPI:', err);
+  }
+}
+
+// ESTRUTURA PARA ATUALIZAR STATUS E DISPARAR MENSAGENS
+// Use isso no painel quando o status mudar
+
+/**
+ * Quando você clicar no painel em "Preparando", "Pronto", "Despachado":
+ * 
+ * async function atualizarStatusENotificar(pedidoId, novoStatus) {
+ *   // 1. Atualizar status no banco
+ *   await supabaseClient
+ *     .from('pedidos')
+ *     .update({ status: novoStatus })
+ *     .eq('id', pedidoId);
+ *   
+ *   // 2. Buscar dados do pedido
+ *   const pedido = await supabaseClient
+ *     .from('pedidos')
+ *     .select('*')
+ *     .eq('id', pedidoId)
+ *     .single();
+ *   
+ *   // 3. Enviar mensagem automática
+ *   await enviarNotificacaoStatusViaAPI(pedido.data[0], novoStatus);
+ * }
+ */
 
 // ==========================================
 // 10. HORÁRIO E EVENTOS INICIAIS

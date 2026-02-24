@@ -1,3 +1,6 @@
 {
-    "liveServer.settings.port": 5502
+    "liveServer.settings.port": 5502,
+    "deno.enable": true,
+    "deno.lint": true,
+    "deno.unstable": true
 }
