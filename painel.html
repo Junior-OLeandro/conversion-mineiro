@@ -501,10 +501,17 @@
 
     async function enviarMensagemStatusViaWhatsApp(pedido, novoStatus) {
       try {
+        if (!pedido || !pedido.telefone) {
+          console.warn('⚠️ Pedido ou telefone inválido');
+          return;
+        }
+
         let telefoneLimpo = pedido.telefone.replace(/\D/g, '');
         if (!telefoneLimpo.startsWith('55')) {
           telefoneLimpo = '55' + telefoneLimpo;
         }
+
+        console.log('📱 Enviando WhatsApp para:', telefoneLimpo);
 
         let mensagem = '';
         switch (novoStatus) {
@@ -546,12 +553,15 @@
 
         if (res.ok) {
           console.log(`✅ WhatsApp enviado para ${novoStatus}`);
+          alert(`✅ Mensagem enviada para ${pedido.nome_cliente}`);
         } else {
           const errorData = await res.json();
           console.error('❌ Erro:', errorData);
+          alert(`❌ Erro ao enviar: ${JSON.stringify(errorData)}`);
         }
       } catch (err) {
         console.error('❌ Erro de conexão:', err);
+        alert(`❌ Erro: ${err.message}`);
       }
     }
 
@@ -560,38 +570,52 @@
     // ==========================================
 
     async function atualizarStatus(pedidoId, novoStatus) {
-      const { data: pedidoAtual, error: fetchError } = await supabase_client
-        .from("pedidos")
-        .select("*")
-        .eq("id", pedidoId)
-        .single();
+      try {
+        const { data: pedidoAtual, error: fetchError } = await supabase_client
+          .from("pedidos")
+          .select("*")
+          .eq("id", pedidoId)
+          .single();
 
-      if (fetchError || !pedidoAtual) {
-        alert("Erro ao buscar pedido");
-        return;
+        if (fetchError || !pedidoAtual) {
+          alert("❌ Erro ao buscar pedido");
+          return;
+        }
+
+        if (pedidoAtual.ultima_notificacao === novoStatus) {
+          console.log("⚠️ Mensagem já enviada para esse status");
+          alert("⚠️ Mensagem já foi enviada para este status");
+          return;
+        }
+
+        const { error: updateError } = await supabase_client
+          .from("pedidos")
+          .update({
+            status: novoStatus,
+            ultima_notificacao: novoStatus,
+            notificacao_enviada_em: new Date()
+          })
+          .eq("id", pedidoId);
+
+        if (updateError) {
+          alert("❌ Erro ao atualizar status");
+          console.error(updateError);
+          return;
+        }
+
+        // ✅ Enviar mensagem se telefone existir
+        if (pedidoAtual.telefone) {
+          await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
+        } else {
+          console.warn('⚠️ Telefone não encontrado para enviar WhatsApp');
+          alert('⚠️ Aviso: Telefone não configurado, mensagem não foi enviada');
+        }
+        
+        carregarPedidos();
+      } catch (erro) {
+        console.error('Erro ao atualizar status:', erro);
+        alert(`❌ Erro: ${erro.message}`);
       }
-
-      if (pedidoAtual.ultima_notificacao === novoStatus) {
-        console.log("⚠️ Mensagem já enviada para esse status");
-        return;
-      }
-
-      const { error: updateError } = await supabase_client
-        .from("pedidos")
-        .update({
-          status: novoStatus,
-          ultima_notificacao: novoStatus,
-          notificacao_enviada_em: new Date()
-        })
-        .eq("id", pedidoId);
-
-      if (updateError) {
-        alert("Erro ao atualizar status");
-        return;
-      }
-
-      await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
-      carregarPedidos();
     }
 
     function imprimirPedido(id) {
