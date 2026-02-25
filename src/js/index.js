@@ -479,6 +479,9 @@ function updateTotals() {
   if (modalSubtotal) modalSubtotal.textContent = 'Subtotal: ' + formatBRL(subtotal);
   if (modalFrete) modalFrete.textContent = 'Entrega: ' + formatBRL(frete);
   if (modalTotal) modalTotal.textContent = 'Total: ' + formatBRL(total);
+
+  atualizarValorPix();
+  atualizarValorPixModal();
 }
 
 // ==========================================
@@ -559,11 +562,20 @@ function openCartModal() {
 
 function handlePagamentoChange() {
   const modalSemTrocoCheckbox = document.getElementById('modal-sem-troco');
+  const modalPixContainer = document.getElementById('modal-pix-container');
 
   if (modalPagamento.value === 'dinheiro') {
     modalTrocoContainer.style.display = 'block';
+    if (modalPixContainer) modalPixContainer.style.display = 'none';
+  } else if (modalPagamento.value === 'pix') {
+    modalTrocoContainer.style.display = 'none';
+    if (modalPixContainer) {
+      modalPixContainer.style.display = 'block';
+      atualizarValorPixModal();
+    }
   } else {
     modalTrocoContainer.style.display = 'none';
+    if (modalPixContainer) modalPixContainer.style.display = 'none';
     modalTrocoInput.value = '';
     modalTrocoInput.disabled = false;
     modalTrocoInfo.textContent = '';
@@ -590,12 +602,19 @@ function handlePagamentoChange() {
 function toggleTroco() {
   const pagamento = document.getElementById("pagamento").value;
   const trocoDiv = document.getElementById("troco-container");
+  const pixDiv = document.getElementById("pix-container");
   const semTrocoCheckbox = document.getElementById("sem-troco");
 
   if (pagamento === "dinheiro") {
     trocoDiv.style.display = "block";
+    pixDiv.style.display = "none";
+  } else if (pagamento === "pix") {
+    trocoDiv.style.display = "none";
+    pixDiv.style.display = "block";
+    atualizarValorPix();
   } else {
     trocoDiv.style.display = "none";
+    pixDiv.style.display = "none";
     document.getElementById("troco").value = "";
     document.getElementById("troco").disabled = false;
     if (semTrocoCheckbox) semTrocoCheckbox.checked = false;
@@ -619,6 +638,60 @@ function toggleTroco() {
       }
     };
   }
+}
+
+function copiarChavePix() {
+  const chavePix = document.getElementById('pix-key').value;
+  navigator.clipboard.writeText(chavePix).then(() => {
+    alert('✅ Chave Pix copiada com sucesso!');
+  }).catch(() => {
+    alert('Erro ao copiar. Tente novamente.');
+  });
+}
+
+function atualizarValorPix() {
+  const totalText = document.getElementById('total').textContent;
+  const valor = totalText.replace('Total: ', '').replace('R$ ', '');
+  document.getElementById('pix-valor').textContent = `R$ ${valor}`;
+}
+
+function toggleTrocoModal() {
+  const pagamento = document.getElementById("modal-pagamento").value;
+  const modalTrocoDiv = document.getElementById("modal-troco-container");
+  const modalPixDiv = document.getElementById("modal-pix-container");
+  const modalSemTrocoCheckbox = document.getElementById("modal-sem-troco");
+
+  if (pagamento === "dinheiro") {
+    modalTrocoDiv.style.display = "block";
+    modalPixDiv.style.display = "none";
+  } else if (pagamento === "pix") {
+    modalTrocoDiv.style.display = "none";
+    modalPixDiv.style.display = "block";
+    atualizarValorPixModal();
+  } else {
+    modalTrocoDiv.style.display = "none";
+    modalPixDiv.style.display = "none";
+    document.getElementById("modal-troco").value = "";
+    document.getElementById("modal-troco").disabled = false;
+    if (modalSemTrocoCheckbox) modalSemTrocoCheckbox.checked = false;
+    const info = document.getElementById('modal-troco-info');
+    if (info) info.textContent = '';
+  }
+}
+
+function copiarChavePixModal() {
+  const chavePix = document.getElementById('modal-pix-key').value;
+  navigator.clipboard.writeText(chavePix).then(() => {
+    alert('Chave Pix copiada com sucesso!');
+  }).catch(() => {
+    alert('Erro ao copiar. Tente novamente.');
+  });
+}
+
+function atualizarValorPixModal() {
+  const totalText = document.getElementById('modal-total').textContent;
+  const valor = totalText.replace('Total: ', '').replace('R$ ', '').replace(/[<strong>|<\/strong>]/g, '');
+  document.getElementById('modal-pix-valor').textContent = `R$ ${valor}`;
 }
 
 function getSidebarTotal() {
@@ -893,6 +966,19 @@ async function enviarWhatsapp() {
     return;
   }
 
+  // Se for PIX, mostra tela antes de enviar
+  if (pagamento === 'pix') {
+    pedidoEnviando = false;
+    confirmSendBtn.disabled = false;
+    confirmSendBtn.innerText = 'Confirmar e Enviar o Pedido';
+    
+    // Guarda dados globalmente para usar depois
+    window.pedidoPendente = { pedido, texto };
+    window.totalPedido = total;
+    mostrarTelaPix();
+    return;
+  }
+
   // Desabilitar botão durante o envio
   pedidoEnviando = true;
   confirmSendBtn.disabled = true;
@@ -922,7 +1008,7 @@ async function enviarWhatsapp() {
     // Reabilitar botão
     pedidoEnviando = false;
     confirmSendBtn.disabled = false;
-    confirmSendBtn.innerText = 'Confirmar e Enviar por WhatsApp';
+    confirmSendBtn.innerText = 'Confirmar e Enviar o Pedido';
   }
 }
 
@@ -993,6 +1079,99 @@ function fecharTelaConfirmacao() {
     modal.setAttribute('aria-hidden', 'true');
     modal.style.display = 'none';
     document.body.style.overflow = '';
+  }
+}
+
+// ==========================================
+// TELA PIX POS-FINALIZACAO
+// ==========================================
+
+function mostrarTelaPix() {
+  const modalTotal = document.getElementById('modal-total').textContent;
+  const valor = modalTotal.replace(/[^\d,]/g, '').replace(',', '.');
+
+  const pixModal = document.createElement('div');
+  pixModal.id = 'pixConfirmModal';
+  pixModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+
+  pixModal.innerHTML = `
+    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);">
+      <h2 style="color: #27ae60; margin-top: 0;">💳 REALIZE SEU PAGAMENTO PIX</h2>
+      
+      <div style="background: #f0f9f4; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 10px 0; color: #555;"><strong>Chave Pix:</strong></p>
+        <div style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
+          <input type="text" id="pix-modal-chave" value="32984806357" readonly style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-weight: bold;">
+          <button onclick="copiarChavePixConfirm()" style="padding: 10px 15px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; white-space: nowrap;">📋 Copiar</button>
+        </div>
+      </div>
+
+      <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f0ad4e;">
+        <p style="margin: 0; font-size: 0.95em;"><strong>Valor a Pagar:</strong></p>
+        <p style="margin: 10px 0; font-size: 1.8em; color: #e74c3c; font-weight: bold;">R$ ${valor}</p>
+      </div>
+
+      <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 5px 0; color: #555;"><strong>Recebedor:</strong></p>
+        <p style="margin: 5px 0; font-weight: bold;">Talita Cristina Lopes Souza</p>
+      </div>
+
+      <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0; font-size: 0.95em; color: #2e7d32;">✅ Após realizar o pagamento, clique em "Confirmar" para que sua equipe receba o pedido.</p>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button onclick="fecharTelaPix()" style="flex: 1; padding: 12px; background: #ccc; color: #333; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Voltar</button>
+        <button onclick="confirmarEEnviarPedido()" style="flex: 1; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Confirmar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(pixModal);
+}
+
+function copiarChavePixConfirm() {
+  const chavePix = document.getElementById('pix-modal-chave').value;
+  navigator.clipboard.writeText(chavePix).then(() => {
+    alert('Chave Pix copiada com sucesso!');
+  }).catch(() => {
+    alert('Erro ao copiar. Tente novamente.');
+  });
+}
+
+function fecharTelaPix() {
+  const pixModal = document.getElementById('pixConfirmModal');
+  if (pixModal) pixModal.remove();
+}
+
+async function confirmarEEnviarPedido() {
+  const pixModal = document.getElementById('pixConfirmModal');
+  if (pixModal) pixModal.remove();
+  
+  if (window.pedidoPendente) {
+    const { pedido, texto } = window.pedidoPendente;
+    
+    try {
+      const resultado = await salvarPedido(pedido);
+      
+      if (resultado && resultado.pedido_id) {
+        closeCartModal();
+        mostrarTelaConfirmacao(resultado, texto);
+        
+        cart = [];
+        renderCart();
+      } else {
+        throw new Error('Erro ao salvar pedido');
+      }
+    } catch (erro) {
+      console.error('Erro ao processar pedido:', erro);
+      alert('Erro ao processar seu pedido. Tente novamente.');
+    } finally {
+      window.pedidoPendente = null;
+      pedidoEnviando = false;
+      confirmSendBtn.disabled = false;
+      confirmSendBtn.innerText = 'Confirmar e Enviar o Pedido';
+    }
   }
 }
 

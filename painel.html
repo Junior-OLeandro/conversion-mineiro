@@ -108,7 +108,7 @@
       border-left-color: #95a5a6;
     }
 
-    .pedido.lido {
+    .pedido.finalizado {
       opacity: 0.6;
       background: #f8f8f8;
     }
@@ -426,8 +426,8 @@
       data.forEach(p => {
         const div = document.createElement("div");
         const statusClass = p.status || 'novo';
-        const foiLido = localStorage.getItem(`pedido-lido-${p.id}`) === 'true';
-        const classeDiv = foiLido ? `pedido lido` : `pedido ${statusClass}`;
+        const foiFinalizado = localStorage.getItem(`pedido-finalizado-${p.id}`) === 'true';
+        const classeDiv = foiFinalizado ? `pedido finalizado` : `pedido ${statusClass}`;
 
         div.className = classeDiv;
 
@@ -443,7 +443,7 @@
         div.innerHTML = `
         <div class="linha">
           <strong>🆔 ${p.pedido_id}</strong>
-          <span class="status">${foiLido ? '👁️ LIDO' : statusLabel[p.status || 'novo']}</span>
+          <span class="status">${foiFinalizado ? '✔️ FINALIZADO' : statusLabel[p.status || 'novo']}</span>
         </div>
 
         <div class="detalhes">
@@ -468,8 +468,11 @@
           <button class="btn btn-print" onclick="imprimirPedido('${p.id}')">
             🖨 Imprimir Cupom
           </button>
-          <button class="btn" style="background: #9b59b6; color: #fff;" onclick="marcarComoLido('${p.id}')">
-            ${foiLido ? '👁️ Marcar como Não Lido' : '📖 Marcar como Lido'}
+          <button class="btn" style="background: #9b59b6; color: #fff;" onclick="marcarComoFinalizado('${p.id}')">
+            ${foiFinalizado ? '↩️ Marcar como Não Finalizado' : '✔️ Marcar como Finalizado'}
+          </button>
+          <button class="btn" style="background: #25d366; color: #fff;" onclick="abrirWhatsApp('${p.telefone}')">
+            💬 WhatsApp do Cliente
           </button>
         </div>
 
@@ -485,12 +488,12 @@
       });
     }
 
-    function marcarComoLido(pedidoId) {
-      const estavaLido = localStorage.getItem(`pedido-lido-${pedidoId}`) === 'true';
-      if (estavaLido) {
-        localStorage.removeItem(`pedido-lido-${pedidoId}`);
+    function marcarComoFinalizado(pedidoId) {
+      const estavaFinalizado = localStorage.getItem(`pedido-finalizado-${pedidoId}`) === 'true';
+      if (estavaFinalizado) {
+        localStorage.removeItem(`pedido-finalizado-${pedidoId}`);
       } else {
-        localStorage.setItem(`pedido-lido-${pedidoId}`, 'true');
+        localStorage.setItem(`pedido-finalizado-${pedidoId}`, 'true');
       }
       carregarPedidos();
     }
@@ -603,13 +606,13 @@
           return;
         }
 
-        // ✅ Enviar mensagem se telefone existir
-        if (pedidoAtual.telefone) {
-          await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
-        } else {
-          console.warn('⚠️ Telefone não encontrado para enviar WhatsApp');
-          alert('⚠️ Aviso: Telefone não configurado, mensagem não foi enviada');
-        }
+        // // ✅ Enviar mensagem se telefone existir
+        // if (pedidoAtual.telefone) {
+        //   await enviarMensagemStatusViaWhatsApp(pedidoAtual, novoStatus);
+        // } else {
+        //   console.warn('⚠️ Telefone não encontrado para enviar WhatsApp');
+        //   alert('⚠️ Aviso: Telefone não configurado, mensagem não foi enviada');
+        // }
         
         carregarPedidos();
       } catch (erro) {
@@ -620,6 +623,21 @@
 
     function imprimirPedido(id) {
       window.open(`print.html?id=${id}`, "_blank");
+    }
+
+    function abrirWhatsApp(telefone) {
+      if (!telefone) {
+        alert('⚠️ Telefone não configurado');
+        return;
+      }
+
+      let telefoneLimpo = telefone.replace(/\D/g, '');
+      if (!telefoneLimpo.startsWith('55')) {
+        telefoneLimpo = '55' + telefoneLimpo;
+      }
+
+      const urlWhatsApp = `https://wa.me/${telefoneLimpo}`;
+      window.open(urlWhatsApp, '_blank');
     }
   </script>
 </body>
