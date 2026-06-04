@@ -46,7 +46,7 @@
 <body>
   <div class="menu-fixo">
     <a href="#grid-combos">Combos</a>
-    <a href="#grid-hamburgueres">Mineirinhos</a>
+    <a href="#grid-hamburgueres">Mineiros</a>
     <a href="#grid-smashs">Smashs</a>
     <a href="#grid-acompanhamentos">Acompanhamentos</a>
     <a href="#grid-bebidas">Bebidas</a>
@@ -115,6 +115,8 @@
           <option value="0">RETIRAR NO LOCAL</option>
           <option value="12.00">AEROPORTO</option>
           <option value="7.00">ANDARAÍ</option>
+          <option value="8.00">ÁGUA SANTA</option>
+          <option value="10.00">BELVEDERE</option>
           <option value="7.00">BOA MORTE</option>
           <option value="7.00">BOA VISTA</option>
           <option value="7.00">BOM PASTOR</option>
@@ -127,16 +129,19 @@
           <option value="7.00">DINIZ</option>
           <option value="9.00">DOM BOSCO</option>
           <option value="7.00">EPCAR</option>
-          <option value="9.00">FÁTIMA</option>
+          <option value="7.00">FÁTIMA</option>
+          <option value="7.00">FLORESTA</option>
           <option value="7.00">FUNCIONÁRIOS</option>
           <option value="7.00">GROGOTÓ</option>
-          <option value="9.00">IPANEMA</option>
+          <option value="8.00">GUARANI</option>
+          <option value="10.00">IPANEMA</option>
           <option value="7.00">JARDIM</option>
           <option value="10.00">JOÃO PAULO II</option>
-          <option value="8.00">MONSENHOR MÁRIO QUINTÃO</option>
+          <option value="7.00">MANSÕES</option>
+          <option value="10.00">MONSENHOR MÁRIO QUINTÃO</option>
           <option value="10.00">MONTE MÁRIO</option>
-          <option value="9.00">N. SRA. APARECIDA</option>
-          <option value="9.00">NOVA CIDADE</option>
+          <option value="10.00">N. SRA. APARECIDA</option>
+          <option value="10.00">NOVA CIDADE</option>
           <option value="7.00">NOVO HORIZONTE</option>
           <option value="7.00">PADRE CUNHA</option>
           <option value="7.00">PASSARINHOS</option>
@@ -145,17 +150,20 @@
           <option value="7.00">SANTA CECÍLIA</option>
           <option value="6.00">SANTA EFIGÊNIA</option>
           <option value="7.00">SANTA LUZIA</option>
-          <option value="8.00">SANTA TEREZA</option>
+          <option value="7.00">SANTA TEREZA</option>
           <option value="7.00">SANTO ANTÔNIO</option>
+          <option value="10.00">SERRA VERDE</option>
+          <option value="7.00">SÃO GERALDO</option>
           <option value="7.00">SÃO CRISTÓVÃO</option>
           <option value="10.00">SÃO FRANCISCO</option>
           <option value="7.00">SÃO JORGE</option>
           <option value="7.00">SÃO JOSÉ</option>
           <option value="7.00">SÃO PEDRO</option>
           <option value="7.00">SÃO SEBASTIÃO</option>
+          <option value="7.00">VALENTIM PRENASSI</option>
           <option value="7.00">VILELA</option>
-          <option value="8.00">VISTA ALEGRE</option>
-      
+          <option value="7.00">VISTA ALEGRE</option>
+
         </select>
 
         <label for="pagamento">Forma de pagamento:</label>
@@ -166,14 +174,18 @@
           <option value="dinheiro">Dinheiro</option>
         </select>
 
-        <div id="pix-container" style="display:none; background:#f0f9f4; padding:15px; border-radius:8px; margin:15px 0; border-left:4px solid #27ae60;">
+        <div id="pix-container"
+          style="display:none; background:#f0f9f4; padding:15px; border-radius:8px; margin:15px 0; border-left:4px solid #27ae60;">
           <h3 style="color:#27ae60; margin-top:0;">💳 Dados para Pagamento Pix</h3>
-          
+
           <div style="background:white; padding:12px; border-radius:6px; margin-bottom:12px;">
             <p style="margin:5px 0; font-size:0.9em; color:#555;"><strong>Chave Pix:</strong></p>
             <div style="display:flex; align-items:center; gap:8px;">
-              <input type="text" id="pix-key" value="32984806357" readonly style="flex:1; padding:8px; border:1px solid #ddd; border-radius:4px; font-weight:bold;">
-              <button onclick="copiarChavePix()" style="padding:8px 12px; background:#27ae60; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; white-space:nowrap;">📋 Copiar</button>
+              <input type="text" id="pix-key" value="32984806357" readonly
+                style="flex:1; padding:8px; border:1px solid #ddd; border-radius:4px; font-weight:bold;">
+              <button onclick="copiarChavePix()"
+                style="padding:8px 12px; background:#27ae60; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; white-space:nowrap;">📋
+                Copiar</button>
             </div>
           </div>
 
@@ -288,13 +300,17 @@
             </select>
           </label>
 
-          <div id="modal-pix-container" style="display:none; background:#f0f9f4; padding:15px; border-radius:8px; margin:15px 0; border-left:4px solid #27ae60;">
+          <div id="modal-pix-container"
+            style="display:none; background:#f0f9f4; padding:15px; border-radius:8px; margin:15px 0; border-left:4px solid #27ae60;">
             <h3 style="color:#27ae60; margin-top:0;">💳 Dados para Pagamento Pix</h3>
             <div style="background:white; padding:12px; border-radius:6px; margin-bottom:12px;">
               <p style="margin:5px 0; font-size:0.9em; color:#555;"><strong>Chave Pix:</strong></p>
               <div style="display:flex; align-items:center; gap:8px;">
-                <input type="text" id="modal-pix-key" value="32984806357" readonly style="flex:1; padding:8px; border:1px solid #ddd; border-radius:4px; font-weight:bold;">
-                <button onclick="copiarChavePixModal()" style="padding:8px 12px; background:#27ae60; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; white-space:nowrap;">📋 Copiar</button>
+                <input type="text" id="modal-pix-key" value="32984806357" readonly
+                  style="flex:1; padding:8px; border:1px solid #ddd; border-radius:4px; font-weight:bold;">
+                <button onclick="copiarChavePixModal()"
+                  style="padding:8px 12px; background:#27ae60; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; white-space:nowrap;">📋
+                  Copiar</button>
               </div>
             </div>
             <div style="background:white; padding:12px; border-radius:6px; margin-bottom:12px;">
@@ -306,7 +322,8 @@
               <p style="margin:0; font-size:0.95em; color:#333; font-weight:bold;">Talita Cristina Lopes Souza</p>
             </div>
             <div style="background:#fff3cd; padding:12px; border-radius:6px; border-left:4px solid #f0ad4e;">
-              <p style="margin:0; font-size:0.9em; color:#5a4a00;">✅ <strong>Após o pagamento</strong>, envie o comprovante pelo WhatsApp para confirmar seu pedido.</p>
+              <p style="margin:0; font-size:0.9em; color:#5a4a00;">✅ <strong>Após o pagamento</strong>, envie o
+                comprovante pelo WhatsApp para confirmar seu pedido.</p>
             </div>
           </div>
 
@@ -340,7 +357,9 @@
   <div id="successModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="successTitle"
     style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
-      <h2 id="successTitle" style="color: #2ecc71; margin-bottom: 20px; background: #f0f9f4; padding: 20px; border-radius: 8px;">✅ Pedido Enviado!</h2>
+      <h2 id="successTitle"
+        style="color: #2ecc71; margin-bottom: 20px; background: #f0f9f4; padding: 20px; border-radius: 8px;">✅ Pedido
+        Enviado!</h2>
 
       <div style="margin-bottom: 15px;">
         <p><strong>Cliente:</strong> <span id="pedido-cliente">-</span></p>

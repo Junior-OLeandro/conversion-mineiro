@@ -75,7 +75,7 @@ function mostrarTempoEntrega(config) {
 const productsData = [
   // --- COMBOS ---
   { id: 1, category: 'combos', name: 'Combo Trem Bão', desc: 'Trem Bão + Batata Individual + Refri 350ml (2 Bifes artesanais de 160g cada, fatias de cheddar, tiras de bacon e barbecue. Acompanha maionese mineira.)', price: 55.90, img: './src/images/lanches/combo-trembao.webp', alt: 'Hamburguer com batata e refri' },
-  { id: 2, category: 'combos', name: 'Combo Smash Mineiro Duplo', desc: 'Smash Mineiro Duplo + Batata Individual + Refri 350ml (2 Smash burguer 70g cada, fatias de cheddar, requeijão, tiras de bacon, picles de cebola roxa e salada de alface e tomate. Acompanha maionese mineira.)', price: 41.90, img: './src/images/lanches/smash-mineiro.webp', alt: 'Hamburguer com batata e refri' },
+  { id: 2, category: 'combos', name: 'Combo Mineiro ', desc: 'Mineiro + Batata Individual + Refri 350ml (Bife artesanal 160g, queijo canastra, banana da terra frita, tiras de bacon, melado de cana e couve crispy. Acompanha maionese caseira.)', price: 46.90, img: './src/images/lanches/combo-mineiro.webp', alt: 'Hamburguer com batata e refri' },
   { id: 3, category: 'combos', name: 'Combo Tropical', desc: 'Tropical + Batata Individual + Refri 350ml (Bife artesanal 160g, fatias de cheddar, cream cheese, tiras de bacon e chutney de abacaxi. Acompanha maionese mineira.)', price: 45.90, img: './src/images/lanches/combo-tropical.webp', alt: 'Hamburguer com batata e refri' },
 
   // --- HAMBURGUERES ---
@@ -117,16 +117,18 @@ const productsData = [
 
   // --- ACOMPANHAMENTOS E BEBIDAS ---
   { id: 17, category: 'acompanhamentos', name: 'Batata Frita', desc: 'Batata frita simples', price: 12.90, img: './src/images/lanches/batata.webp', alt: 'Batata Frita' },
-  { id: 18, category: 'acompanhamentos', name: 'Batata, cheddar e costela desfiada', desc: 'Batata frita com cheddar e costela desfiada', price: 29.90, img: './src/images/lanches/batata-cc.webp', alt: 'Batata Especial' },
+  { id: 18, category: 'acompanhamentos', name: 'Batata, cheddar e costela desfiada', desc: 'Batata frita com cheddar, costela desfiada e finalizada com queijo canastra ralado', price: 29.90, img: './src/images/lanches/batata-cc.webp', alt: 'Batata Especial' },
   { id: 19, category: 'acompanhamentos', name: 'Batata, cheddar e bacon', desc: 'Batata frita com cheddar e bacon', price: 24.90, img: './src/images/lanches/batata-cb.webp', alt: 'Batata Especial' },
-  { id: 20, category: 'bebidas', name: 'Coca-Cola Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/cocazero.webp', alt: 'Coca Zero' },
-  { id: 21, category: 'bebidas', name: 'Coca-Cola 350ml', desc: '', price: 6.00, img: './src/images/lanches/coca.webp', alt: 'Coca Cola' },
+  { id: 20, category: 'bebidas', name: 'Coca-Cola 350ml', desc: '', price: 6.00, img: './src/images/lanches/coca.webp', alt: 'Coca Cola' },
+  { id: 21, category: 'bebidas', name: 'Coca-Cola Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/cocazero.webp', alt: 'Coca Zero' },
   { id: 22, category: 'bebidas', name: 'Guaraná 350ml', desc: '', price: 6.00, img: './src/images/lanches/guarana.webp', alt: 'Guaraná' },
-  { id: 23, category: 'bebidas', name: 'Coca-Cola 600ml', desc: '', price: 9.00, img: './src/images/lanches/coca600.webp', alt: 'Coca-cola 600ml' },
+  { id: 23, category: 'bebidas', name: 'Guaraná Zero 350ml', desc: '', price: 6.00, img: './src/images/lanches/guaranazero.webp', alt: 'Guaraná' },
+  { id: 24, category: 'bebidas', name: 'Coca-Cola 600ml', desc: '', price: 9.00, img: './src/images/lanches/coca600.webp', alt: 'Coca-cola 600ml' },
+  { id: 25, category: 'bebidas', name: 'Coca-Cola Zero 600ml', desc: '', price: 9.00, img: './src/images/lanches/cocazero600.webp', alt: 'Coca-cola 600ml' },
 ];
 
 const extras = [
-  { id: 'canastra', name: 'Queijo Canastra', price: 6.00 },
+  { id: 'canastra', name: 'Queijo Canastra', price: 7.00 },
   { id: 'cheddar', name: 'Fatias de Cheddar', price: 5.00 },
   { id: 'cheese', name: 'Cream Cheese', price: 5.00 },
   { id: 'requei', name: 'Requeijão', price: 5.00 },
@@ -139,10 +141,11 @@ const extras = [
   { id: 'cebolac', name: 'Cebola Caremelizada', price: 5.00 },
   { id: 'piclesc', name: 'Picles de Cebola Roxa', price: 4.00 },
   { id: 'chutney', name: 'Chutney de Abacaxi', price: 5.00 },
-  { id: 'maionese', name: 'Maionese Mineira (Potinho 30ml)', price: 5.00 },
-  { id: 'ketchup', name: 'Ketchup de Goiabada (Potinho 30ml)', price: 5.00 },
-  { id: 'bbq', name: 'Barbecue (Potinho 30ml)', price: 5.00 },
+  { id: 'maionese', name: 'Maionese Mineira (Pot. 30ml)', price: 5.00 },
+  { id: 'ketchup', name: 'Ketchup de Goiabada (Pot. 30ml)', price: 5.00 },
+  { id: 'bbq', name: 'Barbecue (Pot. 30ml)', price: 5.00 },
   { id: 'bife', name: 'Bife artesanal de boi 160g', price: 13.00 },
+  { id: 'bife2', name: 'Bife artesanal de frango 160g', price: 13.00 },
 ];
 
 const categoriesWithExtras = ['combos', 'hamburgueres', 'smashs'];
